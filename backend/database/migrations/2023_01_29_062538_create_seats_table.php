@@ -17,12 +17,10 @@ class CreateSeatsTable extends Migration
       $table->id();
       $table->string('name');
       $table->unsignedBigInteger('bogi_id');
-      $table->unsignedBigInteger('train_id');
-      $table->unsignedBigInteger('booked')->default(0)->comment('0=open, 1=booked');
+      $table->unsignedBigInteger('type')->default(0)->comment('0=shovon, 1=shovon chair, 2=f_chair, 3=f_seat, 4=f_berth, 5=snigdha, 6=ac_s, 7=ac_b');
       $table->timestamps();
 
-      // $table->foreign('bogi_id')->references('id')->on('bogis')->onDelete('cascade');
-      $table->foreign('train_id')->references('id')->on('trains');
+      $table->foreign('bogi_id')->references('id')->on('bogis');
     });
   }
 

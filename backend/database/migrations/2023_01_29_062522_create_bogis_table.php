@@ -15,7 +15,11 @@ class CreateBogisTable extends Migration
     {
         Schema::create('bogis', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->unsignedBigInteger('train_id');
             $table->timestamps();
+
+            $table->foreign('train_id')->references('id')->on('trains');
         });
     }
 

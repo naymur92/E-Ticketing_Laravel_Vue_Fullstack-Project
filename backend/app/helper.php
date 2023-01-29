@@ -41,3 +41,17 @@ function eticket_trains()
 
   ];
 }
+
+function eticket_bogis()
+{
+  return [
+    [
+      'name' => 'KA',
+      'train_id' => 1,
+    ],
+    [
+      'name' => 'KHA',
+      'train_id' => 1,
+    ],
+  ];
+}
