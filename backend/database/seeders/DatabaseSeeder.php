@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Bogi;
+use App\Models\Schedule;
 use App\Models\Seat;
 use App\Models\Station;
 use App\Models\Train;
@@ -48,11 +49,22 @@ class DatabaseSeeder extends Seeder
         for ($i = 1; $i <= 60; $i++) {
           $seat = new Seat();
           $seat->name = $bogi->name . '-' . $i;
+          $seat->type = rand(0, 1);
           $seat->bogi_id = $bogi->id;
+          $seat->train_id = $train->id;
 
           $seat->save();
         }
       }
     }
+
+    $schedule = new Schedule();
+    $schedule->train_id = 1;
+    $schedule->station_id = 2;
+    $schedule->time = '07:00';
+    $schedule->shovon_price = 50;
+    $schedule->s_chair_price = 70;
+    $schedule->f_chair_price = 80;
+    $schedule->save();
   }
 }
