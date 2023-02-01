@@ -91,8 +91,9 @@
           </form>
 
           <div class="card mt-3">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
               <h6>Train Bogis</h6>
+              <a href="{{ route('bogis.create') }}" class="btn btn-outline-primary">Add Bogi</a>
             </div>
             <div class="card-body p-0">
               <div class="row">
