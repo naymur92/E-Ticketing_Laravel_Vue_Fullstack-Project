@@ -37,42 +37,30 @@ class TicketController extends Controller
         }
         $unique_available_type = array_unique($available_type);
 
+        $total_seats = 0;
         $available = [];
         foreach ($unique_available_type as $type) {
           $seatsTypeAvailable = Seat::where('train_id', $train->id)->where('booked', 0)->where('type', $type)->get();
 
+          $seatTypeName = table_name_by_number()[$type];
           $available[] = [
-            'type' => $type,
+            'type' => type_name_by_number()[$type],
             'quantity' => count($seatsTypeAvailable),
-            'fare' => ''
+            'fare' => $schedule->$seatTypeName
           ];
+
+          $total_seats += count($seatsTypeAvailable);
         }
 
         $data[] = [
           'train_name' => $train->name,
           'train_route' => 'test route',
           'dep_time' => date('F j, Y', strtotime($train->date)) . ' - ' . date('H:i:a', strtotime($schedule->time)),
-          'seats_available' => '',
+          'seats_available' => $total_seats,
           'available' => $available
         ];
       }
     }
-
-    // If found display data
-    // $data = [
-    //   'train_name' => '',
-    //   'train_route' => '',
-    //   'dep_time' => '',
-    //   'seats_available' => '',
-    //   'available' => [
-    //     [
-    //       'type' => '',
-    //       'quantity' => '',
-    //       'fare' => ''
-    //     ]
-    //   ],
-    // ];
-
 
     return response()->json($data);
   }

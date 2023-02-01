@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BogiController;
+use App\Http\Controllers\TrainController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,12 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-  return view('welcome');
-});
+Route::middleware(['auth'])->group(function () {
+  Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
 
-Route::get('/dashboard', function () {
-  return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+  Route::resource('trains', TrainController::class);
+  Route::resource('bogis', BogiController::class);
+});
 
 require __DIR__ . '/auth.php';

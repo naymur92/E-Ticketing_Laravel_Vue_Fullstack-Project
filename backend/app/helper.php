@@ -55,3 +55,22 @@ function eticket_bogis()
     ],
   ];
 }
+
+function type_name_by_number()
+{
+  return [
+    0 => 'Shovon',
+    1 => 'Shovon Chair',
+  ];
+}
+
+function table_name_by_number()
+{
+  return [
+    0 => 'shovon_price',
+    1 => 's_chair_price',
+    2 => 'f_chair_price',
+    3 => 'f_seat_price',
+    4 => 'f_berth_price',
+  ];
+}

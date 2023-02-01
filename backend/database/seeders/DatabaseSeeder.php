@@ -7,7 +7,10 @@ use App\Models\Schedule;
 use App\Models\Seat;
 use App\Models\Station;
 use App\Models\Train;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +21,13 @@ class DatabaseSeeder extends Seeder
    */
   public function run()
   {
+    $user = new User();
+    $user->name = 'Naymur Rahman';
+    $user->email = 'naymur@example.com';
+    $user->password = Hash::make(value: 'abcd1234');
+    $user->remember_token = Str::random(10);
+    $user->save();
+
     foreach (eticket_stations() as $item) {
       $station = new Station();
 
@@ -52,6 +62,7 @@ class DatabaseSeeder extends Seeder
           $seat->type = rand(0, 1);
           $seat->bogi_id = $bogi->id;
           $seat->train_id = $train->id;
+          $seat->booked = rand(0, 1);
 
           $seat->save();
         }
