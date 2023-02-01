@@ -30,7 +30,7 @@
         <a href="{{ route('trains.index') }}" class="btn btn-outline-warning">Back</a>
       </div>
       <div class="card-body row justify-content-center">
-        <div class="col-8">
+        <div class="col-xl-10 col-lg-10 col-md-12">
           <form action="{{ route('trains.update', $train->id) }}" method="post">
             @csrf
             <div class="card">
@@ -94,7 +94,7 @@
             <div class="card-header">
               <h6>Train Bogis</h6>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
               <div class="row">
                 @foreach ($train->bogis as $bogi)
                   <div class="col-6">
@@ -111,11 +111,10 @@
 
                         <h4 class="text-center">{{ $bogi->name }}</h4>
                       </div>
-                      <div class="card-body">
-                        <ul class="list-unstyled d-flex flex-wrap">
+                      <div class="card-body px-0">
+                        <ul class="bogi_list">
                           @foreach ($bogi->seats as $seat)
-                            <li
-                              class="rounded text-center py-2 m-2 {{ $seat->booked ? 'bg-danger' : 'bg-secondary' }} text-white seats">
+                            <li class="rounded p-2 {{ $seat->booked ? 'bg-danger' : 'bg-secondary' }}">
                               {{ $seat->name }}
                             </li>
                           @endforeach
