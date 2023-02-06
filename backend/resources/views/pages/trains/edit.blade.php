@@ -98,7 +98,7 @@
             <div class="card-body p-0">
               <div class="row">
                 @foreach ($train->bogis as $bogi)
-                  <div class="col-6">
+                  <div class="col-sm-6 col-lg-3">
                     <div class="card border-0">
                       <div class="card-header position-relative">
                         {{-- Bogi delete button --}}
@@ -115,8 +115,8 @@
                       <div class="card-body px-0">
                         <ul class="bogi_list">
                           @foreach ($bogi->seats as $seat)
-                            <li class="rounded p-2 {{ $seat->booked ? 'bg-danger' : 'bg-secondary' }}">
-                              {{ $seat->name }}
+                            <li class="rounded {{ $seat->booked ? 'bg-danger' : 'bg-secondary' }}">
+                              <span>{{ $seat->name }}</span>
                             </li>
                           @endforeach
                         </ul>

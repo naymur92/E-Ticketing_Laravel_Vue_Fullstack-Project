@@ -28,27 +28,45 @@ class DatabaseSeeder extends Seeder
     $user->remember_token = Str::random(10);
     $user->save();
 
-    foreach (eticket_stations() as $item) {
-      $station = new Station();
+    Station::insert([
+      [
+        'name' => 'Dhaka',
+        'address' => 'Dhaka',
+        'lat' => 90.334,
+        'lon' => 92.154
+      ],
+      [
+        'name' => 'Dhaka Bimanbondor',
+        'address' => 'Dhaka Bimanbondor',
+        'lat' => 90.3134,
+        'lon' => 92.1254
+      ],
+      [
+        'name' => 'Khulna',
+        'address' => 'Khulna',
+        'lat' => 90.23134,
+        'lon' => 92.31254
+      ],
+    ]);
 
-      $station->name = $item['name'];
-      $station->address = $item['address'];
-      $station->lat = $item['lat'];
-      $station->lon = $item['lon'];
+    Train::insert([
+      [
+        'name' => 'Chitra',
+        'date' => '2023-06-02',
+        'home_station_id' => 1,
+        'start_time' => '06:00'
+      ],
+      [
+        'name' => 'Sundarban',
+        'date' => '2023-06-02',
+        'home_station_id' => 1,
+        'start_time' => '12:00'
+      ],
+    ]);
 
-      $station->save();
-    }
+    $trains = Train::get();
 
-    foreach (eticket_trains() as $item) {
-      $train = new Train();
-
-      $train->name = $item['name'];
-      $train->date = date('Y-m-d', strtotime($item['date']));
-      $train->home_station_id = $item['home_station_id'];
-      $train->start_time = date('h:i:s', strtotime($item['start_time']));
-
-      $train->save();
-
+    foreach ($trains as $train) {
       foreach (eticket_bogis() as $bogiitem) {
         $bogi = new Bogi();
         $bogi->name = $bogiitem['name'];
@@ -56,7 +74,7 @@ class DatabaseSeeder extends Seeder
 
         $bogi->save();
 
-        for ($i = 1; $i <= 60; $i++) {
+        for ($i = 1; $i <= 100; $i++) {
           $seat = new Seat();
           $seat->name = $bogi->name . '-' . $i;
           $seat->type = rand(0, 1);

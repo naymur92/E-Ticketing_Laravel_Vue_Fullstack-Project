@@ -25,7 +25,7 @@ class TrainController extends Controller
    */
   public function create()
   {
-    //
+    return view('pages.trains.create');
   }
 
   /**
