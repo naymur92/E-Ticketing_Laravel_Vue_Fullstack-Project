@@ -62,8 +62,12 @@
                             class="fa fa-eye text-primary"></i> View</a>
                         <a class="dropdown-item" href="{{ route('trains.edit', $train['id']) }}"><i
                             class="fa fa-pen text-warning"></i> Edit</a>
-                        <a class="dropdown-item" href="{{ route('trains.destroy', $train['id']) }}"><i
-                            class="fa fa-trash text-danger"></i> Delete</a>
+                        <form action="{{ route('trains.destroy', $train['id']) }}"
+                          onsubmit="return confirm('Are you want to sure to delete?')" method="post">
+                          @csrf
+                          @method('delete')
+                          <button class="dropdown-item"><i class="fa fa-trash text-danger"></i> Delete</button>
+                        </form>
                       </div>
                     </div>
                   </td>

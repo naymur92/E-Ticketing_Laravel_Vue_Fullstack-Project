@@ -45,25 +45,13 @@
         <!-- End of Topbar -->
 
         {{-- Display Error Message --}}
-        @if (session()->has('msg'))
-          <script>
-            function tempAlert(msg, duration) {
-              var el = document.createElement("div");
-              el.setAttribute('class', 'alert alert-success');
-              el.setAttribute("style", "position:absolute;top:10%;left:50%;width:250px;text-align:center");
-              el.innerHTML = msg;
-              setTimeout(function() {
-                el.parentNode.removeChild(el);
-              }, duration);
-              document.body.appendChild(el);
-            }
-
-            tempAlert('{{ session()->get('msg') }}', 5000);
-          </script>
-        @endif
+        @flasher_render
 
         <!-- Begin Page Content -->
-        @yield('content')
+        <main id="app">
+
+          @yield('content')
+        </main>
         <!-- /.container-fluid -->
 
       </div>
