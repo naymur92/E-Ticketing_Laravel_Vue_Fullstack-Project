@@ -33,6 +33,7 @@
         <div class="col-xl-10 col-lg-10 col-md-12">
           <form action="{{ route('trains.update', $train->id) }}" method="post">
             @csrf
+            @method('put')
             <div class="card">
               <div class="card-header">
                 <h6>Train Info</h6>
@@ -63,10 +64,15 @@
                 <div class="row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <div class="form-group">
-                      <label for="_home_station"><strong>Home Station</strong></label>
-                      <input type="number" id="_home_station" name="home_station_id"
-                        value="{{ old('home_station_id', $train->home_station_id) }}" class="form-control "
-                        placeholder="numbers only">
+                      <label for="_home_station"><strong>Home Station:</strong></label>
+                      <input list="home_stations" name="home_station_id" id="_home_station"
+                        placeholder="Type or select station name"
+                        value="{{ old('home_station_id', $train->home_station_id) }}" class="form-control">
+                      <datalist id="home_stations">
+                        @foreach ($stations as $station)
+                          <option value="{{ $station->id }}">{{ $station->id . ' - ' . $station->name }}</option>
+                        @endforeach
+                      </datalist>
                     </div>
                     @error('home_station_id')
                       <div class="alert alert-warning my-2">{{ $message }}</div>
@@ -93,7 +99,8 @@
           <div class="card mt-3">
             <div class="card-header d-flex justify-content-between align-items-center">
               <h6>Train Bogis</h6>
-              <a href="{{ route('bogis.create') }}" class="btn btn-outline-primary">Add Bogi</a>
+              <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#bogisCreate">Add
+                Bogi</button>
             </div>
             <div class="card-body p-0">
               <div class="row">
@@ -133,5 +140,46 @@
       </div>
     </div>
 
+  </div>
+
+  {{-- Add Bogi modal --}}
+  <div class="modal fade" id="bogisCreate" tabindex="-1" role="dialog" aria-labelledby="bogisCreateCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bogisCreateLongTitle">Bogi Add Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{ route('bogis.store') }}" method="post">
+          @csrf
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="_bogi_name"><strong>Bogi Name:</strong></label>
+              <input type="text" id="_bogi_name" name="bogi_name" value="{{ old('bogi_name') }}"
+                class="form-control" placeholder="Enter Bogi Name">
+              @error('bogi_name')
+                <div class="alert alert-warning my-2">{{ $message }}</div>
+              @enderror
+            </div>
+            <div class="form-group">
+              <label for="_total_seats"><strong>Total Seats:</strong></label>
+              <input type="number" id="_total_seats" name="total_seats" value="{{ old('total_seats') }}"
+                class="form-control" placeholder="Enter total seats">
+              @error('total_seats')
+                <div class="alert alert-warning my-2">{{ $message }}</div>
+              @enderror
+            </div>
+            <input type="hidden" name="train_id" value="{{ $train->id }}">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Add Bogi</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 @endsection

@@ -46,10 +46,11 @@
           <div class="form-group my-2">
             <label for="_home_station"><strong>Home Station:</strong></label>
             <input list="home_stations" name="home_station_id" id="_home_station"
-              placeholder="Type or select station name" class="form-control">
+              placeholder="Type or select station name" value="{{ old('home_station_id') }}" class="form-control">
             <datalist id="home_stations">
               @foreach ($stations as $station)
-                <option value="{{ $station->id }}">{{ $station->id . ' - ' . $station->name }}</option>
+                <option value="{{ $station->id }}">
+                  {{ $station->id . ' - ' . $station->name }}</option>
               @endforeach
             </datalist>
 

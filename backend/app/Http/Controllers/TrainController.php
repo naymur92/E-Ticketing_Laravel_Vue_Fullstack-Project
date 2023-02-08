@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Station;
 use App\Models\Train;
 use Illuminate\Http\Request;
-use Flasher\Prime\FlasherInterface;
+// use Flasher\Prime\FlasherInterface;
 
 class TrainController extends Controller
 {
@@ -38,7 +38,7 @@ class TrainController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(Request $request, FlasherInterface $flasher)
+  public function store(Request $request)
   {
     $request->validate([
       'name' => 'required|min:3',
@@ -54,7 +54,7 @@ class TrainController extends Controller
     $train->start_time = $request->start_time;
 
     $train->save();
-    $flasher->addSuccess('Train Added');
+    flash()->addSuccess('Train Added');
     return redirect(route('trains.index'));
   }
 
@@ -77,7 +77,8 @@ class TrainController extends Controller
    */
   public function edit(Train $train)
   {
-    return view('pages.trains.edit', compact('train'));
+    $stations = Station::get();
+    return view('pages.trains.edit', compact('train', 'stations'));
   }
 
   /**
@@ -89,7 +90,22 @@ class TrainController extends Controller
    */
   public function update(Request $request, $id)
   {
-    //
+    $request->validate([
+      'name' => 'required|min:3',
+      'date' => 'required|date',
+      'home_station_id' => 'required|integer',
+      'start_time' => 'required',
+    ]);
+
+    $train = Train::findOrFail($id);
+
+    if ($train->update($request->only('name', 'date', 'home_station_id', 'start_time'))) {
+      flash()->addSuccess('Train Updated');
+      return redirect(route('trains.index'));
+    } else {
+      flash()->addError('Somthing went wrong! Try again!');
+      return back();
+    }
   }
 
   /**
@@ -98,11 +114,11 @@ class TrainController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id, FlasherInterface $flasher)
+  public function destroy($id)
   {
     $train = Train::findOrFail($id);
     $train->delete();
-    $flasher->addWarning('Train Deleted');
+    flash()->addWarning('Train Deleted');
     return back();
   }
 }

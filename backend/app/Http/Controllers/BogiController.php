@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bogi;
+use App\Models\Train;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BogiController extends Controller
 {
@@ -35,7 +37,29 @@ class BogiController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $request->validate([
+      'bogi_name' => 'required',
+      'total_seats' => 'required|integer|min:15',
+    ]);
+    $bogi = new Bogi();
+    $bogi->name = strtoupper($request->bogi_name);
+    $bogi->train_id = $request->train_id;
+
+    $bogi->save();
+
+    // $bogi_id = DB::table('bogis')->insertGetId($request->only('name', 'train_id'));
+    for ($i = 1; $i <= $request->total_seats; $i++) {
+      DB::table('seats')->insert([
+        'name' => strtoupper($request->bogi_name) . '-' . $i,
+        'bogi_id' => $bogi->id,
+        'train_id' => $request->train_id,
+        'type' => 0,
+        'booked' => rand(0, 1),
+      ]);
+    }
+
+    flash()->addSuccess('Bogi and seat added');
+    return back();
   }
 
   /**
@@ -78,8 +102,9 @@ class BogiController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy(Bogi $bogi)
+  public function destroy($id)
   {
+    $bogi = Bogi::findOrFail($id);
     // $bogi->seats()->delete();
     $bogi->delete();
     return back()->with('msg', 'Successfully Deleted');

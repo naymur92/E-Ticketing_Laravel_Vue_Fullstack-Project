@@ -20,7 +20,9 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
 
   Route::resource('trains', TrainController::class);
-  Route::resource('bogis', BogiController::class);
+
+  Route::post('bogis', [BogiController::class, 'store'])->name('bogis.store');
+  Route::delete('bogis/{bogi}', [BogiController::class, 'destroy'])->name('bogis.destroy');
 });
 
 require __DIR__ . '/auth.php';
