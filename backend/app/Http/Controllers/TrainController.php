@@ -27,9 +27,7 @@ class TrainController extends Controller
    */
   public function create()
   {
-    $stations = Station::get();
-
-    return view('pages.trains.create', compact('stations'));
+    return view('pages.trains.create');
   }
 
   /**

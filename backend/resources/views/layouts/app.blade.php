@@ -49,7 +49,6 @@
 
         <!-- Begin Page Content -->
         <main id="app">
-
           @yield('content')
         </main>
         <!-- /.container-fluid -->
@@ -101,6 +100,7 @@
     </div>
   </div>
 
+  <script src="{{ mix('js/app.js') }}"></script>
   <!-- Bootstrap core JavaScript-->
   <script src="/backend_assets/vendor/jquery/jquery.min.js"></script>
   <script src="/backend_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
