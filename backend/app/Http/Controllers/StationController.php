@@ -9,6 +9,16 @@ class StationController extends Controller
 {
   public function listStations()
   {
-    return response()->json(Station::get(), status: 200);
+    $stations = Station::get();
+
+    $data = [];
+
+    foreach ($stations as $station) {
+      $data[] = [
+        'label' => $station->name,
+        'code' => $station->id
+      ];
+    }
+    return response()->json($data, status: 200);
   }
 }

@@ -40,22 +40,12 @@
         </div>
         <div class="form-group my-2">
           <label for="_home_station"><strong>Home Station:</strong></label>
-          <input
-            list="home_stations"
-            v-model="home_station_id"
+
+          <v-select
             id="_home_station"
-            placeholder="Type or select station name"
-            class="form-control"
-          />
-          <datalist id="home_stations">
-            <option
-              v-for="(station, index) in stations"
-              :key="index"
-              :value="station.id"
-            >
-              {{ station.id + " - " + station.name }}
-            </option>
-          </datalist>
+            v-model="home_station_id"
+            :options="stations"
+          ></v-select>
 
           <ul v-if="errors.home_station_id" class="alert alert-warning my-2">
             <li v-for="(err, index) in errors.home_station_id" :key="index">

@@ -84,7 +84,7 @@
                       <input type="time" id="_start_time" name="start_time"
                         value="{{ old('start_time', $train->start_time) }}" class="form-control">
                     </div>
-                    @error('date')
+                    @error('start_time')
                       <div class="alert alert-warning my-2">{{ $message }}</div>
                     @enderror
                   </div>
