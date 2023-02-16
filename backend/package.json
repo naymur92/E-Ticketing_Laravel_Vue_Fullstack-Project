@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "vue": "^3.2.36",
-        "vue-ctk-date-time-picker": "^3.0.0-alpha.0"
+        "vue-ctk-date-time-picker": "^3.0.0-alpha.0",
+        "vue-router": "^4.1.6"
     }
 }

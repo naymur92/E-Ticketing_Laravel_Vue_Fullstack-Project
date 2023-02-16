@@ -17,8 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+  return view('welcome');
+});
+
 Route::middleware(['auth'])->group(function () {
-  Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+  Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
   Route::resource('trains', TrainController::class);
 
@@ -26,6 +30,10 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('bogis/{bogi}', [BogiController::class, 'destroy'])->name('bogis.destroy');
 
   Route::get('list-stations', [StationController::class, 'listStations']);
+});
+
+Route::any('{slug}', function () {
+  return view('welcome');
 });
 
 require __DIR__ . '/auth.php';
