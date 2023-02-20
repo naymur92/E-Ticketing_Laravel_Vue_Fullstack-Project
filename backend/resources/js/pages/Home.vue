@@ -1,13 +1,18 @@
+<script setup>
+import SearchTrain from "../Components/SearchTrain.vue";
+</script>
 <template>
   <div class="container">
-    <div class="row my-5 d-flex align-content-center">
-      <div class="col-md-6 col-sm-12 py-5">ticket searching form</div>
+    <div class="row my-5 d-flex align-items-center">
+      <div class="col-md-6 col-sm-12 py-5">
+        <SearchTrain />
+      </div>
       <div class="col-md-6 col-sm-12 position-relative">
         <img
-          src="assets/images/train-illustration-for-train-1.jpg"
-          alt=""
-          width="100%"
+          src="/assets/images/train-illustration-for-train-1.jpg"
           class="rounded"
+          style="width: 100%"
+          alt="train_illustration_image"
         />
         <span
           class="position-absolute"
@@ -17,7 +22,13 @@
           online payment method</span
         >
         <div
-          class="money-partners d-flex align-items-baseline position-absolute"
+          class="
+            money-partners
+            my-3
+            d-flex
+            align-items-baseline
+            position-absolute
+          "
           style="top: 50px; right: 15px"
         >
           <div class="money-logo">
@@ -134,4 +145,8 @@
 export default {};
 </script>
 <style>
+.money-partners .money-logo img {
+  height: 25px;
+  margin-left: 5px;
+}
 </style>
