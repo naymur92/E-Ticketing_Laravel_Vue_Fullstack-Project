@@ -1,6 +1,3 @@
-<script setup>
-import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
-</script>
 <template>
   <form>
     <div class="row my-2">
@@ -60,6 +57,7 @@ export default {
       this.loading = false;
     });
   },
+  methods: {},
 };
 </script>
 <style>

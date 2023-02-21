@@ -5,7 +5,51 @@ import SearchTrain from "../Components/SearchTrain.vue";
   <div class="container">
     <div class="row my-5 d-flex align-items-center">
       <div class="col-md-6 col-sm-12 py-5">
+        <!-- Search Train -->
         <SearchTrain />
+        <!-- <form>
+          <div class="row my-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="_from"><strong>From</strong></label>
+                <v-select
+                  id="_from"
+                  v-model="from"
+                  :options="stations"
+                ></v-select>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="_to"><strong>To</strong></label>
+                <v-select id="_to" v-model="to" :options="stations"></v-select>
+              </div>
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="_doj"><strong>Date of Journey</strong></label>
+                <VueCtkDateTimePicker
+                  only-date
+                  no-button-now
+                  format="YYYY-MM-DD"
+                  formatted="YYYY-MM-DD"
+                  input-size="lg"
+                  label="Select Date"
+                  auto-close="true"
+                  id="_doj"
+                  v-model="doj"
+                />
+              </div>
+            </div>
+          </div>
+          <input
+            type="submit"
+            value="Search Train"
+            class="btn btn-success form-control"
+          />
+        </form> -->
       </div>
       <div class="col-md-6 col-sm-12 position-relative">
         <img
@@ -22,13 +66,7 @@ import SearchTrain from "../Components/SearchTrain.vue";
           online payment method</span
         >
         <div
-          class="
-            money-partners
-            my-3
-            d-flex
-            align-items-baseline
-            position-absolute
-          "
+          class="money-partners my-3 d-flex align-items-baseline position-absolute"
           style="top: 50px; right: 15px"
         >
           <div class="money-logo">
@@ -142,7 +180,30 @@ import SearchTrain from "../Components/SearchTrain.vue";
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      loading: true,
+      stations: [],
+      from: "",
+      to: "",
+      doj: "",
+      errors: {},
+    };
+  },
+  // mounted() {
+  //   this.getStations();
+  // },
+  methods: {
+    getStations() {
+      axios.get("/list-stations").then((res) => {
+        this.stations = res.data;
+        this.loading = false;
+        // console.log(this.stations);
+      });
+    },
+  },
+};
 </script>
 <style>
 .money-partners .money-logo img {

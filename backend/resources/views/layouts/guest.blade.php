@@ -20,8 +20,6 @@
   <!-- Styles -->
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
-  <!-- Scripts -->
-  <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 
 <body>
@@ -29,10 +27,10 @@
     {{ $slot }}
   </div>
 
+  <script src="{{ mix('js/app.js') }}"></script>
   <script src="/assets/js/bootstrap.bundle.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"
     integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-  <script src="{{ mix('js/app.js') }}"></script>
 </body>
 
 </html>

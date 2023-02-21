@@ -21820,10 +21820,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/SearchTrain.vue?vue&type=script&setup=true&lang=js":
-/*!****************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/SearchTrain.vue?vue&type=script&setup=true&lang=js ***!
-  \****************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/SearchTrain.vue?vue&type=script&lang=js":
+/*!*****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/SearchTrain.vue?vue&type=script&lang=js ***!
+  \*****************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -21831,9 +21831,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_ctk_date_time_picker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-ctk-date-time-picker */ "./node_modules/vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.common.js");
-/* harmony import */ var vue_ctk_date_time_picker__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_ctk_date_time_picker__WEBPACK_IMPORTED_MODULE_0__);
-var __default__ = {
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       loading: true,
@@ -21850,24 +21848,9 @@ var __default__ = {
       _this.stations = res.data;
       _this.loading = false;
     });
-  }
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/Object.assign(__default__, {
-  name: 'SearchTrain',
-  setup: function setup(__props, _ref) {
-    var expose = _ref.expose;
-    expose();
-    var __returned__ = {
-      VueCtkDateTimePicker: (vue_ctk_date_time_picker__WEBPACK_IMPORTED_MODULE_0___default())
-    };
-    Object.defineProperty(__returned__, '__isScriptSetup', {
-      enumerable: false,
-      value: true
-    });
-    return __returned__;
-  }
-}));
+  },
+  methods: {}
+});
 
 /***/ }),
 
@@ -21933,7 +21916,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Components_SearchTrain_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Components/SearchTrain.vue */ "./resources/js/Components/SearchTrain.vue");
-var __default__ = {};
+var __default__ = {
+  data: function data() {
+    return {
+      loading: true,
+      stations: [],
+      from: "",
+      to: "",
+      doj: "",
+      errors: {}
+    };
+  },
+  // mounted() {
+  //   this.getStations();
+  // },
+  methods: {
+    getStations: function getStations() {
+      var _this = this;
+      axios.get("/list-stations").then(function (res) {
+        _this.stations = res.data;
+        _this.loading = false;
+        // console.log(this.stations);
+      });
+    }
+  }
+};
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/Object.assign(__default__, {
   name: 'Home',
@@ -22361,6 +22369,7 @@ var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_v_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-select");
+  var _component_VueCtkDateTimePicker = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("VueCtkDateTimePicker");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     id: "_from",
     modelValue: $data.from,
@@ -22375,7 +22384,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $data.to = $event;
     }),
     options: $data.stations
-  }, null, 8 /* PROPS */, ["modelValue", "options"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["VueCtkDateTimePicker"], {
+  }, null, 8 /* PROPS */, ["modelValue", "options"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_VueCtkDateTimePicker, {
     "only-date": "",
     "no-button-now": "",
     format: "YYYY-MM-DD",
@@ -22465,7 +22474,7 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, " Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem, culpa tempora nihil, consectetur, aut inventore iusto velit voluptas ipsum ab quos magnam nam? Perspiciatis, ipsam maxime error aliquam expedita voluptatem architecto, tenetur ipsa eum facilis quisquam atque velit. Perferendis id ex quaerat optio, unde alias repudiandae enim quia molestiae adipisci commodi quidem harum animi ipsam sunt maiores. Molestias, accusantium odio! Voluptas laboriosam neque quasi iste, necessitatibus doloribus provident magni vitae reiciendis totam libero ad nihil animi illo fuga cumque, odio iure quod repudiandae nisi. Ipsum cumque aliquid, incidunt esse magni hic fugit facilis neque soluta facere ipsa, voluptas quo! Modi ea animi earum in nam porro neque eius veritatis. Sed, velit esse veniam incidunt voluptates ut, perferendis recusandae sunt reprehenderit aliquid nihil quasi, possimus at. Error rem non cupiditate? Accusamus ipsum fugit incidunt dolores, iure at, minus assumenda voluptatibus ratione ea laboriosam fuga ipsam perspiciatis magnam quia quaerat eligendi. Aliquam rem iusto sequi qui a blanditiis, odio ipsum necessitatibus exercitationem, consequatur officiis autem? Officia, dignissimos numquam. Iusto inventore aperiam nam. Provident ullam deserunt, aperiam et itaque consectetur illo rerum saepe minus quisquam voluptate repudiandae esse ratione ipsum possimus vero porro minima eaque! Fugit odit officiis fuga quidem nam voluptatum atque, nemo molestiae ad temporibus reiciendis, incidunt sint rerum quae error, explicabo doloribus facere. Sunt modi exercitationem porro est commodi ex, aspernatur iusto. Nulla corrupti reiciendis earum aperiam, magni, odit facere et maxime culpa maiores possimus deleniti cupiditate cumque molestiae sint, eaque rem sunt modi sequi quo doloribus? Recusandae velit aliquam provident vitae. Alias eveniet esse blanditiis maiores molestias minus? Fugit, mollitia, ullam voluptatum eum nemo, harum reiciendis error sint nisi eaque officiis maiores aliquid ipsa quod ratione! Aliquid ab nesciunt quia reprehenderit neque voluptatem velit incidunt cum non nihil explicabo, tempora iusto qui quis error alias assumenda sint amet dolor! Enim exercitationem tenetur quae provident sed aperiam sequi hic inventore voluptatem corrupti, cupiditate similique aspernatur ad? Magni doloribus dolores tenetur ipsam mollitia minus necessitatibus, vitae debitis voluptatem omnis libero optio culpa ullam repellendus nulla odio? Commodi eligendi quos nobis sed magni debitis eveniet veniam illo amet quo officia libero alias, ipsum velit provident ea? Ab minus mollitia, numquam quos impedit, tempora voluptates ducimus illo blanditiis esse est porro ex dolores minima maiores perferendis, excepturi explicabo sapiente nulla? Molestias modi nisi atque minima? Iste illo, numquam dolores perferendis, voluptatum nobis nihil nostrum totam doloremque incidunt consectetur ad. Totam, provident earum reprehenderit quidem rerum sit assumenda eius expedita voluptates sint, illo ad, ducimus quia? Ipsum quam quasi nisi dolore? Omnis sapiente eum et voluptatem fugiat consequatur quaerat excepturi, tempora asperiores recusandae doloribus sequi molestias aspernatur laudantium tenetur eius totam quidem veniam. Deserunt quasi inventore laudantium, pariatur laborum est culpa atque, dignissimos ipsa praesentium harum, in amet! Vel saepe voluptate reprehenderit, blanditiis repellendus, architecto enim repudiandae eius nobis omnis eos dolor culpa animi porro odit rerum? Libero magnam repudiandae harum numquam quo. Fuga voluptatum natus magnam! Asperiores officia explicabo dolores consectetur! Sit, iusto accusantium quia illo nemo at? Quam quasi esse magnam. Deleniti a quis nulla corporis dolor autem aliquid esse debitis ipsam. Odio cumque, animi nulla incidunt maxime sed neque facere officia fugit quae suscipit sapiente consectetur, porro vel nobis nulla sint doloribus qui quas odio debitis nisi libero? Cupiditate iure voluptatem distinctio similique, ut aliquid sequi nesciunt! Eum sint tempora perspiciatis quaerat explicabo cum praesentium consectetur nihil vel harum cumque quae, repellat eius beatae incidunt temporibus tempore nesciunt perferendis assumenda sequi. Similique nisi odio, adipisci ad possimus sequi cumque labore! Aliquid, dolorum consectetur nisi sapiente quo incidunt libero quaerat eos placeat dolorem facilis libero! ")], -1 /* HOISTED */);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["SearchTrain"])]), _hoisted_4]), _hoisted_5]);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Search Train "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["SearchTrain"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <form>\r\n          <div class=\"row my-2\">\r\n            <div class=\"col-6\">\r\n              <div class=\"form-group\">\r\n                <label for=\"_from\"><strong>From</strong></label>\r\n                <v-select\r\n                  id=\"_from\"\r\n                  v-model=\"from\"\r\n                  :options=\"stations\"\r\n                ></v-select>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-6\">\r\n              <div class=\"form-group\">\r\n                <label for=\"_to\"><strong>To</strong></label>\r\n                <v-select id=\"_to\" v-model=\"to\" :options=\"stations\"></v-select>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"row my-2\">\r\n            <div class=\"col-6\">\r\n              <div class=\"form-group\">\r\n                <label for=\"_doj\"><strong>Date of Journey</strong></label>\r\n                <VueCtkDateTimePicker\r\n                  only-date\r\n                  no-button-now\r\n                  format=\"YYYY-MM-DD\"\r\n                  formatted=\"YYYY-MM-DD\"\r\n                  input-size=\"lg\"\r\n                  label=\"Select Date\"\r\n                  auto-close=\"true\"\r\n                  id=\"_doj\"\r\n                  v-model=\"doj\"\r\n                />\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <input\r\n            type=\"submit\"\r\n            value=\"Search Train\"\r\n            class=\"btn btn-success form-control\"\r\n          />\r\n        </form> ")]), _hoisted_4]), _hoisted_5]);
 }
 
 /***/ }),
@@ -22496,11 +22505,12 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
+window.renderSomething = function () {};
 var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)({});
-app.component("vue-ctk-date-time-picker", (vue_ctk_date_time_picker__WEBPACK_IMPORTED_MODULE_2___default()));
+app.component("VueCtkDateTimePicker", (vue_ctk_date_time_picker__WEBPACK_IMPORTED_MODULE_2___default()));
 app.component("add-train", _Components_AddTrain_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 app.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3__["default"]);
-app.component("front-layout", _FrontLayout_vue__WEBPACK_IMPORTED_MODULE_4__["default"])["default"];
+app.component("front-layout", _FrontLayout_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
 app.use(_router__WEBPACK_IMPORTED_MODULE_7__["default"]);
 app.mount("#app");
 
@@ -67529,14 +67539,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _SearchTrain_vue_vue_type_template_id_75e3dc45__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchTrain.vue?vue&type=template&id=75e3dc45 */ "./resources/js/Components/SearchTrain.vue?vue&type=template&id=75e3dc45");
-/* harmony import */ var _SearchTrain_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchTrain.vue?vue&type=script&setup=true&lang=js */ "./resources/js/Components/SearchTrain.vue?vue&type=script&setup=true&lang=js");
+/* harmony import */ var _SearchTrain_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchTrain.vue?vue&type=script&lang=js */ "./resources/js/Components/SearchTrain.vue?vue&type=script&lang=js");
 /* harmony import */ var C_xampp_htdocs_E_Ticketing_Laravel_Vue_Fullstack_Project_backend_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_E_Ticketing_Laravel_Vue_Fullstack_Project_backend_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_SearchTrain_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_SearchTrain_vue_vue_type_template_id_75e3dc45__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Components/SearchTrain.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_E_Ticketing_Laravel_Vue_Fullstack_Project_backend_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_SearchTrain_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_SearchTrain_vue_vue_type_template_id_75e3dc45__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Components/SearchTrain.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -67680,18 +67690,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/Components/SearchTrain.vue?vue&type=script&setup=true&lang=js":
-/*!************************************************************************************!*\
-  !*** ./resources/js/Components/SearchTrain.vue?vue&type=script&setup=true&lang=js ***!
-  \************************************************************************************/
+/***/ "./resources/js/Components/SearchTrain.vue?vue&type=script&lang=js":
+/*!*************************************************************************!*\
+  !*** ./resources/js/Components/SearchTrain.vue?vue&type=script&lang=js ***!
+  \*************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SearchTrain_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SearchTrain_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SearchTrain_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./SearchTrain.vue?vue&type=script&setup=true&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/SearchTrain.vue?vue&type=script&setup=true&lang=js");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SearchTrain_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./SearchTrain.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/SearchTrain.vue?vue&type=script&lang=js");
  
 
 /***/ }),
