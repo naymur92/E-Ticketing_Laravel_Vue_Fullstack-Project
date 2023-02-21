@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Schedule;
 use App\Models\Seat;
 use App\Models\Train;
 use Illuminate\Http\Request;
 
-class TicketController extends Controller
+class FrontController extends Controller
 {
+  public function home()
+  {
+    return view('home');
+  }
+
   public function check(Request $request)
   {
     $request->validate([

@@ -18,26 +18,7 @@
             </li>
           </ul>
         </div>
-        <div class="form-group my-2">
-          <label for="_date"><strong>Train Date:</strong></label>
-          <VueCtkDateTimePicker
-            only-date
-            no-button-now
-            format="YYYY-MM-DD"
-            formatted="YYYY-MM-DD"
-            input-size="lg"
-            label="Select Date"
-            auto-close="true"
-            id="_date"
-            v-model="date"
-          />
 
-          <ul v-if="errors.date" class="alert alert-warning my-2">
-            <li v-for="(err, index) in errors.date" :key="index">
-              {{ err }}
-            </li>
-          </ul>
-        </div>
         <div class="form-group my-2">
           <label for="_home_station"><strong>Home Station:</strong></label>
 
@@ -53,24 +34,49 @@
             </li>
           </ul>
         </div>
-        <div class="form-group my-2">
-          <label for="_start_time"><strong>Start Time:</strong></label>
-          <VueCtkDateTimePicker
-            only-time
-            no-button-now
-            format="HH:mm"
-            formatted="hh:mm a"
-            input-size="lg"
-            label="Select Time"
-            id="_start_time"
-            v-model="start_time"
-          />
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group my-2">
+              <label for="_date"><strong>Train Date:</strong></label>
+              <VueCtkDateTimePicker
+                only-date
+                no-button-now
+                format="YYYY-MM-DD"
+                formatted="YYYY-MM-DD"
+                input-size="lg"
+                label="Select Date"
+                auto-close="true"
+                id="_date"
+                v-model="date"
+              />
 
-          <ul v-if="errors.start_time" class="alert alert-warning my-2">
-            <li v-for="(err, index) in errors.start_time" :key="index">
-              {{ err }}
-            </li>
-          </ul>
+              <ul v-if="errors.date" class="alert alert-warning my-2">
+                <li v-for="(err, index) in errors.date" :key="index">
+                  {{ err }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group my-2">
+              <label for="_start_time"><strong>Start Time:</strong></label>
+              <VueCtkDateTimePicker
+                only-time
+                no-button-now
+                format="HH:mm"
+                formatted="hh:mm a"
+                input-size="lg"
+                label="Select Time"
+                id="_start_time"
+                v-model="start_time"
+              />
+              <ul v-if="errors.start_time" class="alert alert-warning my-2">
+                <li v-for="(err, index) in errors.start_time" :key="index">
+                  {{ err }}
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="card-footer d-flex justify-content-end">
@@ -106,19 +112,22 @@ export default {
   },
   methods: {
     addTrain() {
-      // console.log(this.start_time);
+      // console.log(this.home_station_id.code);
       axios
         .post("/trains", {
           name: this.name,
           date: this.date,
-          home_station_id: this.home_station_id,
+          home_station_id: this.home_station_id.code,
           start_time: this.start_time,
         })
         .then((res) => {
-          console.log("train Created");
+          if (res.data.success) {
+            console.log(res.data.msg);
+            window.location.href = "/trains";
+          }
         })
         .catch((err) => {
-          // console.log(err.response.data.errors)
+          // console.log(err.response.data.errors);
           this.errors = err.response.data.errors;
         });
     },

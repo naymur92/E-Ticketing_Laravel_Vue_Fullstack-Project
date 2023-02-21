@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="navbar sticky-top navbar-expand-lg navbar-light p-0"
+    class="front-navbar navbar sticky-top navbar-expand-lg navbar-light p-0"
     style="background-color: #e3f2fd"
   >
     <div class="container">
@@ -122,37 +122,37 @@
 export default {};
 </script>
 <style>
-.navbar-brand {
+.front-navbar .navbar-brand {
   font-weight: 800;
   font-size: 2.5em;
   color: rgb(1, 73, 95);
   text-shadow: 2px 3px 5px rgba(0, 0, 0, 0.349);
 }
-.navbar {
+.front-navbar .navbar {
   box-shadow: 0px 5px 5px #ddd;
 }
-.nav-link {
+.front-navbar .nav-link {
   font-weight: 600;
 }
-.dropdown-item {
+.front-navbar .dropdown-item {
   font-weight: 600;
   color: rgba(0, 0, 0, 0.55);
 }
-.dropdown-menu,
-.nav-link {
+.front-navbar .dropdown-menu,
+.front-navbar .nav-link {
   padding: 25px 15px !important;
 }
-.nav-link:hover {
+.front-navbar .nav-link:hover {
   background-color: #ddd;
   color: black;
 }
-.dropdown-toggle span {
+.front-navbar .dropdown-toggle span {
   font-weight: 800;
   border: 1px solid rgba(0, 0, 0, 0.55);
   padding: 10px;
   border-radius: 5px;
 }
-a.active {
+.front-navbar a.active {
   color: rgb(1, 73, 95) !important;
   font-weight: 800;
   text-shadow: 0px 0px 7px #383737;

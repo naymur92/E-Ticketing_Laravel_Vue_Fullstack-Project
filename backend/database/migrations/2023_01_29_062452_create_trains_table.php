@@ -21,7 +21,7 @@ class CreateTrainsTable extends Migration
       $table->time('start_time');
       $table->timestamps();
 
-      $table->foreign('home_station_id')->references('id')->on('stations');
+      $table->foreign('home_station_id')->references('id')->on('stations')->onDelete('cascade');
     });
   }
 

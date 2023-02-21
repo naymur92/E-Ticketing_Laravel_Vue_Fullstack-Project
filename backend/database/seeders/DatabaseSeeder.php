@@ -52,13 +52,13 @@ class DatabaseSeeder extends Seeder
     Train::insert([
       [
         'name' => 'Chitra',
-        'date' => '2023-06-02',
+        'date' => '2023-02-22',
         'home_station_id' => 1,
         'start_time' => '06:00'
       ],
       [
         'name' => 'Sundarban',
-        'date' => '2023-06-02',
+        'date' => '2023-02-23',
         'home_station_id' => 1,
         'start_time' => '12:00'
       ],

@@ -23,7 +23,7 @@ class CreateSeatsTable extends Migration
       $table->timestamps();
 
       $table->foreign('bogi_id')->references('id')->on('bogis')->onDelete('cascade');
-      $table->foreign('train_id')->references('id')->on('trains');
+      $table->foreign('train_id')->references('id')->on('trains')->onDelete('cascade');
     });
   }
 

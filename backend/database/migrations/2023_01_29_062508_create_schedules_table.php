@@ -29,8 +29,8 @@ class CreateSchedulesTable extends Migration
       $table->timestamps();
 
 
-      $table->foreign('train_id')->references('id')->on('trains');
-      $table->foreign('station_id')->references('id')->on('stations');
+      $table->foreign('train_id')->references('id')->on('trains')->onDelete('cascade');
+      $table->foreign('station_id')->references('id')->on('stations')->onDelete('cascade');
     });
   }
 

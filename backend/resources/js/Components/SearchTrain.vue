@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.prevent="searchTrain()">
     <div class="row my-2">
       <div class="col-6">
         <div class="form-group">
@@ -57,7 +57,20 @@ export default {
       this.loading = false;
     });
   },
-  methods: {},
+  methods: {
+    searchTrain() {
+      axios
+        .post("/check", {
+          from: this.from.code,
+          to: this.to.code,
+          doj: this.doj,
+        })
+        .then((res) => {
+          console.log(res.data);
+        });
+      // alert(this.from);
+    },
+  },
 };
 </script>
 <style>

@@ -53,7 +53,8 @@ class TrainController extends Controller
 
     $train->save();
     flash()->addSuccess('Train Added');
-    return redirect(route('trains.index'));
+    // return redirect(route('trains.index'));
+    return response()->json(['success' => true, 'msg' => 'Train Added']);
   }
 
   /**
