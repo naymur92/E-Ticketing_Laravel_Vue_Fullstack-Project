@@ -16,8 +16,10 @@ class CreateSchedulesTable extends Migration
     Schema::create('schedules', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('train_id');
-      $table->unsignedBigInteger('station_id');
-      $table->time('time');
+      $table->unsignedBigInteger('from_station_id');
+      $table->unsignedBigInteger('to_station_id');
+      $table->dateTime('left_station_at');
+      $table->dateTime('reach_destination_at');
       $table->float('ac_b_price')->nullable();
       $table->float('ac_s_price')->nullable();
       $table->float('snigdha_price')->nullable();
@@ -30,7 +32,8 @@ class CreateSchedulesTable extends Migration
 
 
       $table->foreign('train_id')->references('id')->on('trains')->onDelete('cascade');
-      $table->foreign('station_id')->references('id')->on('stations')->onDelete('cascade');
+      $table->foreign('from_station_id')->references('id')->on('stations')->onDelete('cascade');
+      $table->foreign('to_station_id')->references('id')->on('stations')->onDelete('cascade');
     });
   }
 

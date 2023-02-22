@@ -3,10 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\Bogi;
+use App\Models\Route;
 use App\Models\Schedule;
 use App\Models\Seat;
 use App\Models\Station;
 use App\Models\Train;
+use App\Models\TrainList;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -30,37 +32,114 @@ class DatabaseSeeder extends Seeder
 
     Station::insert([
       [
-        'name' => 'Dhaka',
-        'address' => 'Dhaka',
-        'lat' => 90.334,
-        'lon' => 92.154
-      ],
-      [
-        'name' => 'Dhaka Bimanbondor',
-        'address' => 'Dhaka Bimanbondor',
-        'lat' => 90.3134,
-        'lon' => 92.1254
-      ],
-      [
         'name' => 'Khulna',
         'address' => 'Khulna',
         'lat' => 90.23134,
         'lon' => 92.31254
+      ],
+      [
+        'name' => 'Dhaka Bimanbondor',
+        'address' => 'Bimanbondor, Dhaka',
+        'lat' => 90.3134,
+        'lon' => 92.1254
+      ],
+      [
+        'name' => 'Dhaka',
+        'address' => 'Komlapur, Dhaka',
+        'lat' => 90.334,
+        'lon' => 92.154
+      ],
+    ]);
+
+    TrainList::insert([
+      [
+        'train_name' => 'Chitra',
+        'off_day' => 'Monday',
+        'up_down' => 0
+      ],
+      [
+        'train_name' => 'Chitra',
+        'off_day' => 'Monday',
+        'up_down' => 1
+      ],
+    ]);
+
+    Route::insert([
+      [
+        'route_id' => 1,
+        'station_id' => 1,
+        'time_from_prev_station' => null,
+        'sl_no' => 1
+      ],
+      [
+        'route_id' => 1,
+        'station_id' => 2,
+        'time_from_prev_station' => '02:00',
+        'sl_no' => 2
+      ],
+      [
+        'route_id' => 1,
+        'station_id' => 3,
+        'time_from_prev_station' => '00:30',
+        'sl_no' => 3
+      ],
+      [
+        'route_id' => 2,
+        'station_id' => 3,
+        'time_from_prev_station' => null,
+        'sl_no' => 1
+      ],
+      [
+        'route_id' => 2,
+        'station_id' => 2,
+        'time_from_prev_station' => '00:30',
+        'sl_no' => 2
+      ],
+      [
+        'route_id' => 2,
+        'station_id' => 1,
+        'time_from_prev_station' => '02:30',
+        'sl_no' => 3
       ],
     ]);
 
     Train::insert([
       [
         'name' => 'Chitra',
-        'date' => '2023-02-22',
-        'home_station_id' => 1,
-        'start_time' => '06:00'
+        'journey_date' => '2023-02-22',
+        'route_id' => 1,
       ],
       [
-        'name' => 'Sundarban',
-        'date' => '2023-02-23',
-        'home_station_id' => 1,
-        'start_time' => '12:00'
+        'name' => 'Chitra',
+        'journey_date' => '2023-02-23',
+        'route_id' => 2,
+      ],
+    ]);
+
+    Schedule::insert([
+      [
+        'train_id' => 1,
+        'from_station_id' => 1,
+        'to_station_id' => 2,
+        'left_station_at' => '2023-02-22 10:00',
+        'reach_destination_at' => '2023-02-22 12:00',
+        'shovon_price' => 200,
+      ],
+      [
+        'train_id' => 1,
+        'from_station_id' => 1,
+        'to_station_id' => 3,
+        'left_station_at' => '2023-02-22 10:00',
+        'reach_destination_at' => '2023-02-22 12:30',
+        'shovon_price' => 250,
+      ],
+      [
+        'train_id' => 1,
+        'from_station_id' => 2,
+        'to_station_id' => 3,
+        'left_station_at' => '2023-02-22 12:00',
+        'reach_destination_at' => '2023-02-22 12:30',
+        'shovon_price' => 50,
       ],
     ]);
 
@@ -86,14 +165,5 @@ class DatabaseSeeder extends Seeder
         }
       }
     }
-
-    $schedule = new Schedule();
-    $schedule->train_id = 1;
-    $schedule->station_id = 2;
-    $schedule->time = '07:00';
-    $schedule->shovon_price = 50;
-    $schedule->s_chair_price = 70;
-    $schedule->f_chair_price = 80;
-    $schedule->save();
   }
 }
