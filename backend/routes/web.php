@@ -5,6 +5,8 @@ use App\Http\Controllers\BogiController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\StationController;
 use App\Http\Controllers\TrainController;
+use App\Http\Controllers\TrainListController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,8 +26,10 @@ Route::post('/check', [FrontController::class, 'check']);
 Route::middleware(['auth'])->group(function () {
   Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-  Route::resource('trains', TrainController::class);
+  Route::resource('users', UserController::class);
   Route::resource('stations', StationController::class);
+  Route::resource('trainlists', TrainListController::class);
+  Route::resource('trains', TrainController::class);
 
   Route::post('bogis', [BogiController::class, 'store'])->name('bogis.store');
   Route::delete('bogis/{bogi}', [BogiController::class, 'destroy'])->name('bogis.destroy');

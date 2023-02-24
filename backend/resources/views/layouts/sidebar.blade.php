@@ -62,6 +62,24 @@ function isActive($routeName)
       <span>Dashboard</span></a>
   </li>
 
+  {{-- Nav item -users --}}
+  <li class="nav-item {{ isActiveLI('users') }}">
+    <a class="nav-link {{ isCollapsed('users') }}" href="#" data-toggle="collapse" data-target="#userMenu"
+      aria-expanded="true" aria-controls="userMenu">
+      <i class="fas fa-subway"></i>
+      <span>Users</span>
+    </a>
+    <div id="userMenu" class="collapse {{ isShow('users') }}" aria-labelledby="headingTwo"
+      data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">User Components:</h6>
+        <a class="collapse-item {{ isActive('users.index') }}" href="{{ route('users.index') }}">Users List</a>
+        <a class="collapse-item {{ isActive('users.create') }}" href="{{ route('users.create') }}">Add User</a>
+      </div>
+    </div>
+  </li>
+  </li>
+
   {{-- Nav item -stations --}}
   <li class="nav-item {{ isActiveLI('stations') }}">
     <a class="nav-link {{ isCollapsed('stations') }}" href="#" data-toggle="collapse" data-target="#stationMenu"
@@ -73,8 +91,10 @@ function isActive($routeName)
       data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Train Components:</h6>
-        <a class="collapse-item {{ isActive('stations.index') }}" href="{{ route('stations.index') }}">Station List</a>
-        <a class="collapse-item {{ isActive('stations.create') }}" href="{{ route('stations.create') }}">Add Station</a>
+        <a class="collapse-item {{ isActive('stations.index') }}" href="{{ route('stations.index') }}">Stations
+          List</a>
+        <a class="collapse-item {{ isActive('stations.create') }}" href="{{ route('stations.create') }}">Add
+          Station</a>
       </div>
     </div>
   </li>
