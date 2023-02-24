@@ -48,10 +48,12 @@ function eticket_bogis()
     [
       'name' => 'KA',
       'train_id' => 1,
+      'bogi_type_id' => 1
     ],
     [
       'name' => 'KHA',
       'train_id' => 1,
+      'bogi_type_id' => 1
     ],
   ];
 }

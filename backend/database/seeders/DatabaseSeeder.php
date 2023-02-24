@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Bogi;
+use App\Models\BogiType;
 use App\Models\Route;
 use App\Models\Schedule;
 use App\Models\Seat;
@@ -27,6 +28,7 @@ class DatabaseSeeder extends Seeder
     $user->name = 'Naymur Rahman';
     $user->email = 'naymur@example.com';
     $user->password = Hash::make(value: 'abcd1234');
+    $user->is_admin = 1;
     $user->remember_token = Str::random(10);
     $user->save();
 
@@ -143,23 +145,33 @@ class DatabaseSeeder extends Seeder
       ],
     ]);
 
+    BogiType::insert([
+      [
+        'bogi_type_name' => 's_chair',
+        'seat_count' => 105
+      ],
+      [
+        'bogi_type_name' => 'ac_s',
+        'seat_count' => 75
+      ],
+    ]);
+
     $trains = Train::get();
 
     foreach ($trains as $train) {
       foreach (eticket_bogis() as $bogiitem) {
         $bogi = new Bogi();
-        $bogi->name = $bogiitem['name'];
+        $bogi->bogi_name = $bogiitem['name'];
         $bogi->train_id = $train->id;
+        $bogi->bogi_type_id = $bogiitem['bogi_type_id'];
 
         $bogi->save();
 
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= $bogi->bogi_type->seat_count; $i++) {
           $seat = new Seat();
-          $seat->name = $bogi->name . '-' . $i;
-          $seat->type = 1;
+          $seat->seat_name = $bogi->bogi_name . '-' . $i;
           $seat->bogi_id = $bogi->id;
-          $seat->train_id = $train->id;
-          $seat->booked = rand(0, 1);
+          $seat->booked = rand(0, 2);
 
           $seat->save();
         }

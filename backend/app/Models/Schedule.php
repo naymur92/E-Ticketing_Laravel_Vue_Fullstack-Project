@@ -15,4 +15,19 @@ class Schedule extends Model
   {
     return $this->belongsTo(related: Train::class);
   }
+
+  public function seat_range()
+  {
+    return $this->hasOne(related: SeatRange::class, foreignKey: 'schedule_id');
+  }
+
+  public function from_station()
+  {
+    return $this->belongsTo(related: Station::class, foreignKey: 'from_station_id');
+  }
+
+  public function to_station()
+  {
+    return $this->belongsTo(related: Station::class, foreignKey: 'to_station_id');
+  }
 }

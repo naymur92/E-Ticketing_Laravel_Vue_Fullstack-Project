@@ -19,8 +19,6 @@ class Train extends Model
 
   public function routes()
   {
-    // return $this->hasManyThrough(TrainList::class, Route::class, firstKey: 'route_id', secondKey: 'id', localKey: 'route_id', secondLocalKey: 'route_id');
-
     // call $train->routes->routes to get route list
     return $this->belongsTo(TrainList::class, 'route_id');
   }
@@ -28,5 +26,10 @@ class Train extends Model
   public function schedules()
   {
     return $this->hasMany(related: Schedule::class, foreignKey: 'train_id');
+  }
+
+  public function tickets()
+  {
+    return $this->hasMany(related: Ticket::class, foreignKey: 'train_id');
   }
 }

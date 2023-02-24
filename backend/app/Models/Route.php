@@ -16,6 +16,11 @@ class Route extends Model
         return $this->belongsTo(related: TrainList::class, foreignKey: 'route_id');
     }
 
+    public function station()
+    {
+        return $this->belongsTo(related: Station::class, foreignKey: 'station_id');
+    }
+
     // call $route->getTrain->trains to get trains list
 
     // public function trains()
