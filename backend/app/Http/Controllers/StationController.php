@@ -63,7 +63,8 @@ class StationController extends Controller
    */
   public function show($id)
   {
-    //
+    $station = Station::findOrFail($id);
+    return view('pages.stations.show', compact('station'));
   }
 
   /**
@@ -74,7 +75,8 @@ class StationController extends Controller
    */
   public function edit($id)
   {
-    //
+    $station = Station::findOrFail($id);
+    return view('pages.stations.edit', compact('station'));
   }
 
   /**
@@ -86,7 +88,23 @@ class StationController extends Controller
    */
   public function update(Request $request, $id)
   {
-    //
+    $request->validate([
+      'name' => 'required|min:3',
+      'address' => 'required|min:3',
+      'lat' => 'required|numeric',
+      'lon' => 'required|numeric',
+    ]);
+
+    $station = Station::findOrFail($id);
+    $station->name = $request->name;
+    $station->address = $request->address;
+    $station->lat = $request->lat;
+    $station->lon = $request->lon;
+
+    $station->update();
+    flash()->addSuccess('Station Updated');
+    return redirect(route('stations.index'));
+    // return response()->json(['success' => true, 'msg' => 'Station Added']);
   }
 
   /**
@@ -100,8 +118,8 @@ class StationController extends Controller
     $station = Station::findOrFail($id);
     $station->delete();
 
-    flash()->addError('Successfully Deleted');
-    return back();
+    flash()->addSuccess('Successfully Deleted');
+    return redirect(route('stations.index'));
     // return response()->json(['success' => true, 'msg' => 'Station Added']);
 
   }

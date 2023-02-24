@@ -120,6 +120,6 @@ class UserController extends Controller
 
     flash()->addSuccess('User Deleted');
 
-    return back();
+    return redirect(route('users.index'));
   }
 }
