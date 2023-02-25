@@ -28,13 +28,14 @@ Route::middleware(['auth'])->group(function () {
 
   Route::resource('users', UserController::class);
   Route::resource('stations', StationController::class);
-  Route::resource('trainlists', TrainListController::class);
+  Route::resource('train-lists', TrainListController::class);
   Route::resource('trains', TrainController::class);
 
   Route::post('bogis', [BogiController::class, 'store'])->name('bogis.store');
   Route::delete('bogis/{bogi}', [BogiController::class, 'destroy'])->name('bogis.destroy');
 });
 Route::get('list-stations', [StationController::class, 'listStations']);
+Route::get('get-auth', [FrontController::class, 'get_auth']);
 
 require __DIR__ . '/auth.php';
 

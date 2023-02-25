@@ -9,7 +9,7 @@ class TrainList extends Model
 {
   use HasFactory;
 
-  protected $fillable = ['train_name', 'off_day', 'up_down'];
+  protected $fillable = ['train_name', 'off_day', 'up_down', 'created_at'];
 
   public function routes()
   {

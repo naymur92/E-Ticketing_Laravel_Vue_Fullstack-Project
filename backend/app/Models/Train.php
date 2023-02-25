@@ -10,7 +10,7 @@ class Train extends Model
 {
   use HasFactory;
 
-  protected $fillable = ['name', 'journey_date', 'route_id'];
+  protected $fillable = ['name', 'journey_date', 'route_id', 'created_at'];
 
   public function bogis()
   {

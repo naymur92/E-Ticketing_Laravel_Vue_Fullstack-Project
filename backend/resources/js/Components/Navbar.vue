@@ -1,3 +1,6 @@
+<script setup>
+import axios from "axios";
+</script>
 <template>
   <nav
     class="front-navbar navbar sticky-top navbar-expand-lg navbar-light p-0"
@@ -21,10 +24,10 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/">Home</router-link>
           </li>
-          <li class="nav-item">
+          <li v-if="!auth.id" class="nav-item">
             <a class="nav-link" href="/login">Login</a>
           </li>
-          <li class="nav-item">
+          <li v-if="!auth.id" class="nav-item">
             <a class="nav-link" href="/register">Register</a>
           </li>
           <li class="nav-item">
@@ -42,7 +45,7 @@
               >Contact Us</router-link
             >
           </li>
-          <li class="nav-item dropdown">
+          <li v-if="auth.id" class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -51,7 +54,7 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <span>Naymur Rahman</span>
+              <span>{{ auth.name }}</span>
             </a>
             <ul
               class="dropdown-menu"
@@ -59,17 +62,20 @@
               style="background-color: #e3f2fd"
             >
               <li>
-                <span class="dropdown-item"><strong>Admin</strong></span>
+                <!-- Role -->
+                <span class="dropdown-item"
+                  ><strong>{{ auth.is_admin }}</strong></span
+                >
               </li>
               <li>
                 <span class="dropdown-item"
-                  ><strong>Naymur Rahman</strong></span
+                  ><strong>{{ auth.name }}</strong></span
                 >
               </li>
               <li>
                 <span class="dropdown-item">
                   <i class="fa fa-envelope"></i>
-                  <span class="mx-2">naymurrahman@yahoo.com</span>
+                  <span class="mx-2">{{ auth.email }}</span>
                 </span>
               </li>
               <li>
@@ -81,32 +87,36 @@
               <li>
                 <hr class="dropdown-divider" />
               </li>
-              <li>
-                <a class="dropdown-item" href="#">
+              <li v-if="auth.is_admin != 0">
+                <a class="dropdown-item" href="/dashboard">
                   <i class="fa-solid fa-gauge-high"></i>
                   <span class="mx-2">Dashboard</span>
                 </a>
               </li>
-              <li>
+              <li v-if="auth.is_admin == 0">
                 <a class="dropdown-item" href="#">
                   <i class="fa fa-user"></i>
                   <span class="mx-2">Profile</span>
                 </a>
               </li>
-              <li>
+              <li v-if="auth.is_admin == 0">
                 <a class="dropdown-item" href="#">
                   <i class="fa fa-briefcase"></i>
                   <span class="mx-2">Purchase History</span>
                 </a>
               </li>
-              <li>
+              <li v-if="auth.is_admin == 0">
                 <a class="dropdown-item" href="#">
                   <i class="fa fa-shield-halved"></i>
                   <span class="mx-2">Update Password</span>
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a
+                  @click.prevent="logout()"
+                  class="dropdown-item"
+                  href="/logout"
+                >
                   <i class="fa fa-sign-out"></i>
                   <span class="mx-2">Logout</span>
                 </a>
@@ -119,7 +129,26 @@
   </nav>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      auth: [],
+    };
+  },
+  methods: {
+    logout() {
+      axios.post("/logout").then(() => {
+        window.location.reload();
+        window.location.href = "/";
+      });
+    },
+  },
+  mounted() {
+    axios.get("/get-auth").then((res) => {
+      this.auth = res.data;
+    });
+  },
+};
 </script>
 <style>
 .front-navbar .navbar-brand {

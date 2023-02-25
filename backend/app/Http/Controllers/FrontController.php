@@ -6,6 +6,7 @@ use App\Models\Schedule;
 use App\Models\Seat;
 use App\Models\Train;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FrontController extends Controller
 {
@@ -67,5 +68,10 @@ class FrontController extends Controller
     }
 
     return response()->json($data);
+  }
+
+  public function get_auth()
+  {
+    return response()->json(Auth::user());
   }
 }
