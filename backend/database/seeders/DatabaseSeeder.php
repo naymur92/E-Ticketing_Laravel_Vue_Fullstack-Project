@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
       [
         'route_id' => 1,
         'station_id' => 1,
-        'time_from_prev_station' => null,
+        'time_from_prev_station' => '00:00',
         'sl_no' => 1
       ],
       [
@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
       [
         'route_id' => 2,
         'station_id' => 3,
-        'time_from_prev_station' => null,
+        'time_from_prev_station' => '00:00',
         'sl_no' => 1
       ],
       [

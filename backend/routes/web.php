@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BogiController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StationController;
 use App\Http\Controllers\TrainController;
 use App\Http\Controllers\TrainListController;
@@ -29,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
   Route::resource('users', UserController::class);
   Route::resource('stations', StationController::class);
   Route::resource('train-lists', TrainListController::class);
+  Route::resource('routes', RouteController::class);
   Route::resource('trains', TrainController::class);
 
   Route::post('bogis', [BogiController::class, 'store'])->name('bogis.store');
