@@ -20,7 +20,7 @@ class CreateRoutesTable extends Migration
             $table->unsignedTinyInteger('sl_no');
             $table->timestamps();
 
-            $table->foreign('route_id')->references('id')->on('train_lists');
+            $table->foreign('route_id')->references('id')->on('train_lists')->onDelete('cascade');
             $table->foreign('station_id')->references('id')->on('stations');
         });
     }

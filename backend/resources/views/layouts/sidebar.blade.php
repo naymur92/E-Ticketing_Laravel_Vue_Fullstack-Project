@@ -109,7 +109,7 @@ function isActive($routeName)
     <a class="nav-link {{ isCollapsed('train-lists') }}" href="#" data-toggle="collapse"
       data-target="#trainlistMenu" aria-expanded="true" aria-controls="trainlistMenu">
       <i class="fas fa-subway"></i>
-      <span>Root Trains List</span>
+      <span>Root Trains</span>
     </a>
     <div id="trainlistMenu" class="collapse {{ isShow('train-lists') }}" aria-labelledby="headingTwo"
       data-parent="#accordionSidebar">
@@ -122,6 +122,25 @@ function isActive($routeName)
             class="fas fa-plus-square mr-2 text-success"></i>Add
           Root
           Train</a>
+      </div>
+    </div>
+  </li>
+
+  {{-- Nav item - routes --}}
+  <li class="nav-item {{ isActiveLI('routes') }}">
+    <a class="nav-link {{ isCollapsed('routes') }}" href="#" data-toggle="collapse" data-target="#routesMenu"
+      aria-expanded="true" aria-controls="routesMenu">
+      <i class="fas fa-route"></i>
+      <span>Routes</span>
+    </a>
+    <div id="routesMenu" class="collapse {{ isShow('routes') }}" aria-labelledby="headingTwo"
+      data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Route Components:</h6>
+        <a class="collapse-item {{ isActive('routes.index') }}" href="{{ route('routes.index') }}"><i
+            class="fas fa-list mr-2 text-primary"></i>All Routes</a>
+        <a class="collapse-item {{ isActive('routes.create') }}" href="{{ route('routes.create') }}"><i
+            class="fas fa-plus-square mr-2 text-success"></i>Add Route</a>
       </div>
     </div>
   </li>

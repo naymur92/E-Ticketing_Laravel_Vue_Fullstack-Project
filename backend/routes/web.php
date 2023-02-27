@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('bogis/{bogi}', [BogiController::class, 'destroy'])->name('bogis.destroy');
 });
 Route::get('list-stations', [StationController::class, 'listStations']);
+Route::get('root-stations', [RouteController::class, 'root_stations']);
 Route::get('get-auth', [FrontController::class, 'get_auth']);
 
 require __DIR__ . '/auth.php';

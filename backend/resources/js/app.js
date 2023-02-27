@@ -5,6 +5,7 @@ import { createApp } from "vue";
 // Backend imports
 import AddTrain from "./Components/backend/AddTrain.vue";
 import AddStation from "./Components/backend/AddStation.vue";
+import AddRoute from "./Components/backend/AddRoute.vue";
 
 // Tools imports
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
@@ -21,6 +22,7 @@ const app = createApp({});
 
 app.component("add-train", AddTrain);
 app.component("add-station", AddStation);
+app.component("add-route", AddRoute);
 app.component("VueCtkDateTimePicker", VueCtkDateTimePicker);
 app.component("v-select", VueSelect);
 app.component("front-layout", FrontLayout);
