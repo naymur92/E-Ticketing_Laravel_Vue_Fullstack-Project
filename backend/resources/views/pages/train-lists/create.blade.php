@@ -57,8 +57,8 @@
                   <label for="_up_down"><strong>Select Up/Down:</strong></label>
                   <select name="up_down" id="_up_down" class="form-control">
                     <option value="" selected disabled>Select One</option>
-                    <option value="1" {{ old('off_day') ? 'selected' : '' }}>Up</option>
-                    <option value="2" {{ old('off_day') ? 'selected' : '' }}>Down</option>
+                    <option value="0" {{ old('off_day') ? 'selected' : '' }}>Up</option>
+                    <option value="1" {{ old('off_day') ? 'selected' : '' }}>Down</option>
                   </select>
                   @error('up_down')
                     <div class="alert alert-warning my-2">{{ $message }}</div>

@@ -56,13 +56,13 @@
                   <td>{{ $item->train_name }}</td>
                   <td>{{ $item->off_day }}</td>
                   <td>
-                    @if ($item->up_down == 1)
+                    @if ($item->up_down == 0)
                       UP
                     @else
                       DOWN
                     @endif
                   </td>
-                  <td>{{ date('d M, Y - H:i a', strtotime($item->created_at)) }}</td>
+                  <td>{{ date('d M, Y - h:i a', strtotime($item->created_at)) }}</td>
                   <td>
                     <div class="dropdown">
                       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"

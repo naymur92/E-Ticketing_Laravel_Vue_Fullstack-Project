@@ -37,19 +37,22 @@ class DatabaseSeeder extends Seeder
         'name' => 'Khulna',
         'address' => 'Khulna',
         'lat' => 90.23134,
-        'lon' => 92.31254
+        'lon' => 92.31254,
+        'created_at' => now()
       ],
       [
         'name' => 'Dhaka Bimanbondor',
         'address' => 'Bimanbondor, Dhaka',
         'lat' => 90.3134,
-        'lon' => 92.1254
+        'lon' => 92.1254,
+        'created_at' => now()
       ],
       [
         'name' => 'Dhaka',
         'address' => 'Komlapur, Dhaka',
         'lat' => 90.334,
-        'lon' => 92.154
+        'lon' => 92.154,
+        'created_at' => now()
       ],
     ]);
 
@@ -57,12 +60,14 @@ class DatabaseSeeder extends Seeder
       [
         'train_name' => 'Chitra',
         'off_day' => 'Monday',
-        'up_down' => 0
+        'up_down' => 0,
+        'created_at' => now()
       ],
       [
         'train_name' => 'Chitra',
         'off_day' => 'Monday',
-        'up_down' => 1
+        'up_down' => 1,
+        'created_at' => now()
       ],
     ]);
 
@@ -110,11 +115,13 @@ class DatabaseSeeder extends Seeder
         'name' => 'Chitra',
         'journey_date' => '2023-02-22',
         'route_id' => 1,
+        'created_at' => now()
       ],
       [
         'name' => 'Chitra',
         'journey_date' => '2023-02-23',
         'route_id' => 2,
+        'created_at' => now()
       ],
     ]);
 
@@ -126,6 +133,7 @@ class DatabaseSeeder extends Seeder
         'left_station_at' => '2023-02-22 10:00',
         'reach_destination_at' => '2023-02-22 12:00',
         'shovon_price' => 200,
+        'created_at' => now()
       ],
       [
         'train_id' => 1,
@@ -134,6 +142,7 @@ class DatabaseSeeder extends Seeder
         'left_station_at' => '2023-02-22 10:00',
         'reach_destination_at' => '2023-02-22 12:30',
         'shovon_price' => 250,
+        'created_at' => now()
       ],
       [
         'train_id' => 1,
@@ -142,6 +151,7 @@ class DatabaseSeeder extends Seeder
         'left_station_at' => '2023-02-22 12:00',
         'reach_destination_at' => '2023-02-22 12:30',
         'shovon_price' => 50,
+        'created_at' => now()
       ],
     ]);
 

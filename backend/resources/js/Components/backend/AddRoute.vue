@@ -6,7 +6,7 @@ import axios from "axios";
     <div class="card-body">
       <!-- Train Name section -->
       <div class="form-group">
-        <label for="_route_name"><strong>Select Route:</strong></label>
+        <label for="_route_name"><strong>Select Root Train:</strong></label>
         <v-select
           id="_route_name"
           v-model="route_id"

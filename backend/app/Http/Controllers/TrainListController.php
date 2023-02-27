@@ -46,7 +46,7 @@ class TrainListController extends Controller
       'train_name' => $request->train_name,
       'off_day' => $request->off_day,
       'up_down' => $request->up_down,
-      'created_at' => date("Y-m-d")
+      'created_at' => date("Y-m-d H:i:s")
     ];
 
     TrainList::insert($root_train);

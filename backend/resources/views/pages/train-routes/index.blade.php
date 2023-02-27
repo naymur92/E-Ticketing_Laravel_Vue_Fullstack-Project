@@ -54,12 +54,12 @@
             <tbody>
               @foreach ($routes as $route)
                 <tr>
-                  <td>{{ $route['id'] }}</td>
-                  <td>{{ $route['train_name'] }}</td>
-                  <td>{{ $route['from_station'] }}</td>
-                  <td>{{ $route['to_station'] }}</td>
-                  <td>{{ $route['total_time'] }}</td>
-                  <td>{{ $route['off_day'] }}</td>
+                  <td>{{ $route->id }}</td>
+                  <td>{{ $route->train_name }}</td>
+                  <td>{{ $route->from_station }}</td>
+                  <td>{{ $route->to_station }}</td>
+                  <td>{{ $route->total_time }}</td>
+                  <td>{{ $route->off_day }}</td>
                   <td>
                     <div class="dropdown">
                       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -67,11 +67,11 @@
                         Action
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{{ route('routes.show', $route['id']) }}"><i
+                        <a class="dropdown-item" href="{{ route('routes.show', $route->id) }}"><i
                             class="fa fa-eye text-primary"></i> View</a>
-                        <a class="dropdown-item" href="{{ route('routes.edit', $route['id']) }}"><i
+                        <a class="dropdown-item" href="{{ route('routes.edit', $route->id) }}"><i
                             class="fa fa-pen text-warning"></i> Edit</a>
-                        <form action="{{ route('routes.destroy', $route['id']) }}"
+                        <form action="{{ route('routes.destroy', $route->id) }}"
                           onsubmit="return confirm('Are you want to sure to delete?')" method="post">
                           @csrf
                           @method('delete')
