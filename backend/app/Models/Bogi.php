@@ -13,7 +13,7 @@ class Bogi extends Model
 
   public function bogi_type()
   {
-    return $this->belongsTo(related: BogiType::class);
+    return $this->belongsTo(related: BogiType::class, foreignKey: 'bogi_type_id');
   }
 
   public function train()

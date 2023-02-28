@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bogi;
 use App\Models\BogiType;
+use App\Models\Seat;
 use App\Models\Station;
 use App\Models\Train;
 use App\Models\TrainList;
@@ -18,7 +20,7 @@ class TrainController extends Controller
    */
   public function index()
   {
-    $trains = Train::get();
+    $trains = Train::orderBy('journey_date', 'desc')->get();
     return view('pages.trains.index', compact('trains'));
   }
 
@@ -40,23 +42,72 @@ class TrainController extends Controller
    */
   public function store(Request $request)
   {
-    return response()->json($request->all());
-
     $request->validate([
       'name' => 'required|min:3',
-      'date' => 'required|date',
-      'home_station_id' => 'required|integer',
-      'start_time' => 'required',
+      'journey_date' => 'required',
+      'journey_time' => 'required',
+      'route_id' => 'required|integer',
     ]);
 
-    $train = new Train();
-    $train->name = $request->name;
-    $train->date = $request->date;
-    $train->home_station_id = $request->home_station_id;
-    $train->start_time = $request->start_time;
+    // check valid date and time
+    if (time() >= strtotime($request->journey_date . ' ' . $request->journey_time) || time() >= strtotime($request->start_date . ' ' . $request->journey_time) || time() >= strtotime($request->end_date . ' ' . $request->journey_time)) {
+      return response()->json(['success' => false, 'msg' => 'Please Select correct Date']);
+    }
 
-    $train->save();
-    flash()->addSuccess('Train Added');
+    if ($request->start_date == '' || $request->end_date == '') {
+      $journey_date = $request->journey_date . ' ' . $request->journey_time;
+
+      $train = new Train();
+      $train->name = $request->name;
+      $train->journey_date = $journey_date;
+      $train->route_id = $request->route_id;
+
+      $train->save();
+
+      // call bogi add method
+      foreach ($request->bogis as $bogi) {
+        $bogi_type_id = $bogi['bogi_type_id']['code'];
+
+        if ($bogi_type_id > 0 && $bogi['bogi_name'] != '') {
+          $this->add_bogi_seat($train->id, $bogi_type_id, $bogi['bogi_name']);
+        }
+      }
+    } else {
+      // count total days
+      $num_days = round((strtotime($request->end_date) - strtotime($request->start_date)) / (60 * 60 * 24));
+
+      $cur_date = $request->start_date;
+      for ($i = 1; $i <= $num_days; $i++) {
+        // check off day and skip
+        if (date('w', strtotime($cur_date)) == $request->off_day) {
+          $cur_date = date('Y-m-d', strtotime($cur_date . ' +1 day'));
+          continue;
+        }
+
+        // generate date-time
+        $journey_date = $cur_date . ' ' . $request->journey_time;
+
+        $train = new Train();
+        $train->name = $request->name;
+        $train->journey_date = $journey_date;
+        $train->route_id = $request->route_id;
+
+        $train->save();
+
+        // call bogi add method
+        foreach ($request->bogis as $bogi) {
+          $bogi_type_id = $bogi['bogi_type_id']['code'];
+
+          if ($bogi_type_id > 0 && $bogi['bogi_name'] != '') {
+            $this->add_bogi_seat($train->id, $bogi_type_id, $bogi['bogi_name']);
+          }
+        }
+
+        $cur_date = date('Y-m-d', strtotime($cur_date . ' +1 day'));
+      }
+    }
+
+    flash()->addSuccess('Train, Bogis and Seats Added');
     // return redirect(route('trains.index'));
     return response()->json(['success' => true, 'msg' => 'Train Added']);
   }
@@ -80,8 +131,8 @@ class TrainController extends Controller
    */
   public function edit(Train $train)
   {
-    $stations = Station::get();
-    return view('pages.trains.edit', compact('train', 'stations'));
+    // $stations = Station::get();
+    return view('pages.trains.edit', compact('train'));
   }
 
   /**
@@ -183,5 +234,26 @@ class TrainController extends Controller
     }
 
     return response()->json($data);
+  }
+
+  // bogi add function
+  public function add_bogi_seat($train_id, $bogi_type_id, $bogi_name)
+  {
+    $bogi = new Bogi();
+
+    $bogi->bogi_name = strtoupper($bogi_name);
+    $bogi->train_id = $train_id;
+    $bogi->bogi_type_id = $bogi_type_id;
+
+    $bogi->save();
+
+    for ($i = 1; $i <= $bogi->bogi_type->seat_count; $i++) {
+      $seat = new Seat();
+      $seat->seat_name = $bogi->bogi_name . '-' . $i;
+      $seat->bogi_id = $bogi->id;
+      $seat->booked = 0;
+
+      $seat->save();
+    }
   }
 }

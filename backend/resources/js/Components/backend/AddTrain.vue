@@ -15,6 +15,12 @@
                   :options="root_trains"
                   @update:modelValue="getTrainInfo()"
                 ></v-select>
+
+                <ul v-if="errors.name" class="text-danger my-2">
+                  <li v-for="(err, index) in errors.name" :key="index">
+                    {{ err }}
+                  </li>
+                </ul>
               </div>
             </div>
             <div class="col-4">
@@ -28,10 +34,17 @@
                   label="Select Train Date"
                   input-size="lg"
                   no-label="true"
+                  :min-date="current_date"
                   id="_journey_date"
                   v-model="journey_date"
                   :disabled-weekly="off_day"
                 />
+
+                <ul v-if="errors.journey_date" class="text-danger my-2">
+                  <li v-for="(err, index) in errors.journey_date" :key="index">
+                    {{ err }}
+                  </li>
+                </ul>
               </div>
             </div>
             <div class="col-4">
@@ -45,30 +58,20 @@
                   label="Select Train Time"
                   input-size="lg"
                   no-label="true"
+                  :min-date="current_date"
                   id="_journey_time"
                   v-model="journey_time"
                 />
+
+                <ul v-if="errors.journey_time" class="text-danger my-2">
+                  <li v-for="(err, index) in errors.journey_time" :key="index">
+                    {{ err }}
+                  </li>
+                </ul>
               </div>
             </div>
 
             <!-- Error lists -->
-            <ul v-if="errors.name" class="alert alert-warning my-2">
-              <li v-for="(err, index) in errors.name" :key="index">
-                {{ err }}
-              </li>
-            </ul>
-
-            <ul v-if="errors.journey_date" class="alert alert-warning my-2">
-              <li v-for="(err, index) in errors.journey_date" :key="index">
-                {{ err }}
-              </li>
-            </ul>
-
-            <ul v-if="errors.journey_time" class="alert alert-warning my-2">
-              <li v-for="(err, index) in errors.journey_time" :key="index">
-                {{ err }}
-              </li>
-            </ul>
           </div>
         </fieldset>
 
@@ -80,42 +83,33 @@
               <div class="form-group my-2">
                 <label for="_start_date"><strong>Start Date:</strong></label>
                 <VueCtkDateTimePicker
-                  no-button-now
                   only-date
-                  label="Select Start Date"
+                  no-button-now
+                  format="YYYY-MM-DD"
                   formatted="YYYY-MM-DD"
+                  label="Select Start Date"
                   input-size="lg"
+                  :min-date="current_date"
                   no-label="true"
                   id="_start_date"
                   v-model="start_date"
                 />
-
-                <ul v-if="errors.start_date" class="alert alert-warning my-2">
-                  <li v-for="(err, index) in errors.start_date" :key="index">
-                    {{ err }}
-                  </li>
-                </ul>
               </div>
             </div>
             <div class="col-6">
               <div class="form-group my-2">
                 <label for="_end_date"><strong>End Date:</strong></label>
                 <VueCtkDateTimePicker
-                  no-button-now
                   only-date
-                  label="Select End Date"
+                  no-button-now
+                  format="YYYY-MM-DD"
                   formatted="YYYY-MM-DD"
+                  label="Select End Date"
                   input-size="lg"
                   no-label="true"
                   id="_end_date"
                   v-model="end_date"
                 />
-
-                <ul v-if="errors.end_date" class="alert alert-warning my-2">
-                  <li v-for="(err, index) in errors.end_date" :key="index">
-                    {{ err }}
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
@@ -124,7 +118,7 @@
         <!-- Bogi info -->
         <fieldset>
           <legend><strong>Bogi Info</strong></legend>
-          <div class="row">
+          <div class="row" v-for="(bogi, index) in bogis" :key="index">
             <div class="col-6">
               <div class="form-group my-2">
                 <label for="_bogi_type"
@@ -132,14 +126,9 @@
                 >
                 <v-select
                   id="_bogi_type"
-                  v-model="bogi_type_id"
+                  v-model="bogi.bogi_type_id"
                   :options="bogi_types"
                 ></v-select>
-                <ul v-if="errors.start_date" class="alert alert-warning my-2">
-                  <li v-for="(err, index) in errors.start_date" :key="index">
-                    {{ err }}
-                  </li>
-                </ul>
               </div>
             </div>
             <div class="col-6">
@@ -147,18 +136,18 @@
                 <label for="_bogi_name"><strong>Bogi Name:</strong></label>
                 <input
                   type="text"
-                  v-model="bogi_name"
+                  v-model="bogi.bogi_name"
                   placeholder="Enter Bogi Name"
                   class="form-control"
                 />
-
-                <ul v-if="errors.bogi_name" class="alert alert-warning my-2">
-                  <li v-for="(err, index) in errors.bogi_name" :key="index">
-                    {{ err }}
-                  </li>
-                </ul>
               </div>
             </div>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="button" @click="addField()" class="btn btn-success">
+              Add More Bogi
+            </button>
           </div>
         </fieldset>
       </div>
@@ -183,15 +172,20 @@ export default {
       journey_date: "",
       journey_time: "",
       off_day: [],
-      route_id: null,
+      route_id: "",
       root_trains: [],
       bogi_types: [],
-      bogi_type_id: null,
-      bogi_name: "",
+      bogis: [
+        {
+          bogi_type_id: "",
+          bogi_name: "",
+        },
+      ],
       loading: true,
       errors: {},
       start_date: "",
       end_date: "",
+      current_date: "",
     };
   },
   mounted() {
@@ -203,6 +197,8 @@ export default {
     axios.get("/bogi-types-list").then((res) => {
       this.bogi_types = res.data;
     });
+
+    this.getNow();
   },
   methods: {
     addTrain() {
@@ -215,14 +211,15 @@ export default {
           off_day: this.off_day[0],
           start_date: this.start_date,
           end_date: this.end_date,
-          bogi_type_id: this.bogi_type_id.code,
-          bogi_name: this.bogi_name,
+          bogis: this.bogis,
         })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.success) {
-            console.log(res.data.msg);
+            // console.log(res.data.msg);
             window.location.href = "/trains";
+          } else {
+            alert(res.data.msg);
           }
         })
         .catch((err) => {
@@ -236,6 +233,27 @@ export default {
         this.name = res.data.train_name;
         this.off_day = [res.data.off_day];
       });
+    },
+    addField() {
+      this.bogis.push({
+        bogi_type_id: "",
+        bogi_name: "",
+      });
+    },
+
+    // get date
+    getNow: function () {
+      const today = new Date();
+      const date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+      // const time =
+      //   today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      // const dateTime = date + " " + time;
+      this.current_date = date;
     },
   },
 };
