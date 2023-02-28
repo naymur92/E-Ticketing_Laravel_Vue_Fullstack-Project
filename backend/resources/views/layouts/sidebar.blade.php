@@ -146,6 +146,25 @@ function isActive($routeName)
   </li>
 
 
+  {{-- Nav item -bogi-types --}}
+  <li class="nav-item {{ isActiveLI('bogi-types') }}">
+    <a class="nav-link {{ isCollapsed('bogi-types') }}" href="#" data-toggle="collapse"
+      data-target="#bogiTypeMenu" aria-expanded="true" aria-controls="bogiTypeMenu">
+      <i class="fas fa-th-list"></i>
+      <span>Bogi Types</span>
+    </a>
+    <div id="bogiTypeMenu" class="collapse {{ isShow('bogi-types') }}" aria-labelledby="headingTwo"
+      data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">BogiType Components:</h6>
+        <a class="collapse-item {{ isActive('bogi-types.index') }}" href="{{ route('bogi-types.index') }}"><i
+            class="fas fa-list mr-2 text-primary"></i>Bogi Types</a>
+        <a class="collapse-item {{ isActive('bogi-types.index') }}" href="{{ route('bogi-types.create') }}"><i
+            class="fas fa-plus-square mr-2 text-success"></i>Add Bogi Type</a>
+      </div>
+    </div>
+  </li>
+
   {{-- Nav item -trains --}}
   <li class="nav-item {{ isActiveLI('trains') }}">
     <a class="nav-link {{ isCollapsed('trains') }}" href="#" data-toggle="collapse" data-target="#trainMenu"

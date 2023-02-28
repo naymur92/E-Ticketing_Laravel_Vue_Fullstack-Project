@@ -90,9 +90,6 @@ export default {
     axios.get("/root-stations").then((res) => {
       this.stations = res.data.stations;
       this.train_lists = res.data.train_lists;
-
-      // console.log(this.stations);
-      // console.log(this.train_lists);
     });
   },
 };

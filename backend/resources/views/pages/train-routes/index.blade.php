@@ -69,8 +69,8 @@
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="{{ route('routes.show', $route->id) }}"><i
                             class="fa fa-eye text-primary"></i> View</a>
-                        <a class="dropdown-item" href="{{ route('routes.edit', $route->id) }}"><i
-                            class="fa fa-pen text-warning"></i> Edit</a>
+                        {{-- <a class="dropdown-item" href="{{ route('routes.edit', $route->id) }}"><i
+                            class="fa fa-pen text-warning"></i> Edit</a> --}}
                         <form action="{{ route('routes.destroy', $route->id) }}"
                           onsubmit="return confirm('Are you want to sure to delete?')" method="post">
                           @csrf

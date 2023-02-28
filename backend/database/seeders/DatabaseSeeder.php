@@ -158,11 +158,13 @@ class DatabaseSeeder extends Seeder
     BogiType::insert([
       [
         'bogi_type_name' => 's_chair',
-        'seat_count' => 105
+        'seat_count' => 105,
+        'created_at' => now()
       ],
       [
         'bogi_type_name' => 'ac_s',
-        'seat_count' => 75
+        'seat_count' => 75,
+        'created_at' => now()
       ],
     ]);
 

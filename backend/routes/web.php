@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BogiController;
+use App\Http\Controllers\BogiTypeController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StationController;
@@ -27,17 +28,24 @@ Route::post('/check', [FrontController::class, 'check']);
 Route::middleware(['auth'])->group(function () {
   Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
+  // Resource paths
   Route::resource('users', UserController::class);
   Route::resource('stations', StationController::class);
   Route::resource('train-lists', TrainListController::class);
   Route::resource('routes', RouteController::class);
   Route::resource('trains', TrainController::class);
+  Route::resource('bogi-types', BogiTypeController::class);
 
   Route::post('bogis', [BogiController::class, 'store'])->name('bogis.store');
   Route::delete('bogis/{bogi}', [BogiController::class, 'destroy'])->name('bogis.destroy');
+
+  // route for generate data for vue components
+  Route::get('list-stations', [StationController::class, 'listStations']);
+  Route::get('root-stations', [RouteController::class, 'root_stations']);
+  Route::get('root-trains', [TrainController::class, 'listRootTrains']);
+  Route::get('root-train/{id}', [TrainController::class, 'rootTrainData']);
+  Route::get('bogi-types-list', [TrainController::class, 'bogiTypes']);
 });
-Route::get('list-stations', [StationController::class, 'listStations']);
-Route::get('root-stations', [RouteController::class, 'root_stations']);
 Route::get('get-auth', [FrontController::class, 'get_auth']);
 
 require __DIR__ . '/auth.php';

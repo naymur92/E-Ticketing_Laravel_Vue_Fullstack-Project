@@ -112,13 +112,13 @@ export default {
         .then((res) => {
           // console.log("Station Created");
           if (res.data.success) {
-            console.log(res.data.msg);
+            // console.log(res.data.msg);
             window.location.href = "/stations";
           }
           // console.log(res.data.code);
         })
         .catch((err) => {
-          console.log(err.response.data);
+          // console.log(err.response.data);
           this.errors = err.response.data.errors;
         });
     },

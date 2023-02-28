@@ -17,9 +17,9 @@ class Train extends Model
     return $this->hasMany(related: Bogi::class, foreignKey: 'train_id');
   }
 
-  public function routes()
+  public function route()
   {
-    // call $train->routes->routes to get route list
+    // call $train->route->routes to get route list
     return $this->belongsTo(TrainList::class, 'route_id');
   }
 

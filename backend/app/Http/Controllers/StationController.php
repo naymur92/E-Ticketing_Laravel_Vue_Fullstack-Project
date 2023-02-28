@@ -124,6 +124,7 @@ class StationController extends Controller
 
   }
 
+  // this data is for add component
   public function listStations()
   {
     $stations = Station::get();

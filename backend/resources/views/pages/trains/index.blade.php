@@ -31,16 +31,16 @@
           <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
-                <th class="text-left">Name</th>
-                <th>Date</th>
+                <th>Name</th>
+                <th>Journey Time</th>
                 <th>Route</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tfoot>
               <tr>
-                <th class="text-left">Name</th>
-                <th>Date</th>
+                <th>Name</th>
+                <th>Journey Time</th>
                 <th>Route</th>
                 <th>Action</th>
               </tr>
@@ -48,9 +48,13 @@
             <tbody>
               @foreach ($trains as $train)
                 <tr>
-                  <td class="text-left">{{ $train->name }}</td>
-                  <td>{{ date('Y-m-d', strtotime($train->date)) }}</td>
-                  <td>{{ $train->route }}</td>
+                  <td>{{ $train->name }}</td>
+                  <td>{{ date('d-m-Y - h:i a', strtotime($train->journey_date)) }}</td>
+                  <td>
+                    {{ $train->route->routes->first()->station->name }}
+                    -
+                    {{ $train->route->routes->last()->station->name }}
+                  </td>
                   <td>
                     <div class="dropdown">
                       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
