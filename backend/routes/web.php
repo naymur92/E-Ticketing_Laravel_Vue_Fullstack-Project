@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [FrontController::class, 'home'])->name('home');
-Route::post('/check', [FrontController::class, 'check']);
 
 Route::middleware(['auth'])->group(function () {
   Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -55,6 +54,11 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('get-auth', [FrontController::class, 'get_auth']);
+
+// ticket checking
+Route::get('/from-stations', [FrontController::class, 'from_stations']);
+Route::get('/to-stations/{id}', [FrontController::class, 'to_stations']);
+Route::post('/search-train', [FrontController::class, 'check']);
 
 require __DIR__ . '/auth.php';
 

@@ -21817,27 +21817,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       loading: true,
-      stations: [],
-      from: "",
-      to: "",
+      from_stations: [],
+      to_stations: [],
+      from: null,
+      to: null,
       doj: "",
-      errors: {}
+      errors: {},
+      current_date: ""
     };
   },
   mounted: function mounted() {
     var _this = this;
-    axios.get("/list-stations").then(function (res) {
-      _this.stations = res.data;
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get("/from-stations").then(function (res) {
+      _this.from_stations = res.data;
       _this.loading = false;
     });
+    this.getNow();
   },
   methods: {
     searchTrain: function searchTrain() {
-      axios.post("/check", {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post("/search-train", {
         from: this.from.code,
         to: this.to.code,
         doj: this.doj
@@ -21845,6 +21851,25 @@ __webpack_require__.r(__webpack_exports__);
         console.log(res.data);
       });
       // alert(this.from);
+    },
+    getToStations: function getToStations() {
+      var _this2 = this;
+      if (this.from.code != null) {
+        axios__WEBPACK_IMPORTED_MODULE_0___default().get("/to-stations/" + this.from.code).then(function (res) {
+          _this2.to_stations = res.data;
+          // console.log(res.data);
+        });
+      }
+    },
+
+    // get date
+    getNow: function getNow() {
+      var today = new Date();
+      var date = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+      // const time =
+      //   today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      // const dateTime = date + " " + time;
+      this.current_date = date;
     }
   }
 });
@@ -22569,23 +22594,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_v_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-select");
   var _component_VueCtkDateTimePicker = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("VueCtkDateTimePicker");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
-    onSubmit: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.searchTrain();
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     id: "_from",
     modelValue: $data.from,
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+    "onUpdate:modelValue": [_cache[0] || (_cache[0] = function ($event) {
       return $data.from = $event;
-    }),
-    options: $data.stations
+    }), _cache[1] || (_cache[1] = function ($event) {
+      return $options.getToStations();
+    })],
+    options: $data.from_stations
   }, null, 8 /* PROPS */, ["modelValue", "options"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     id: "_to",
     modelValue: $data.to,
-    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.to = $event;
     }),
-    options: $data.stations
+    options: $data.to_stations
   }, null, 8 /* PROPS */, ["modelValue", "options"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_VueCtkDateTimePicker, {
     "only-date": "",
     "no-button-now": "",
@@ -22593,13 +22620,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     formatted: "YYYY-MM-DD",
     "input-size": "lg",
     label: "Select Date",
+    "no-label": "true",
     "auto-close": "true",
+    "min-date": $data.current_date,
     id: "_doj",
     modelValue: $data.doj,
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.doj = $event;
     })
-  }, null, 8 /* PROPS */, ["modelValue"])])])]), _hoisted_12], 32 /* HYDRATE_EVENTS */);
+  }, null, 8 /* PROPS */, ["min-date", "modelValue"])])])]), _hoisted_12], 32 /* HYDRATE_EVENTS */);
 }
 
 /***/ }),
