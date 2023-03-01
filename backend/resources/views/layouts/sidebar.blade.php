@@ -184,6 +184,26 @@ function isActive($routeName)
     </div>
   </li>
 
+
+  {{-- Nav item -schedules --}}
+  <li class="nav-item {{ isActiveLI('schedules') }}">
+    <a class="nav-link {{ isCollapsed('schedules') }}" href="#" data-toggle="collapse"
+      data-target="#scheduleMenu" aria-expanded="true" aria-controls="scheduleMenu">
+      <i class="fas fa-calendar-alt"></i>
+      <span>Schedules</span>
+    </a>
+    <div id="scheduleMenu" class="collapse {{ isShow('schedules') }}" aria-labelledby="headingTwo"
+      data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Schedule Components:</h6>
+        <a class="collapse-item {{ isActive('schedules.index') }}" href="{{ route('schedules.index') }}"><i
+            class="fas fa-list mr-2 text-primary"></i>Schedules List</a>
+        <a class="collapse-item {{ isActive('schedules.create') }}" href="{{ route('schedules.create') }}"><i
+            class="fas fa-plus-square mr-2 text-success"></i>Add Schedule</a>
+      </div>
+    </div>
+  </li>
+
   {{-- Nav item --}}
 
   <!-- Heading -->

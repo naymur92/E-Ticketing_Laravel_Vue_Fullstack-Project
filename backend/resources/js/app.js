@@ -3,9 +3,10 @@ require("./bootstrap");
 import { createApp } from "vue";
 
 // Backend imports
-import AddTrain from "./Components/backend/AddTrain.vue";
 import AddStation from "./Components/backend/AddStation.vue";
 import AddRoute from "./Components/backend/AddRoute.vue";
+import AddTrain from "./Components/backend/AddTrain.vue";
+import AddSchedule from "./Components/backend/AddSchedule.vue";
 
 // Tools imports
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
@@ -20,9 +21,10 @@ import router from "./router";
 
 const app = createApp({});
 
-app.component("add-train", AddTrain);
 app.component("add-station", AddStation);
 app.component("add-route", AddRoute);
+app.component("add-train", AddTrain);
+app.component("add-schedule", AddSchedule);
 app.component("VueCtkDateTimePicker", VueCtkDateTimePicker);
 app.component("v-select", VueSelect);
 app.component("front-layout", FrontLayout);
