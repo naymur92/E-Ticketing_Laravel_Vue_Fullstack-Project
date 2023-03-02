@@ -16,9 +16,9 @@ class Schedule extends Model
     return $this->belongsTo(related: Train::class);
   }
 
-  public function seat_range()
+  public function seat_ranges()
   {
-    return $this->hasOne(related: SeatRange::class, foreignKey: 'schedule_id');
+    return $this->hasMany(related: SeatRange::class, foreignKey: 'schedule_id');
   }
 
   public function from_station()

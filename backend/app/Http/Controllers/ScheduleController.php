@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bogi;
 use App\Models\Schedule;
+use App\Models\Seat;
+use App\Models\SeatRange;
 use App\Models\Train;
 use Illuminate\Http\Request;
 
@@ -60,10 +63,21 @@ class ScheduleController extends Controller
       $schedule->shovon_price = $dest_station->shovon_price;
 
       $schedule->save();
+
+      // Add seat ranges
+      foreach ($dest_station->seat_ranges as $item) {
+        $seat_range = new SeatRange();
+
+        $seat_range->schedule_id = $schedule->id;
+        $seat_range->bogi_id = $item->bogi_id->code;
+        $seat_range->seats_range = $item->seat_start . ',' . $item->seat_end;
+
+        $seat_range->save();
+      }
     }
 
 
-    flash()->addSuccess('Schedules Added');
+    flash()->addSuccess('Schedules & Seat Ranges Added');
     // return redirect(route('schedules.index'));
     return response()->json(['success' => true, 'msg' => 'Schedules Added']);
   }
@@ -177,9 +191,44 @@ class ScheduleController extends Controller
         'f_chair_price' => null,
         's_chair_price' => null,
         'shovon_price' => null,
+        'seat_ranges' => [
+          [
+            'bogi_id' => null,
+            'seat_start' => null,
+            'seat_end' => null,
+          ]
+        ]
       ];
     }
 
     return response()->json(['base_station' => $base_station, 'dest_stations' => $dest_stations]);
+  }
+
+  public function get_bogis($id)
+  {
+    $train = Train::findOrFail($id);
+    $bogis = $train->bogis;
+    $data = array();
+
+    foreach ($bogis as $bogi) {
+      $data[] = [
+        'code' => $bogi->id,
+        'label' => $bogi->bogi_name . ' (' . $bogi->bogi_type->bogi_type_name . ')'
+      ];
+    }
+
+    return response()->json($data);
+  }
+
+  public function get_seats($id)
+  {
+    $seats = Seat::where('bogi_id', $id)->get();
+    $data = array();
+
+    foreach ($seats as $seat) {
+      $data[] = $seat->seat_name;
+    }
+
+    return response()->json($data);
   }
 }

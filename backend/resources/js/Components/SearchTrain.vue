@@ -1,50 +1,90 @@
 <template>
-  <form @submit.prevent="searchTrain()">
-    <div class="row my-2">
-      <div class="col-6">
-        <div class="form-group">
-          <label for="_from"><strong>From</strong></label>
-          <v-select
-            id="_from"
-            v-model="from"
-            :options="from_stations"
-            @update:modelValue="getToStations()"
-          ></v-select>
+  <div>
+    <form @submit.prevent="searchTrain()">
+      <div class="row my-2">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="_from"><strong>From</strong></label>
+            <v-select
+              id="_from"
+              v-model="from"
+              :options="from_stations"
+              @update:modelValue="getToStations()"
+            ></v-select>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label for="_to"><strong>To</strong></label>
+            <v-select id="_to" v-model="to" :options="to_stations"></v-select>
+          </div>
         </div>
       </div>
-      <div class="col-6">
-        <div class="form-group">
-          <label for="_to"><strong>To</strong></label>
-          <v-select id="_to" v-model="to" :options="to_stations"></v-select>
+      <div class="row my-2">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="_doj"><strong>Date of Journey</strong></label>
+            <VueCtkDateTimePicker
+              only-date
+              no-button-now
+              format="YYYY-MM-DD"
+              formatted="YYYY-MM-DD"
+              input-size="lg"
+              label="Select Date"
+              no-label="true"
+              auto-close="true"
+              :min-date="current_date"
+              id="_doj"
+              v-model="doj"
+            />
+          </div>
+        </div>
+      </div>
+      <input
+        type="submit"
+        value="Search Train"
+        class="btn btn-success form-control"
+      />
+    </form>
+
+    <!-- search result -->
+    <div class="card mt-5" v-if="search">
+      <div class="card-header"><h4>Search Result</h4></div>
+      <div
+        class="card shadow my-5"
+        v-for="result in searchResult"
+        :key="result.train_id"
+      >
+        <div class="card-header d-flex justify-content-between">
+          <h5>{{ result.train_name }}</h5>
+          <span>{{ result.from }} - {{ result.to }}</span>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <p><strong>Left At</strong></p>
+              <p>{{ result.left_at }}</p>
+            </div>
+            <div class="col-6">
+              <p><strong>Reach At</strong></p>
+              <p>{{ result.left_at }}</p>
+            </div>
+          </div>
+          <hr />
+
+          <div class="row">
+            <h5>Seats Available</h5>
+            <div class="col-6" v-for="(item, index) in result.seats">
+              <p>
+                <strong>{{ index }}</strong>
+              </p>
+              <p>{{ item }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="row my-2">
-      <div class="col-6">
-        <div class="form-group">
-          <label for="_doj"><strong>Date of Journey</strong></label>
-          <VueCtkDateTimePicker
-            only-date
-            no-button-now
-            format="YYYY-MM-DD"
-            formatted="YYYY-MM-DD"
-            input-size="lg"
-            label="Select Date"
-            no-label="true"
-            auto-close="true"
-            :min-date="current_date"
-            id="_doj"
-            v-model="doj"
-          />
-        </div>
-      </div>
-    </div>
-    <input
-      type="submit"
-      value="Search Train"
-      class="btn btn-success form-control"
-    />
-  </form>
+  </div>
 </template>
 <script>
 import axios from "axios";
@@ -59,6 +99,8 @@ export default {
       doj: "",
       errors: {},
       current_date: "",
+      searchResult: [],
+      search: false,
     };
   },
   mounted() {
@@ -78,7 +120,13 @@ export default {
           doj: this.doj,
         })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
+          this.searchResult = res.data;
+          this.search = true;
+          // this.$router.push({
+          //   name: "searchresult",
+          //   query: { searchResult: this.searchResult },
+          // });
         });
       // alert(this.from);
     },

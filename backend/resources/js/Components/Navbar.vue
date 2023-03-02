@@ -3,7 +3,7 @@ import axios from "axios";
 </script>
 <template>
   <nav
-    class="front-navbar navbar sticky-top navbar-expand-lg navbar-light p-0"
+    class="front-navbar navbar sticky-top navbar-expand-lg navbar-light p-0 shadow"
     style="background-color: #e3f2fd"
   >
     <div class="container">

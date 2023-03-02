@@ -64,7 +64,7 @@
           <div v-if="schedule_dest_stations[0].to_station_id != null">
             <div
               class="my-4 shadow p-2"
-              v-for="item in schedule_dest_stations"
+              v-for="(item, index) in schedule_dest_stations"
               :key="item.to_station_id"
             >
               <!-- Next station info -->
@@ -180,6 +180,59 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Seat range details -->
+              <div class="alert alert-info mt-4">
+                <strong>Set Seat Ranges</strong>
+              </div>
+              <div
+                class="row"
+                v-for="(seat_range, i) in item.seat_ranges"
+                :key="i"
+              >
+                <div class="col-6">
+                  <div class="form-group">
+                    <label><strong>Select Bogi</strong></label>
+                    <v-select
+                      id="_train_id"
+                      v-model="item.seat_ranges[i].bogi_id"
+                      :options="bogis"
+                      @update:modelValue="
+                        getSeats(item.seat_ranges[i].bogi_id.code)
+                      "
+                    ></v-select>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label><strong>Seat Start</strong></label>
+                    <v-select
+                      id="_train_id"
+                      v-model="item.seat_ranges[i].seat_start"
+                      :options="seats"
+                    ></v-select>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label><strong>Seat End</strong></label>
+                    <v-select
+                      id="_train_id"
+                      v-model="item.seat_ranges[i].seat_end"
+                      :options="seats"
+                    ></v-select>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-end">
+                <button
+                  type="button"
+                  @click="addMoreBogi(index)"
+                  class="btn btn-primary"
+                >
+                  Add More Bogi
+                </button>
+              </div>
             </div>
           </div>
         </fieldset>
@@ -202,7 +255,8 @@ export default {
       loading: true,
       errors: [],
       trains: [],
-      // route_lists: [],
+      bogis: [],
+      seats: [],
       train_id: null,
       schedule_base_station: {
         from_station_id: null,
@@ -222,6 +276,13 @@ export default {
           f_chair_price: null,
           s_chair_price: null,
           shovon_price: null,
+          seat_ranges: [
+            {
+              bogi_id: null,
+              seat_start: null,
+              seat_end: null,
+            },
+          ],
         },
       ],
     };
@@ -240,6 +301,9 @@ export default {
           this.schedule_dest_stations = res.data.dest_stations;
           // console.log(res.data);
         });
+
+        // get bogi list when select a train
+        this.getBogis();
       } else {
         this.route_lists = [];
       }
@@ -260,6 +324,23 @@ export default {
             alert(res.data.msg);
           }
         });
+    },
+    getBogis() {
+      axios.get("/get-bogis/" + this.train_id.code).then((res) => {
+        this.bogis = res.data;
+      });
+    },
+    getSeats(id) {
+      axios.get("/get-seats/" + id).then((res) => {
+        this.seats = res.data;
+      });
+    },
+    addMoreBogi(index) {
+      this.schedule_dest_stations[index].seat_ranges.push({
+        bogi_id: null,
+        seat_start: null,
+        seat_end: null,
+      });
     },
   },
 };

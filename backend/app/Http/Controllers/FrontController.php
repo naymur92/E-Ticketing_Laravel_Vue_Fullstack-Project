@@ -24,10 +24,54 @@ class FrontController extends Controller
       'doj' => 'required'
     ]);
 
-    $schedules = Schedule::where('from_station_id', $request->from)->where('to_station_id', $request->to)->whereDate('left_station_at', $request->doj)->get();
+    $results = Schedule::where('from_station_id', $request->from)->where('to_station_id', $request->to)->whereDate('left_station_at', $request->doj)->get();
 
+    $data = [];
 
-    // $data = [];
+    foreach ($results as $result) {
+      // get bogy types
+      $bogi_types = array();
+      foreach ($result->train->bogis as $bogi) {
+        $bogi_types[] = $bogi->bogi_type->bogi_type_name;
+      }
+
+      // get seat range
+      $bogis_seats = array();
+      foreach ($result->seat_ranges as $item) {
+        $bogi_type = $item->bogi->bogi_type->bogi_type_name;
+        $seat_ranges = explode(',', $item->seats_range);
+        $start = $seat_ranges[0];
+        $end = $seat_ranges[1];
+        $bogi_id = $item->bogi_id;
+
+        // $seats = Seat::where('bogi_id', $bogi_id)->where('booked', 0)->whereBetween('seat_name', [$start, $end])->count();
+
+        $start_seat = explode('-', $seat_ranges[0])[1];
+        $end_seat = explode('-', $seat_ranges[1])[1];
+        $seat_count = $end_seat - $start_seat + 1;
+
+        if (count($bogis_seats) != 0) {
+          if (array_key_exists($bogi_type, $bogis_seats)) {
+            $bogis_seats[$bogi_type] = $bogis_seats[$bogi_type] + $seat_count;
+          } else {
+            $bogis_seats[$bogi_type] = $seat_count;
+          }
+        } else {
+          $bogis_seats[$bogi_type] = $seat_count;
+        }
+      }
+
+      $data[] = [
+        'id' => $result->id,
+        'train_name' => $result->train->name,
+        'from' => $result->from_station->name,
+        'to' => $result->to_station->name,
+        'left_at' => $result->left_station_at,
+        'reach_at' => $result->reach_destination_at,
+        'total_time' => date('h:i', (strtotime($result->reach_destination_at) - strtotime($result->left_station_at))),
+        'seats' => $bogis_seats
+      ];
+    }
 
     // // search train on that specific date
     // $trains = Train::where('date', $request->doj)->get();
@@ -71,7 +115,7 @@ class FrontController extends Controller
     //   }
     // }
 
-    // return response()->json($data);
+    return response()->json($data);
   }
 
   public function get_auth()
