@@ -17,9 +17,11 @@ import "vue-select/dist/vue-select.css";
 // Frontend imports
 import FrontLayout from "./FrontLayout.vue";
 
+import { createPinia } from "pinia";
 import router from "./router";
 
 const app = createApp({});
+const pinia = createPinia();
 
 app.component("add-station", AddStation);
 app.component("add-route", AddRoute);
@@ -29,5 +31,6 @@ app.component("VueCtkDateTimePicker", VueCtkDateTimePicker);
 app.component("v-select", VueSelect);
 app.component("front-layout", FrontLayout);
 app.use(router);
+app.use(pinia);
 
 app.mount("#app");

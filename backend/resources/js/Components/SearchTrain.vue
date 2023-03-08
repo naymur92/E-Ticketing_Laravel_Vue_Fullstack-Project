@@ -49,43 +49,17 @@
 
     <!-- search result -->
     <div class="card mt-5" v-if="search">
-      <div class="card-header"><h4>Search Result</h4></div>
-      <div
-        class="card shadow my-5"
-        v-for="result in searchResult"
-        :key="result.train_id"
-      >
-        <div class="card-header d-flex justify-content-between">
-          <h5>{{ result.train_name }}</h5>
-          <span>{{ result.from }} - {{ result.to }}</span>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-6">
-              <p><strong>Left At</strong></p>
-              <p>{{ result.left_at }}</p>
-            </div>
-            <div class="col-6">
-              <p><strong>Reach At</strong></p>
-              <p>{{ result.left_at }}</p>
-            </div>
-          </div>
-          <hr />
-
-          <div class="row">
-            <h5>Seats Available</h5>
-            <div class="col-6" v-for="(item, index) in result.seats">
-              <p>
-                <strong>{{ index }}</strong>
-              </p>
-              <p>{{ item }}</p>
-            </div>
-          </div>
-        </div>
+      <div v-if="searchStore.searchResult.length == 0" class="p-2">
+        <h3>No Result Found</h3>
       </div>
     </div>
   </div>
 </template>
+<script setup>
+import { useSearchStore } from "../stores/search";
+
+const searchStore = useSearchStore();
+</script>
 <script>
 import axios from "axios";
 export default {
@@ -99,7 +73,6 @@ export default {
       doj: "",
       errors: {},
       current_date: "",
-      searchResult: [],
       search: false,
     };
   },
@@ -121,12 +94,14 @@ export default {
         })
         .then((res) => {
           // console.log(res.data);
-          this.searchResult = res.data;
+          this.searchStore.searchResult = res.data;
           this.search = true;
-          // this.$router.push({
-          //   name: "searchresult",
-          //   query: { searchResult: this.searchResult },
-          // });
+
+          if (res.data.length > 0) {
+            this.$router.push({
+              name: "searchresult",
+            });
+          }
         });
       // alert(this.from);
     },

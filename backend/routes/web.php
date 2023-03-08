@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BogiController;
 use App\Http\Controllers\BogiTypeController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\ScheduleController;
@@ -62,8 +63,11 @@ Route::get('/from-stations', [FrontController::class, 'from_stations']);
 Route::get('/to-stations/{id}', [FrontController::class, 'to_stations']);
 Route::post('/search-train', [FrontController::class, 'check']);
 
+// booking
+Route::get('/get-booking-details/{schedule_id}', [BookingController::class, 'get_booking_details']);
+
 require __DIR__ . '/auth.php';
 
 Route::any('{slug}', function () {
   return view('home');
-});
+})->where('slug', '.*');

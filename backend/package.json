@@ -23,6 +23,7 @@
         "vue-template-loader": "^1.1.0"
     },
     "dependencies": {
+        "pinia": "^2.0.33",
         "vue": "^3.2.36",
         "vue-ctk-date-time-picker": "^3.0.0-alpha.0",
         "vue-router": "^4.1.6"
