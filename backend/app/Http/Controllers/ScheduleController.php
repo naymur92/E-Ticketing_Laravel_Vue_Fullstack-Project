@@ -124,7 +124,12 @@ class ScheduleController extends Controller
    */
   public function destroy($id)
   {
-    //
+    $schedule = Schedule::findOrFail($id);
+    $schedule->delete();
+
+    flash()->addSuccess('Schedule Deleted Successfullly');
+
+    return back();
   }
 
   // generate train list for add schedules

@@ -6,21 +6,21 @@ import ContactUs from "../pages/ContactUs.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
-    { path: "/", name: 'home', component: Home },
-    {
-        path: "/search-result",
-        name: "searchresult",
-        component: SearchResult,
-    },
-    { path: "/book", component: Booking },
-    { path: "/contact-us", component: ContactUs },
-    { path: "/:catchAll(.*)", redirect: { name: 'home' } }
+  { path: "/", name: 'home', component: Home },
+  {
+    path: "/search-result",
+    name: "searchresult",
+    component: SearchResult,
+  },
+  { path: "/book", component: Booking },
+  { path: "/contact-us", component: ContactUs },
+  // { path: "/:pathMatch(.*)*", redirect: { name: 'home' } }
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes,
-    linkActiveClass: "active"
+  history: createWebHistory(),
+  routes,
+  linkActiveClass: "active"
 });
 
 export default router;

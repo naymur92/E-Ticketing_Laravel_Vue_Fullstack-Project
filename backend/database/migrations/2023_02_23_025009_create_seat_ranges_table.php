@@ -21,7 +21,7 @@ class CreateSeatRangesTable extends Migration
             $table->timestamps();
 
             $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
-            $table->foreign('bogi_id')->references('id')->on('bogis');
+            $table->foreign('bogi_id')->references('id')->on('bogis')->onDelete('cascade');
         });
     }
 

@@ -21845,28 +21845,28 @@ var __default__ = {
   },
   methods: {
     searchTrain: function searchTrain() {
-      var _this2 = this;
       axios__WEBPACK_IMPORTED_MODULE_0___default().post("/search-train", {
         from: this.from.code,
         to: this.to.code,
         doj: this.doj
       }).then(function (res) {
-        // console.log(res.data);
-        _this2.searchStore.searchResult = res.data;
-        _this2.search = true;
-        if (res.data.length > 0) {
-          _this2.$router.push({
-            name: "searchresult"
-          });
-        }
+        console.log(res.data);
+        // this.searchStore.searchResult = res.data;
+        // this.search = true;
+
+        // if (res.data.length > 0) {
+        //   this.$router.push({
+        //     name: "searchresult",
+        //   });
+        // }
       });
       // alert(this.from);
     },
     getToStations: function getToStations() {
-      var _this3 = this;
+      var _this2 = this;
       if (this.from.code != null) {
         axios__WEBPACK_IMPORTED_MODULE_0___default().get("/to-stations/" + this.from.code).then(function (res) {
-          _this3.to_stations = res.data;
+          _this2.to_stations = res.data;
           // console.log(res.data);
         });
       }
@@ -23897,12 +23897,10 @@ var routes = [{
 }, {
   path: "/contact-us",
   component: _pages_ContactUs_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
-}, {
-  path: "/:catchAll(.*)",
-  redirect: {
-    name: 'home'
-  }
-}];
+}
+// { path: "/:pathMatch(.*)*", redirect: { name: 'home' } }
+];
+
 var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_4__.createRouter)({
   history: (0,vue_router__WEBPACK_IMPORTED_MODULE_4__.createWebHistory)(),
   routes: routes,

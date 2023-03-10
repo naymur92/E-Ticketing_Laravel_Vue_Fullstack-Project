@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BogiType;
 use App\Models\Schedule;
 use App\Models\Seat;
 use App\Models\Station;
@@ -29,41 +30,33 @@ class FrontController extends Controller
 
     $data = [];
 
+    // get bogi types
+    $bogi_types_with_seats = array();
+
+    $bogi_types = BogiType::get();
+    foreach ($bogi_types as $item) {
+      $bogi_types_with_seats[] = [
+        'id' => $item->id,
+        'bogi_type_name' => $item->bogi_type_name,
+        'total_seats' => 0
+      ];
+    }
+
     foreach ($results as $result) {
-      // get bogi types
-      $bogi_types = array();
-      foreach ($result->train->bogis as $bogi) {
-        $bogi_types[] = $bogi->bogi_type->bogi_type_name;
-      }
-
-      // foreach ($result->train->bogis as $bogi) {
-      //   $bogi_types[] = [
-      //     'id' => $bogi->bogi_type->id,
-      //     'bogi_type_name' => $bogi->bogi_type->bogi_type_name
-      //   ];
-      // }
-
       // get seat range
-      $bogis_seats = array();
       foreach ($result->seat_ranges as $item) {
         $bogi_type = $item->bogi->bogi_type->bogi_type_name;
         $seat_ranges = explode(',', $item->seats_range);
-        $start = $seat_ranges[0];
-        $end = $seat_ranges[1];
-        $bogi_id = $item->bogi_id;
 
+        // calculate total seats
         $start_seat = explode('-', $seat_ranges[0])[1];
         $end_seat = explode('-', $seat_ranges[1])[1];
         $seat_count = $end_seat - $start_seat + 1;
 
-        if (count($bogis_seats) != 0) {
-          if (array_key_exists($bogi_type, $bogis_seats)) {
-            $bogis_seats[$bogi_type] = $bogis_seats[$bogi_type] + $seat_count;
-          } else {
-            $bogis_seats[$bogi_type] = $seat_count;
+        for ($i = 0; $i < count($bogi_types_with_seats); $i++) {
+          if ($bogi_types_with_seats[$i]['bogi_type_name'] == $bogi_type) {
+            $bogi_types_with_seats[$i]['total_seats'] += $seat_count;
           }
-        } else {
-          $bogis_seats[$bogi_type] = $seat_count;
         }
       }
 
@@ -79,7 +72,7 @@ class FrontController extends Controller
         'left_at' => date('d M, Y - h:i a', strtotime($result->left_station_at)),
         'reach_at' => date('d M, Y - h:i a', strtotime($result->reach_destination_at)),
         'total_time' => $total_time->h . ' Hours : ' . $total_time->i . ' Minutes',
-        'seats' => $bogis_seats
+        'seats' => $bogi_types_with_seats
       ];
     }
 

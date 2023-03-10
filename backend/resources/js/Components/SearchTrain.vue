@@ -93,15 +93,15 @@ export default {
           doj: this.doj,
         })
         .then((res) => {
-          // console.log(res.data);
-          this.searchStore.searchResult = res.data;
-          this.search = true;
+          console.log(res.data);
+          // this.searchStore.searchResult = res.data;
+          // this.search = true;
 
-          if (res.data.length > 0) {
-            this.$router.push({
-              name: "searchresult",
-            });
-          }
+          // if (res.data.length > 0) {
+          //   this.$router.push({
+          //     name: "searchresult",
+          //   });
+          // }
         });
       // alert(this.from);
     },
