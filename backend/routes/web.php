@@ -29,7 +29,7 @@ Route::get('/', [FrontController::class, 'home'])->name('home');
 require __DIR__ . '/auth.php';
 
 Route::middleware(['auth', 'user-access:admin'])->prefix('admin')->group(function () {
-  Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+  Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
 
   // Resource paths
   Route::resource('users', UserController::class);
