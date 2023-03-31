@@ -90,7 +90,7 @@ import axios from "axios";
                 <hr class="dropdown-divider" />
               </li>
               <li v-if="auth.is_admin == 'admin'">
-                <a class="dropdown-item" href="/admin/dashboard">
+                <a class="dropdown-item" href="/admin/">
                   <i class="fa-solid fa-gauge-high"></i>
                   <span class="mx-2">Dashboard</span>
                 </a>
