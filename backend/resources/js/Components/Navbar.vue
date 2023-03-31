@@ -62,15 +62,17 @@ import axios from "axios";
               style="background-color: #e3f2fd"
             >
               <li>
-                <!-- Role -->
-                <span class="dropdown-item"
-                  ><strong>{{ auth.is_admin }}</strong></span
-                >
-              </li>
-              <li>
-                <span class="dropdown-item"
-                  ><strong>{{ auth.name }}</strong></span
-                >
+                <span class="dropdown-item">
+                  <strong>
+                    {{ auth.name }}
+                    <span
+                      v-if="auth.is_admin == 'admin'"
+                      class="badge bg-success"
+                    >
+                      {{ auth.is_admin.toUpperCase() }}
+                    </span>
+                  </strong>
+                </span>
               </li>
               <li>
                 <span class="dropdown-item">
@@ -81,35 +83,38 @@ import axios from "axios";
               <li>
                 <span class="dropdown-item">
                   <i class="fa fa-phone"></i>
-                  <span class="mx-2">01737036324</span>
+                  <span class="mx-2">{{ auth.phone }}</span>
                 </span>
               </li>
               <li>
                 <hr class="dropdown-divider" />
               </li>
-              <li v-if="auth.is_admin != 0">
-                <a class="dropdown-item" href="/dashboard">
+              <li v-if="auth.is_admin == 'admin'">
+                <a class="dropdown-item" href="/admin/dashboard">
                   <i class="fa-solid fa-gauge-high"></i>
                   <span class="mx-2">Dashboard</span>
                 </a>
               </li>
-              <li v-if="auth.is_admin == 0">
+              <li v-if="auth.is_admin == 'user'">
                 <a class="dropdown-item" href="#">
                   <i class="fa fa-user"></i>
                   <span class="mx-2">Profile</span>
                 </a>
               </li>
-              <li v-if="auth.is_admin == 0">
+              <li v-if="auth.is_admin == 'user'">
                 <a class="dropdown-item" href="#">
                   <i class="fa fa-briefcase"></i>
                   <span class="mx-2">Purchase History</span>
                 </a>
               </li>
-              <li v-if="auth.is_admin == 0">
+              <li v-if="auth.is_admin == 'user'">
                 <a class="dropdown-item" href="#">
                   <i class="fa fa-shield-halved"></i>
                   <span class="mx-2">Update Password</span>
                 </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
               </li>
               <li>
                 <a
