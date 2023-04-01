@@ -47,7 +47,9 @@
                         class="form-control " placeholder="Train Name">
                     </div>
                     @error('name')
-                      <div class="alert alert-warning my-2">{{ $message }}</div>
+                      <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
                   </div>
                   <div class="col-sm-6">
@@ -57,7 +59,9 @@
                         value="{{ old('journey_date', $train->journey_date) }}" class="form-control">
                     </div>
                     @error('date')
-                      <div class="alert alert-warning my-2">{{ $message }}</div>
+                      <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
                   </div>
                 </div>
@@ -89,7 +93,7 @@
                             style="right: 20px; cursor: pointer;"><i class="fa fa-trash"></i></span>
                         </form>
 
-                        <h4 class="text-center">{{ $bogi->bogi_name }}</h4>
+                        <h4 class="text-center">{{ $bogi->bogi_name }} ({{ $bogi->bogi_type->bogi_type_name }})</h4>
                       </div>
                       <div class="card-body px-0">
                         <ul class="bogi_list">
@@ -129,19 +133,29 @@
           @csrf
           <div class="modal-body">
             <div class="form-group">
-              <label for="_bogi_name"><strong>Bogi Name:</strong></label>
-              <input type="text" id="_bogi_name" name="bogi_name" value="{{ old('bogi_name') }}" class="form-control"
-                placeholder="Enter Bogi Name">
-              @error('bogi_name')
-                <div class="alert alert-warning my-2">{{ $message }}</div>
+              <label for="_bogi_type_id"><strong>Bogi Name:</strong></label>
+              <select name="bogi_type_id" id="_bogi_type_id"
+                class="form-control @error('bogi_type_id') is-invalid @enderror">
+                <option value="" selected hidden>Select One</option>
+                @foreach ($bogi_types as $item)
+                  <option value="{{ $item->id }}" {{ old('bogi_type_id') == $item->id ? 'selected' : '' }}>
+                    {{ $item->bogi_type_name }}</option>
+                @endforeach
+              </select>
+              @error('bogi_type_id')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
               @enderror
             </div>
             <div class="form-group">
-              <label for="_total_seats"><strong>Total Seats:</strong></label>
-              <input type="number" id="_total_seats" name="total_seats" value="{{ old('total_seats') }}"
-                class="form-control" placeholder="Enter total seats">
-              @error('total_seats')
-                <div class="alert alert-warning my-2">{{ $message }}</div>
+              <label for="_bogi_name"><strong>Bogi Name:</strong></label>
+              <input type="text" id="_bogi_name" name="bogi_name" value="{{ old('bogi_name') }}"
+                class="form-control @error('bogi_name') is-invalid @enderror" placeholder="Enter Bogi Name">
+              @error('bogi_name')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
               @enderror
             </div>
             <input type="hidden" name="train_id" value="{{ $train->id }}">

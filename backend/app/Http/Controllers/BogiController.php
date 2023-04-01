@@ -14,20 +14,20 @@ class BogiController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
-  {
-    //
-  }
+  // public function index()
+  // {
+  //   //
+  // }
 
   /**
    * Show the form for creating a new resource.
    *
    * @return \Illuminate\Http\Response
    */
-  public function create()
-  {
-    //
-  }
+  // public function create()
+  // {
+  //   //
+  // }
 
   /**
    * Store a newly created resource in storage.
@@ -39,26 +39,33 @@ class BogiController extends Controller
   {
     $request->validate([
       'bogi_name' => 'required',
-      'total_seats' => 'required|integer|min:15',
+      'bogi_type_id' => 'required',
     ]);
-    $bogi = new Bogi();
-    $bogi->name = strtoupper($request->bogi_name);
-    $bogi->train_id = $request->train_id;
 
-    $bogi->save();
+    // if bogi_name is duplicate then end process
+    $bogi_exists = Bogi::where('train_id', $request->train_id)->where('bogi_name', strtoupper($request->bogi_name))->get();
+    if (count($bogi_exists) > 0) {
+      flash()->addWarning('Duplicate Bogi Name for - ' . strtoupper($request->bogi_name) . '!');
+      return back();
+    }
 
-    // $bogi_id = DB::table('bogis')->insertGetId($request->only('name', 'train_id'));
-    for ($i = 1; $i <= $request->total_seats; $i++) {
+    // add bogi
+    $bogi = Bogi::create([
+      'bogi_name' => strtoupper($request->bogi_name),
+      'train_id' => $request->train_id,
+      'bogi_type_id' => $request->bogi_type_id,
+    ]);
+
+    // add seats
+    for ($i = 1; $i <= $bogi->bogi_type->seat_count; $i++) {
       DB::table('seats')->insert([
-        'name' => strtoupper($request->bogi_name) . '-' . $i,
+        'seat_name' => $bogi->bogi_name . '-' . $i,
         'bogi_id' => $bogi->id,
-        'train_id' => $request->train_id,
-        'type' => 0,
-        'booked' => rand(0, 1),
+        'booked' => 0,
       ]);
     }
 
-    flash()->addSuccess('Bogi and seat added');
+    flash()->addSuccess('Bogi and seats added');
     return back();
   }
 
@@ -68,10 +75,10 @@ class BogiController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($id)
-  {
-    //
-  }
+  // public function show($id)
+  // {
+  //   //
+  // }
 
   /**
    * Show the form for editing the specified resource.
@@ -79,10 +86,10 @@ class BogiController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function edit($id)
-  {
-    //
-  }
+  // public function edit($id)
+  // {
+  //   //
+  // }
 
   /**
    * Update the specified resource in storage.
@@ -91,10 +98,10 @@ class BogiController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
-  {
-    //
-  }
+  // public function update(Request $request, $id)
+  // {
+  //   //
+  // }
 
   /**
    * Remove the specified resource from storage.
@@ -107,6 +114,7 @@ class BogiController extends Controller
     $bogi = Bogi::findOrFail($id);
     // $bogi->seats()->delete();
     $bogi->delete();
-    return back()->with('msg', 'Successfully Deleted');
+    flash()->addSuccess('Bogi Deleted');
+    return back();
   }
 }

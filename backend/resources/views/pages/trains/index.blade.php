@@ -34,6 +34,7 @@
                 <th>Name</th>
                 <th>Journey Time</th>
                 <th>Route</th>
+                <th>Creation Time</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -42,6 +43,7 @@
                 <th>Name</th>
                 <th>Journey Time</th>
                 <th>Route</th>
+                <th>Creation Time</th>
                 <th>Action</th>
               </tr>
             </tfoot>
@@ -55,6 +57,7 @@
                     -
                     {{ $train->route->routes->last()->station->name }}
                   </td>
+                  <td>{{ date('d M, Y - H:i a', strtotime($train->created_at)) }}</td>
                   <td>
                     <div class="dropdown">
                       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"

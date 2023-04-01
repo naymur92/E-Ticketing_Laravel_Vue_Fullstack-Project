@@ -57,21 +57,15 @@ class TrainController extends Controller
     if ($request->start_date == '' || $request->end_date == '') {
       $journey_date = $request->journey_date . ' ' . $request->journey_time;
 
-      $train = new Train();
-      $train->name = $request->name;
-      $train->journey_date = $journey_date;
-      $train->route_id = $request->route_id;
-
-      $train->save();
+      // add train
+      $train = Train::create([
+        'name' => $request->name,
+        'journey_date' => $journey_date,
+        'route_id' => $request->route_id
+      ]);
 
       // call bogi add method
-      foreach ($request->bogis as $bogi) {
-        $bogi_type_id = $bogi['bogi_type_id']['code'];
-
-        if ($bogi_type_id > 0 && $bogi['bogi_name'] != '') {
-          $this->add_bogi_seat($train->id, $bogi_type_id, $bogi['bogi_name']);
-        }
-      }
+      $this->add_bogi_seat($train->id, $request->bogis);
     } else {
       // count total days
       $num_days = round((strtotime($request->end_date) - strtotime($request->start_date)) / (60 * 60 * 24));
@@ -87,21 +81,15 @@ class TrainController extends Controller
         // generate date-time
         $journey_date = $cur_date . ' ' . $request->journey_time;
 
-        $train = new Train();
-        $train->name = $request->name;
-        $train->journey_date = $journey_date;
-        $train->route_id = $request->route_id;
-
-        $train->save();
+        // add train
+        $train = Train::create([
+          'name' => $request->name,
+          'journey_date' => $journey_date,
+          'route_id' => $request->route_id
+        ]);
 
         // call bogi add method
-        foreach ($request->bogis as $bogi) {
-          $bogi_type_id = $bogi['bogi_type_id']['code'];
-
-          if ($bogi_type_id > 0 && $bogi['bogi_name'] != '') {
-            $this->add_bogi_seat($train->id, $bogi_type_id, $bogi['bogi_name']);
-          }
-        }
+        $this->add_bogi_seat($train->id, $request->bogis);
 
         $cur_date = date('Y-m-d', strtotime($cur_date . ' +1 day'));
       }
@@ -131,8 +119,8 @@ class TrainController extends Controller
    */
   public function edit(Train $train)
   {
-    // $stations = Station::get();
-    return view('pages.trains.edit', compact('train'));
+    $bogi_types = BogiType::get();
+    return view('pages.trains.edit', compact('train', 'bogi_types'));
   }
 
   /**
@@ -237,23 +225,37 @@ class TrainController extends Controller
   }
 
   // bogi add function
-  public function add_bogi_seat($train_id, $bogi_type_id, $bogi_name)
+  public function add_bogi_seat($train_id, $bogis)
   {
-    $bogi = new Bogi();
+    foreach ($bogis as $bogi) {
+      $bogi_type_id = $bogi['bogi_type_id']['code'] ?? 0;
 
-    $bogi->bogi_name = strtoupper($bogi_name);
-    $bogi->train_id = $train_id;
-    $bogi->bogi_type_id = $bogi_type_id;
+      if ($bogi_type_id == 0 || $bogi['bogi_name'] == '') continue;
 
-    $bogi->save();
+      // if bogi_name is duplicate then end process
+      $bogi_exists = Bogi::where('train_id', $train_id)->where('bogi_name', strtoupper($bogi['bogi_name']))->get();
+      if (count($bogi_exists) > 0) {
+        flash()->addWarning('Duplicate Bogi Name for - ' . strtoupper($bogi['bogi_name']) . '!');
+        continue;
+      }
 
-    for ($i = 1; $i <= $bogi->bogi_type->seat_count; $i++) {
-      $seat = new Seat();
-      $seat->seat_name = $bogi->bogi_name . '-' . $i;
-      $seat->bogi_id = $bogi->id;
-      $seat->booked = 0;
+      // add bogi and seats
+      $new_bogi = new Bogi();
 
-      $seat->save();
+      $new_bogi->bogi_name = strtoupper($bogi['bogi_name']);
+      $new_bogi->train_id = $train_id;
+      $new_bogi->bogi_type_id = $bogi_type_id;
+
+      $new_bogi->save();
+
+      for ($i = 1; $i <= $new_bogi->bogi_type->seat_count; $i++) {
+        $seat = new Seat();
+        $seat->seat_name = $new_bogi->bogi_name . '-' . $i;
+        $seat->bogi_id = $new_bogi->id;
+        $seat->booked = 0;
+
+        $seat->save();
+      }
     }
   }
 }
