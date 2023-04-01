@@ -9,14 +9,16 @@
             v-model="name"
             id="_name"
             placeholder="Enter station name"
-            class="form-control"
+            :class="['form-control', errors.name ? 'is-invalid' : '']"
           />
-
-          <ul v-if="errors.name" class="alert alert-warning my-2">
-            <li v-for="(err, index) in errors.name" :key="index">
-              {{ err }}
-            </li>
-          </ul>
+          <span
+            v-for="(err, index) in errors.name"
+            :key="index"
+            class="invalid-feedback"
+            role="alert"
+          >
+            <strong>{{ err }}</strong>
+          </span>
         </div>
         <div class="form-group my-2">
           <label for="_addr"><strong>Station Address:</strong></label>
@@ -25,14 +27,17 @@
             v-model="address"
             id="_addr"
             placeholder="Enter station address"
-            class="form-control"
+            :class="['form-control', errors.address ? 'is-invalid' : '']"
           />
 
-          <ul v-if="errors.address" class="alert alert-warning my-2">
-            <li v-for="(err, index) in errors.address" :key="index">
-              {{ err }}
-            </li>
-          </ul>
+          <span
+            v-for="(err, index) in errors.address"
+            :key="index"
+            class="invalid-feedback"
+            role="alert"
+          >
+            <strong>{{ err }}</strong>
+          </span>
         </div>
         <div class="row">
           <div class="col-6">
@@ -44,13 +49,16 @@
                 id="_lat"
                 step="any"
                 placeholder="Enter lattitude"
-                class="form-control"
+                :class="['form-control', errors.lat ? 'is-invalid' : '']"
               />
-              <ul v-if="errors.lat" class="alert alert-warning my-2">
-                <li v-for="(err, index) in errors.lat" :key="index">
-                  {{ err }}
-                </li>
-              </ul>
+              <span
+                v-for="(err, index) in errors.lat"
+                :key="index"
+                class="invalid-feedback"
+                role="alert"
+              >
+                <strong>{{ err }}</strong>
+              </span>
             </div>
           </div>
           <div class="col-6">
@@ -62,13 +70,16 @@
                 id="_lon"
                 step="any"
                 placeholder="Enter longitude"
-                class="form-control"
+                :class="['form-control', errors.lon ? 'is-invalid' : '']"
               />
-              <ul v-if="errors.lon" class="alert alert-warning my-2">
-                <li v-for="(err, index) in errors.lon" :key="index">
-                  {{ err }}
-                </li>
-              </ul>
+              <span
+                v-for="(err, index) in errors.lon"
+                :key="index"
+                class="invalid-feedback"
+                role="alert"
+              >
+                <strong>{{ err }}</strong>
+              </span>
             </div>
           </div>
         </div>
@@ -103,7 +114,7 @@ export default {
     addStation() {
       // console.log(this.lat);
       axios
-        .post("/stations", {
+        .post("/admin/stations", {
           name: this.name,
           address: this.address,
           lat: this.lat,
@@ -113,7 +124,7 @@ export default {
           // console.log("Station Created");
           if (res.data.success) {
             // console.log(res.data.msg);
-            window.location.href = "/stations";
+            window.location.href = "/admin/stations";
           }
           // console.log(res.data.code);
         })

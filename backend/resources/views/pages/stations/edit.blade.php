@@ -35,20 +35,24 @@
                     <div class="form-group">
                       <label for="_name"><strong>Station Name</strong></label>
                       <input type="text" id="_name" name="name" value="{{ old('name', $station->name) }}"
-                        class="form-control " placeholder="Station Name">
+                        class="form-control @error('name') is-invalid @enderror" placeholder="Station Name">
                     </div>
                     @error('name')
-                      <div class="alert alert-warning my-2">{{ $message }}</div>
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
                     @enderror
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label for="_address"><strong>Station Address</strong></label>
                       <input type="text" id="_address" name="address" value="{{ old('address', $station->address) }}"
-                        class="form-control " placeholder="Station Address">
+                        class="form-control @error('address') is-invalid @enderror" placeholder="Station Address">
                     </div>
                     @error('address')
-                      <div class="alert alert-warning my-2">{{ $message }}</div>
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
                     @enderror
                   </div>
                 </div>
@@ -57,20 +61,25 @@
                     <div class="form-group">
                       <label for="_lat"><strong>Station Lattitude</strong></label>
                       <input type="number" step="any" id="_lat" name="lat"
-                        value="{{ old('lat', $station->lat) }}" class="form-control " placeholder="Station Lattitude">
+                        value="{{ old('lat', $station->lat) }}" class="form-control @error('lat') is-invalid @enderror"
+                        placeholder="Station Lattitude">
                     </div>
                     @error('lat')
-                      <div class="alert alert-warning my-2">{{ $message }}</div>
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
                     @enderror
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label for="_lon"><strong>Station Longitude</strong></label>
                       <input type="text" id="_lon" name="lon" value="{{ old('lon', $station->lon) }}"
-                        class="form-control " placeholder="Station Address">
+                        class="form-control @error('lon') is-invalid @enderror" placeholder="Station Address">
                     </div>
                     @error('lon')
-                      <div class="alert alert-warning my-2">{{ $message }}</div>
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
                     @enderror
                   </div>
                 </div>
