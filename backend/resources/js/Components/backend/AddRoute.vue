@@ -62,7 +62,7 @@ export default {
       stations: [],
       train_lists: [],
       route_id: null,
-      routes: [{ sl_no: 1, station_id: null, time_from_prev_station: "00:00" }],
+      routes: [{ sl_no: 1, station_id: null, time_from_prev_station: "" }],
     };
   },
   methods: {
@@ -75,19 +75,19 @@ export default {
     },
     addRoute() {
       axios
-        .post("/routes", {
+        .post("/admin/routes", {
           route_id: this.route_id,
           routes: this.routes,
         })
         .then((res) => {
           if (res.data.success) {
-            window.location.href = "/routes";
+            window.location.href = "/admin/routes";
           }
         });
     },
   },
   mounted() {
-    axios.get("/root-stations").then((res) => {
+    axios.get("/admin/root-stations").then((res) => {
       this.stations = res.data.stations;
       this.train_lists = res.data.train_lists;
     });

@@ -72,6 +72,8 @@ class RouteController extends Controller
     $route_id = $request['route_id']['code'];
 
     foreach ($request['routes'] as $route) {
+      if ($route['time_from_prev_station'] == '') continue;
+
       Route::create([
         'route_id' => $route_id,
         'station_id' => $route['station_id']['code'],
@@ -98,7 +100,8 @@ class RouteController extends Controller
     foreach ($routes as $route) {
       $route_stations[] = [
         'sl_no' => $route->sl_no,
-        'station_name' => $route->station->name
+        'station_name' => $route->station->name,
+        'time_from_prev_station' => $route->time_from_prev_station
       ];
     }
 

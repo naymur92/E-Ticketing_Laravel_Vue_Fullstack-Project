@@ -48,7 +48,9 @@
                 <th>Stations List</th>
                 <td>
                   @foreach ($route->route_stations as $item)
-                    <p><span class="mr-3"><strong>{{ $item->sl_no }}</strong>. </span>{{ $item->station_name }}</p>
+                    <p><span class="mr-3"><strong>{{ $item->sl_no }}</strong>. </span>{{ $item->station_name }} -
+                      ({{ date('H:i', strtotime($item->time_from_prev_station)) }})
+                    </p>
                   @endforeach
                 </td>
               </tr>

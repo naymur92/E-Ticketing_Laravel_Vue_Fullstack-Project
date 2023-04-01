@@ -21928,7 +21928,7 @@ var __default__ = {
       routes: [{
         sl_no: 1,
         station_id: null,
-        time_from_prev_station: "00:00"
+        time_from_prev_station: ""
       }]
     };
   },
@@ -21941,19 +21941,19 @@ var __default__ = {
       });
     },
     addRoute: function addRoute() {
-      axios__WEBPACK_IMPORTED_MODULE_0___default().post("/routes", {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post("/admin/routes", {
         route_id: this.route_id,
         routes: this.routes
       }).then(function (res) {
         if (res.data.success) {
-          window.location.href = "/routes";
+          window.location.href = "/admin/routes";
         }
       });
     }
   },
   mounted: function mounted() {
     var _this = this;
-    axios__WEBPACK_IMPORTED_MODULE_0___default().get("/root-stations").then(function (res) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get("/admin/root-stations").then(function (res) {
       _this.stations = res.data.stations;
       _this.train_lists = res.data.train_lists;
     });
