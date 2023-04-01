@@ -159,8 +159,6 @@ function isActive($routeName)
         <h6 class="collapse-header">BogiType Components:</h6>
         <a class="collapse-item {{ isActive('bogi-types.index') }}" href="{{ route('bogi-types.index') }}"><i
             class="fas fa-list mr-2 text-primary"></i>Bogi Types</a>
-        <a class="collapse-item {{ isActive('bogi-types.index') }}" href="{{ route('bogi-types.create') }}"><i
-            class="fas fa-plus-square mr-2 text-success"></i>Add Bogi Type</a>
       </div>
     </div>
   </li>

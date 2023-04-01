@@ -19,16 +19,6 @@ class BogiTypeController extends Controller
   }
 
   /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  // public function create()
-  // {
-  //   //
-  // }
-
-  /**
    * Store a newly created resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
@@ -52,26 +42,17 @@ class BogiTypeController extends Controller
   }
 
   /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  // public function show($id)
-  // {
-  //   //
-  // }
-
-  /**
    * Show the form for editing the specified resource.
    *
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  // public function edit($id)
-  // {
-  //   //
-  // }
+  public function edit($id)
+  {
+    $bogi_type = BogiType::findOrFail($id);
+    $bogi_types = BogiType::orderBy('created_at', 'desc')->get();
+    return view('pages.bogi-types.index', compact('bogi_types', 'bogi_type'));
+  }
 
   /**
    * Update the specified resource in storage.
@@ -80,10 +61,20 @@ class BogiTypeController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  // public function update(Request $request, $id)
-  // {
-  //   //
-  // }
+  public function update(Request $request, $id)
+  {
+    $bogi_type = BogiType::findOrFail($id);
+
+    $request->validate([
+      'bogi_type_name' => 'required|unique:bogi_types,bogi_type_name,' . $id,
+      'seat_count' => 'required|integer|max:123|min:20'
+    ]);
+
+    $bogi_type->update($request->only('bogi_type_name', 'seat_count'));
+
+    flash()->addSuccess('Bogi Type Updated');
+    return redirect(route('bogi-types.index'));
+  }
 
   /**
    * Remove the specified resource from storage.

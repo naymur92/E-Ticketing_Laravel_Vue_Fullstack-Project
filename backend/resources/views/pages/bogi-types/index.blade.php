@@ -25,48 +25,61 @@
         {{-- Bogi add form --}}
         <div class="card shadow my-3">
           <div class="card-header">
-            <h3 class="text-center m-0 font-weight-bold text-primary">Bogi Add Form</h3>
+            <h3 class="text-center m-0 font-weight-bold text-primary">Bogi @isset($bogi_type)
+                Update
+              @else
+                Add
+              @endisset Form</h3>
           </div>
           <div class="card-body">
-            <form action="{{ route('bogi-types.store') }}" method="post">
-              @csrf
-              <div class="row justify-content-between align-items-end">
+            @if (isset($bogi_type))
+              {{-- edit part --}}
+              <form action="{{ route('bogi-types.update', $bogi_type->id) }}" method="post">
+                @method('put')
+              @else
+                {{-- add part --}}
+                <form action="{{ route('bogi-types.store') }}" method="post">
+            @endif
+            @csrf
+            <div class="row justify-content-between align-items-end">
 
-                <div class="col-5">
-                  <div class="form-group m-0">
-                    <label for="_bogi_type_name"><strong>Bogi Type Name:</strong></label>
-                    <input type="text" id="_bogi_type_name" value="{{ old('bogi_type_name') }}" name="bogi_type_name"
-                      placeholder="Ex. snigdha, s_chair, ac_s etc." class="form-control">
+              <div class="col-5">
+                <div class="form-group m-0">
+                  <label for="_bogi_type_name"><strong>Bogi Type Name:</strong></label>
+                  <input type="text" id="_bogi_type_name"
+                    value="{{ isset($bogi_type) ? old('bogi_type_name', $bogi_type->bogi_type_name) : old('bogi_type_name') }}"
+                    name="bogi_type_name" placeholder="Ex. snigdha, s_chair, ac_s etc."
+                    class="form-control @error('bogi_type_name') is-invalid @enderror">
 
-                    <ul>
-                      @error('bogi_type_name')
-                        <li class="text-warning my-2">{{ $message }}</li>
-                      @enderror
-                    </ul>
-                  </div>
+                  @error('bogi_type_name')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
                 </div>
-                <div class="col-5">
-                  <div class="form-group m-0">
-                    <label for="_seat_count"><strong>Total Seats in Bogi:</strong></label>
-                    <input type="number" id="_seat_count" name="seat_count" value="{{ old('seat_count') }}"
-                      placeholder="Enter total seats in bogi" class="form-control">
-
-                    <ul>
-                      @error('seat_count')
-                        <li class="text-warning my-2">{{ $message }}</li>
-                      @enderror
-                    </ul>
-
-                  </div>
-                </div>
-                <div class="col-2">
-                  <input type="submit" value="Add Bogi Type" class="btn btn-success">
-                  <ul></ul>
-                </div>
-
-
-
               </div>
+              <div class="col-5">
+                <div class="form-group m-0">
+                  <label for="_seat_count"><strong>Total Seats in Bogi:</strong></label>
+                  <input type="number" id="_seat_count" name="seat_count"
+                    value="{{ isset($bogi_type) ? old('seat_count', $bogi_type->seat_count) : old('seat_count') }}"
+                    placeholder="Enter total seats in bogi"
+                    class="form-control @error('seat_count') is-invalid @enderror">
+
+                  @error('seat_count')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+
+                </div>
+              </div>
+              <div class="col-2">
+                <input type="submit"
+                  value="@isset($bogi_type) Update Bogi Type @else Add Bogi Type @endisset"
+                  class="btn btn-success">
+              </div>
+            </div>
             </form>
           </div>
         </div>
@@ -112,10 +125,8 @@
                             Action
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            {{-- <a class="dropdown-item" href="{{ route('bogi-types.show', $item->id) }}"><i
-                                class="fa fa-eye text-primary"></i> View</a> --}}
-                            {{-- <a class="dropdown-item" href="{{ route('bogi-types.edit', $item->id) }}"><i
-                                class="fa fa-pen text-warning"></i> Edit</a> --}}
+                            <a class="dropdown-item" href="{{ route('bogi-types.edit', $item->id) }}"><i
+                                class="fa fa-pen text-warning"></i> Edit</a>
                             <form action="{{ route('bogi-types.destroy', $item->id) }}"
                               onsubmit="return confirm('Are you want to sure to delete?')" method="post">
                               @csrf
