@@ -31,10 +31,12 @@
               <div class="form-group">
                 <label for="_name"><strong>Full Name:</strong></label>
                 <input type="text" id="_name" name="name" value="{{ old('name', $user->name) }}"
-                  placeholder="Enter Full Name" class="form-control">
+                  placeholder="Enter Full Name" class="form-control @error('name') is-invalid @enderror">
 
                 @error('name')
-                  <div class="alert alert-warning my-2">{{ $message }}</div>
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
                 @enderror
               </div>
 
@@ -42,10 +44,25 @@
               <div class="form-group">
                 <label for="_email"><strong>Email:</strong></label>
                 <input type="email" id="_email" name="email" value="{{ old('email', $user->email) }}"
-                  placeholder="Enter Email" class="form-control">
+                  placeholder="Enter Email" class="form-control @error('email') is-invalid @enderror">
 
                 @error('email')
-                  <div class="alert alert-warning my-2">{{ $message }}</div>
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+
+              {{-- Phone section --}}
+              <div class="form-group">
+                <label for="_phone"><strong>Phone:</strong></label>
+                <input type="text" id="_phone" name="phone" value="{{ old('phone', $user->phone) }}"
+                  placeholder="Enter Phone" class="form-control @error('phone') is-invalid @enderror">
+
+                @error('phone')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
                 @enderror
               </div>
 
@@ -53,15 +70,21 @@
               {{-- Role section --}}
               <div class="form-group">
                 <label for="_role"><strong>Select Role:</strong></label>
-                <select name="is_admin" id="_role" class="form-control">
+                <select name="is_admin" id="_role" class="form-control @error('is_admin') is-invalid @enderror">
                   <option value="" selected disabled>Select One</option>
-                  <option value="0" {{ old('is_admin', $user->is_admin) == '0' ? 'selected' : '' }}>User</option>
-                  <option value="1" {{ old('is_admin', $user->is_admin) == '1' ? 'selected' : '' }}>Admin
+                  <option value="0"
+                    {{ old('is_admin', $user->is_admin) == '0' || old('is_admin', $user->is_admin) == 'user' ? 'selected' : '' }}>
+                    User</option>
+                  <option value="1"
+                    {{ old('is_admin', $user->is_admin) == '1' || old('is_admin', $user->is_admin) == 'admin' ? 'selected' : '' }}>
+                    Admin
                   </option>
                 </select>
 
                 @error('is_admin')
-                  <div class="alert alert-warning my-2">{{ $message }}</div>
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
                 @enderror
               </div>
             </div>

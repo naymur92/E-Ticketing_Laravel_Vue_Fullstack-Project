@@ -29,10 +29,12 @@
               <div class="form-group">
                 <label for="_name"><strong>Full Name:</strong></label>
                 <input type="text" id="_name" name="name" value="{{ old('name') }}"
-                  placeholder="Enter Full Name" class="form-control">
+                  placeholder="Enter Full Name" class="form-control @error('name') is-invalid @enderror">
 
                 @error('name')
-                  <div class="alert alert-warning my-2">{{ $message }}</div>
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
                 @enderror
               </div>
 
@@ -40,10 +42,25 @@
               <div class="form-group">
                 <label for="_email"><strong>Email:</strong></label>
                 <input type="email" id="_email" name="email" value="{{ old('email') }}" placeholder="Enter Email"
-                  class="form-control">
+                  class="form-control @error('email') is-invalid @enderror">
 
                 @error('email')
-                  <div class="alert alert-warning my-2">{{ $message }}</div>
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+
+              {{-- Phone section --}}
+              <div class="form-group">
+                <label for="_phone"><strong>Phone:</strong></label>
+                <input type="text" id="_phone" name="phone" value="{{ old('phone') }}" placeholder="Enter Phone"
+                  class="form-control @error('phone') is-invalid @enderror">
+
+                @error('phone')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
                 @enderror
               </div>
 
@@ -52,31 +69,34 @@
                 <div class="col-6">
                   <label for="_pass"><strong>Password:</strong></label>
                   <input type="password" id="_pass" name="password" value="{{ old('password') }}"
-                    placeholder="Enter Password" class="form-control">
+                    placeholder="Enter Password" class="form-control @error('password') is-invalid @enderror">
+
+                  @error('password')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
                 </div>
                 <div class="col-6">
                   <label for="_pass_conf"><strong>Confirm Password:</strong></label>
                   <input type="password" id="_pass_conf" name="password_confirmation" placeholder="Retype Password"
-                    class="form-control">
-                </div>
-                <div class="col-12">
-                  @error('password')
-                    <div class="alert alert-warning my-2">{{ $message }}</div>
-                  @enderror
+                    class="form-control @error('password') is-invalid @enderror">
                 </div>
               </div>
 
               {{-- Role section --}}
               <div class="form-group">
                 <label for="_role"><strong>Select Role:</strong></label>
-                <select name="is_admin" id="_role" class="form-control">
+                <select name="is_admin" id="_role" class="form-control @error('is_admin') is-invalid @enderror">
                   <option value="" selected disabled>Select One</option>
                   <option value="0" {{ old('is_admin') == '0' ? 'selected' : '' }}>User</option>
                   <option value="1" {{ old('is_admin') == '1' ? 'selected' : '' }}>Admin</option>
                 </select>
 
                 @error('is_admin')
-                  <div class="alert alert-warning my-2">{{ $message }}</div>
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
                 @enderror
               </div>
             </div>

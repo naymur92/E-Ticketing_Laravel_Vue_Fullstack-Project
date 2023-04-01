@@ -33,6 +33,7 @@
               <tr>
                 <th class="text-left">Name</th>
                 <th>Email</th>
+                <th>Phone</th>
                 <th>Role</th>
                 <th>Joined At</th>
                 <th>Action</th>
@@ -42,6 +43,7 @@
               <tr>
                 <th class="text-left">Name</th>
                 <th>Email</th>
+                <th>Phone</th>
                 <th>Role</th>
                 <th>Joined At</th>
                 <th>Action</th>
@@ -52,7 +54,14 @@
                 <tr>
                   <td class="text-left">{{ $user->name }}</td>
                   <td>{{ $user->email }}</td>
-                  <td>{{ $user->is_admin }}</td>
+                  <td>{{ $user->phone }}</td>
+                  <td>
+                    @if ($user->is_admin == 'admin')
+                      <span class="badge bg-primary text-white">{{ $user->is_admin }}</span>
+                    @else
+                      <span class="badge bg-secondary text-white">{{ $user->is_admin }}</span>
+                    @endif
+                  </td>
                   <td>{{ date('d M, Y - H:i a', strtotime($user->created_at)) }}</td>
                   <td>
                     <div class="dropdown">
@@ -63,14 +72,17 @@
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="{{ route('users.show', $user['id']) }}"><i
                             class="fa fa-eye text-primary"></i> View</a>
-                        <a class="dropdown-item" href="{{ route('users.edit', $user['id']) }}"><i
-                            class="fa fa-pen text-warning"></i> Edit</a>
-                        <form action="{{ route('users.destroy', $user['id']) }}"
-                          onsubmit="return confirm('Are you want to sure to delete?')" method="post">
-                          @csrf
-                          @method('delete')
-                          <button class="dropdown-item"><i class="fa fa-trash text-danger"></i> Delete</button>
-                        </form>
+                        @if ($user->is_admin != 'admin')
+                          <a class="dropdown-item" href="{{ route('users.edit', $user['id']) }}"><i
+                              class="fa fa-pen text-warning"></i> Edit</a>
+                          <form action="{{ route('users.destroy', $user['id']) }}"
+                            onsubmit="return confirm('Are you want to sure to delete?')" method="post">
+                            @csrf
+                            @method('delete')
+                            <button class="dropdown-item"><i class="fa fa-trash text-danger"></i> Delete</button>
+                          </form>
+                        @endif
+
                       </div>
                     </div>
                   </td>

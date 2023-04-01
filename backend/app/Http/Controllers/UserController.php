@@ -16,7 +16,7 @@ class UserController extends Controller
    */
   public function index()
   {
-    $users = User::select('id', 'name', 'email', 'is_admin', 'created_at')->orderBy('created_at', 'desc')->get();
+    $users = User::select('id', 'name', 'email', 'phone', 'is_admin', 'created_at')->orderBy('created_at', 'desc')->get();
     return view('pages.users.index', compact('users'));
   }
 
@@ -41,6 +41,7 @@ class UserController extends Controller
     $request->validate([
       'name' => ['required', 'string', 'max:255'],
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+      'phone' => ['required', 'numeric', 'unique:users'],
       'password' => ['required', 'confirmed', Rules\Password::defaults()],
       'is_admin' => ['required']
     ]);
@@ -48,6 +49,7 @@ class UserController extends Controller
     $user = User::create([
       'name' => $request->name,
       'email' => $request->email,
+      'phone' => $request->phone,
       'password' => Hash::make($request->password),
       'is_admin' => $request->is_admin
     ]);
@@ -55,7 +57,7 @@ class UserController extends Controller
     if ($user) {
       flash()->addSuccess('User Added');
 
-      return redirect('/users');
+      return redirect(route('users.index'));
     }
   }
 
@@ -80,6 +82,12 @@ class UserController extends Controller
   public function edit($id)
   {
     $user = User::findOrFail($id);
+
+    if ($user->is_admin == 'admin') {
+      flash()->addError('Admin Cannot be Edit!');
+      return redirect(route('users.index'));
+    }
+
     return view('pages.users.edit', compact('user'));
   }
 
@@ -92,19 +100,26 @@ class UserController extends Controller
    */
   public function update(Request $request, $id)
   {
+    $user = User::findOrFail($id);
+
+    if ($user->is_admin == 'admin') {
+      flash()->addError('Admin Cannot be Edit!');
+      return redirect(route('users.index'));
+    }
+
     $request->validate([
       'name' => ['required', 'string', 'max:255'],
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $id],
+      'phone' => ['required', 'numeric', 'unique:users,phone,' . $id],
       'is_admin' => ['required']
     ]);
 
-    $user = User::findOrFail($id);
-    $user->update($request->only('name', 'email', 'is_admin'));
+    $user->update($request->only('name', 'email', 'phone', 'is_admin'));
 
     flash()->addSuccess('User Updated');
 
     // return back();
-    return redirect('/users');
+    return redirect(route('users.index'));
   }
 
   /**
@@ -116,6 +131,12 @@ class UserController extends Controller
   public function destroy($id)
   {
     $user = User::findOrFail($id);
+
+    if ($user->is_admin == 'admin') {
+      flash()->addError('Admin Cannot be Delete!');
+      return redirect(route('users.index'));
+    }
+
     $user->delete();
 
     flash()->addSuccess('User Deleted');

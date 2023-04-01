@@ -33,8 +33,18 @@
                 <td>{{ $user->email }}</td>
               </tr>
               <tr>
+                <th>Phone</th>
+                <td>{{ $user->phone }}</td>
+              </tr>
+              <tr>
                 <th>Role</th>
-                <td>{{ $user->is_admin }}</td>
+                <td>
+                  @if ($user->is_admin == 'admin')
+                    <span class="badge bg-primary text-white">{{ $user->is_admin }}</span>
+                  @else
+                    <span class="badge bg-secondary text-white">{{ $user->is_admin }}</span>
+                  @endif
+                </td>
               </tr>
               <tr>
                 <th>Joined At</th>
@@ -44,15 +54,19 @@
           </div>
           <div class="card-footer d-flex justify-content-between">
             <a class="btn btn-outline-warning" href="{{ route('users.index') }}">Back</a>
-            <a class="btn btn-outline-warning" href="{{ route('users.edit', $user['id']) }}"><i class="fa fa-pen"></i>
-              Edit</a>
 
-            <form action="{{ route('users.destroy', $user['id']) }}"
-              onsubmit="return confirm('Are you want to sure to delete?')" method="post">
-              @csrf
-              @method('delete')
-              <button class="btn btn-outline-danger"><i class="fa fa-trash"></i> Delete</button>
-            </form>
+            @if ($user->is_admin != 'admin')
+              <a class="btn btn-outline-warning" href="{{ route('users.edit', $user['id']) }}"><i class="fa fa-pen"></i>
+                Edit</a>
+
+              <form action="{{ route('users.destroy', $user['id']) }}"
+                onsubmit="return confirm('Are you want to sure to delete?')" method="post">
+                @csrf
+                @method('delete')
+                <button class="btn btn-outline-danger"><i class="fa fa-trash"></i> Delete</button>
+              </form>
+            @endif
+
           </div>
 
 
