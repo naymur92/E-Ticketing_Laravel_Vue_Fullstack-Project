@@ -22161,6 +22161,7 @@ __webpack_require__.r(__webpack_exports__);
       journey_date: "",
       journey_time: "",
       off_day: [],
+      unavailable_dates: [],
       route_id: "",
       root_trains: [],
       bogi_types: [],
@@ -22228,6 +22229,7 @@ __webpack_require__.r(__webpack_exports__);
         // console.log(res.data);
         _this3.name = res.data.train_name;
         _this3.off_day = [res.data.off_day];
+        _this3.unavailable_dates = res.data.unavailable_dates;
       });
     },
     addField: function addField() {
@@ -23499,8 +23501,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.journey_date = $event;
     }),
-    "disabled-weekly": $data.off_day
-  }, null, 8 /* PROPS */, ["min-date", "modelValue", "disabled-weekly"]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.errors.journey_date, function (err, index) {
+    "disabled-weekly": $data.off_day,
+    "disabled-dates": $data.unavailable_dates
+  }, null, 8 /* PROPS */, ["min-date", "modelValue", "disabled-weekly", "disabled-dates"]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.errors.journey_date, function (err, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
       key: index,
       "class": "invalid-feedback",
@@ -23539,8 +23542,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     modelValue: $data.start_date,
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.start_date = $event;
-    })
-  }, null, 8 /* PROPS */, ["min-date", "modelValue"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_VueCtkDateTimePicker, {
+    }),
+    "disabled-weekly": $data.off_day,
+    "disabled-dates": $data.unavailable_dates
+  }, null, 8 /* PROPS */, ["min-date", "modelValue", "disabled-weekly", "disabled-dates"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_VueCtkDateTimePicker, {
     "only-date": "",
     "no-button-now": "",
     format: "YYYY-MM-DD",
@@ -23552,8 +23557,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     modelValue: $data.end_date,
     "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.end_date = $event;
-    })
-  }, null, 8 /* PROPS */, ["modelValue"])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Bogi info "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("fieldset", null, [_hoisted_21, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.bogis, function (bogi, index) {
+    }),
+    "disabled-weekly": $data.off_day,
+    "disabled-dates": $data.unavailable_dates
+  }, null, 8 /* PROPS */, ["modelValue", "disabled-weekly", "disabled-dates"])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Bogi info "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("fieldset", null, [_hoisted_21, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.bogis, function (bogi, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       "class": "row",
       key: index

@@ -188,6 +188,13 @@ class TrainController extends Controller
   public function rootTrainData($id)
   {
     $train_data = TrainList::findOrFail($id);
+    $train_datetimes = Train::where('route_id', $id)->pluck('journey_date');
+
+    $train_dates = array();
+
+    foreach ($train_datetimes as $datetime) {
+      array_push($train_dates, date('Y-m-d', strtotime($datetime)));
+    }
 
     $day_to_number = [
       'Sunday' => 0,
@@ -202,7 +209,8 @@ class TrainController extends Controller
     // generate data
     $data = [
       'train_name' => $train_data->train_name,
-      'off_day' => $day_to_number["$train_data->off_day"]
+      'off_day' => $day_to_number["$train_data->off_day"],
+      'unavailable_dates' => $train_dates
     ];
 
     return response()->json($data);

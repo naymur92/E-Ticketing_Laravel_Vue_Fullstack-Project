@@ -42,6 +42,7 @@
                   id="_journey_date"
                   v-model="journey_date"
                   :disabled-weekly="off_day"
+                  :disabled-dates="unavailable_dates"
                 />
 
                 <span
@@ -103,6 +104,8 @@
                   no-label="true"
                   id="_start_date"
                   v-model="start_date"
+                  :disabled-weekly="off_day"
+                  :disabled-dates="unavailable_dates"
                 />
               </div>
             </div>
@@ -119,6 +122,8 @@
                   no-label="true"
                   id="_end_date"
                   v-model="end_date"
+                  :disabled-weekly="off_day"
+                  :disabled-dates="unavailable_dates"
                 />
               </div>
             </div>
@@ -182,6 +187,7 @@ export default {
       journey_date: "",
       journey_time: "",
       off_day: [],
+      unavailable_dates: [],
       route_id: "",
       root_trains: [],
       bogi_types: [],
@@ -262,6 +268,7 @@ export default {
         // console.log(res.data);
         this.name = res.data.train_name;
         this.off_day = [res.data.off_day];
+        this.unavailable_dates = res.data.unavailable_dates;
       });
     },
     addField() {
