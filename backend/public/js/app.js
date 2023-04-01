@@ -22028,7 +22028,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     var _this = this;
-    axios__WEBPACK_IMPORTED_MODULE_0___default().get("/trains-for-schedules").then(function (res) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get("/admin/trains-for-schedules").then(function (res) {
       _this.trains = res.data;
       _this.loading = false;
     });
@@ -22037,7 +22037,7 @@ __webpack_require__.r(__webpack_exports__);
     getTrainRoutes: function getTrainRoutes() {
       var _this2 = this;
       if (this.train_id != null) {
-        axios__WEBPACK_IMPORTED_MODULE_0___default().get("/route-list/" + this.train_id.code).then(function (res) {
+        axios__WEBPACK_IMPORTED_MODULE_0___default().get("/admin/route-list/" + this.train_id.code).then(function (res) {
           _this2.schedule_base_station = res.data.base_station;
           _this2.schedule_dest_stations = res.data.dest_stations;
           // console.log(res.data);
@@ -22050,14 +22050,14 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     addSchedule: function addSchedule() {
-      axios__WEBPACK_IMPORTED_MODULE_0___default().post("/schedules", {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post("/admin/schedules", {
         train_id: this.train_id.code,
         base_station: this.schedule_base_station,
         dest_stations: this.schedule_dest_stations
       }).then(function (res) {
         if (res.data.success) {
           // console.log(res.data.msg);
-          window.location.href = "/schedules";
+          window.location.href = "/admin/schedules";
           // alert(res.data.msg);
         } else {
           alert(res.data.msg);
@@ -22066,13 +22066,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     getBogis: function getBogis() {
       var _this3 = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/get-bogis/" + this.train_id.code).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/admin/get-bogis/" + this.train_id.code).then(function (res) {
         _this3.bogis = res.data;
       });
     },
     getSeats: function getSeats(id) {
       var _this4 = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/get-seats/" + id).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/admin/get-seats/" + id).then(function (res) {
         _this4.seats = res.data;
       });
     },
@@ -22230,6 +22230,7 @@ __webpack_require__.r(__webpack_exports__);
         _this3.name = res.data.train_name;
         _this3.off_day = [res.data.off_day];
         _this3.unavailable_dates = res.data.unavailable_dates;
+        _this3.journey_time = res.data.last_start_time;
       });
     },
     addField: function addField() {
@@ -22237,6 +22238,9 @@ __webpack_require__.r(__webpack_exports__);
         bogi_type_id: "",
         bogi_name: ""
       });
+    },
+    setStartDate: function setStartDate() {
+      this.start_date = this.journey_date;
     },
     // get date
     getNow: function getNow() {
@@ -23467,7 +23471,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_VueCtkDateTimePicker = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("VueCtkDateTimePicker");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [!$data.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
     key: 0,
-    onSubmit: _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onSubmit: _cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.addTrain && $options.addTrain.apply($options, arguments);
     }, ["prevent"])),
     method: "post"
@@ -23498,9 +23502,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "min-date": $data.current_date,
     id: "_journey_date",
     modelValue: $data.journey_date,
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+    "onUpdate:modelValue": [_cache[2] || (_cache[2] = function ($event) {
       return $data.journey_date = $event;
-    }),
+    }), _cache[3] || (_cache[3] = function ($event) {
+      return $options.setStartDate();
+    })],
     "disabled-weekly": $data.off_day,
     "disabled-dates": $data.unavailable_dates
   }, null, 8 /* PROPS */, ["min-date", "modelValue", "disabled-weekly", "disabled-dates"]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.errors.journey_date, function (err, index) {
@@ -23520,7 +23526,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "min-date": $data.current_date,
     id: "_journey_time",
     modelValue: $data.journey_time,
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.journey_time = $event;
     })
   }, null, 8 /* PROPS */, ["min-date", "modelValue"]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.errors.journey_time, function (err, index) {
@@ -23540,7 +23546,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "no-label": "true",
     id: "_start_date",
     modelValue: $data.start_date,
-    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.start_date = $event;
     }),
     "disabled-weekly": $data.off_day,
@@ -23555,7 +23561,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "no-label": "true",
     id: "_end_date",
     modelValue: $data.end_date,
-    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
       return $data.end_date = $event;
     }),
     "disabled-weekly": $data.off_day,
@@ -23581,7 +23587,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, null, 8 /* PROPS */, _hoisted_28), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, bogi.bogi_name]])])])]);
   }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
-    onClick: _cache[6] || (_cache[6] = function ($event) {
+    onClick: _cache[7] || (_cache[7] = function ($event) {
       return $options.addField();
     }),
     "class": "btn btn-success"

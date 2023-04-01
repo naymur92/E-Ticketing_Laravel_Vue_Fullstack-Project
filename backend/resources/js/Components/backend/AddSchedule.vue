@@ -288,7 +288,7 @@ export default {
     };
   },
   mounted() {
-    axios.get("/trains-for-schedules").then((res) => {
+    axios.get("/admin/trains-for-schedules").then((res) => {
       this.trains = res.data;
       this.loading = false;
     });
@@ -296,7 +296,7 @@ export default {
   methods: {
     getTrainRoutes() {
       if (this.train_id != null) {
-        axios.get("/route-list/" + this.train_id.code).then((res) => {
+        axios.get("/admin/route-list/" + this.train_id.code).then((res) => {
           this.schedule_base_station = res.data.base_station;
           this.schedule_dest_stations = res.data.dest_stations;
           // console.log(res.data);
@@ -310,7 +310,7 @@ export default {
     },
     addSchedule() {
       axios
-        .post("/schedules", {
+        .post("/admin/schedules", {
           train_id: this.train_id.code,
           base_station: this.schedule_base_station,
           dest_stations: this.schedule_dest_stations,
@@ -318,7 +318,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             // console.log(res.data.msg);
-            window.location.href = "/schedules";
+            window.location.href = "/admin/schedules";
             // alert(res.data.msg);
           } else {
             alert(res.data.msg);
@@ -326,12 +326,12 @@ export default {
         });
     },
     getBogis() {
-      axios.get("/get-bogis/" + this.train_id.code).then((res) => {
+      axios.get("/admin/get-bogis/" + this.train_id.code).then((res) => {
         this.bogis = res.data;
       });
     },
     getSeats(id) {
-      axios.get("/get-seats/" + id).then((res) => {
+      axios.get("/admin/get-seats/" + id).then((res) => {
         this.seats = res.data;
       });
     },

@@ -55,6 +55,8 @@ class TrainController extends Controller
     }
 
     if ($request->start_date == '' || $request->end_date == '') {
+      // single add
+
       $journey_date = $request->journey_date . ' ' . $request->journey_time;
 
       // add train
@@ -67,13 +69,21 @@ class TrainController extends Controller
       // call bogi add method
       $this->add_bogi_seat($train->id, $request->bogis);
     } else {
+      // multiple add
+
       // count total days
-      $num_days = round((strtotime($request->end_date) - strtotime($request->start_date)) / (60 * 60 * 24));
+      $num_days = round((strtotime($request->end_date) - strtotime($request->start_date)) / (60 * 60 * 24)) + 1;
 
       $cur_date = $request->start_date;
       for ($i = 1; $i <= $num_days; $i++) {
         // check off day and skip
         if (date('w', strtotime($cur_date)) == $request->off_day) {
+          $cur_date = date('Y-m-d', strtotime($cur_date . ' +1 day'));
+          continue;
+        }
+        // check duplicate date entry and skip
+        $train_exists = Train::where('route_id', $request->route_id)->where('journey_date', 'LIKE', $cur_date . '%')->get();
+        if (count($train_exists) > 0) {
           $cur_date = date('Y-m-d', strtotime($cur_date . ' +1 day'));
           continue;
         }
@@ -188,10 +198,18 @@ class TrainController extends Controller
   public function rootTrainData($id)
   {
     $train_data = TrainList::findOrFail($id);
+
+    // get last time for train
+    $last_start_datetime = Train::where('route_id', $id)->orderBy('journey_date', 'desc')->first();
+    if ($last_start_datetime != null) {
+      $last_start_time = date('H:i', strtotime($last_start_datetime->journey_date));
+    } else {
+      $last_start_time = '';
+    }
+
+    // check dates for train
     $train_datetimes = Train::where('route_id', $id)->pluck('journey_date');
-
     $train_dates = array();
-
     foreach ($train_datetimes as $datetime) {
       array_push($train_dates, date('Y-m-d', strtotime($datetime)));
     }
@@ -210,7 +228,8 @@ class TrainController extends Controller
     $data = [
       'train_name' => $train_data->train_name,
       'off_day' => $day_to_number["$train_data->off_day"],
-      'unavailable_dates' => $train_dates
+      'unavailable_dates' => $train_dates,
+      'last_start_time' => $last_start_time
     ];
 
     return response()->json($data);

@@ -41,6 +41,7 @@
                   :min-date="current_date"
                   id="_journey_date"
                   v-model="journey_date"
+                  @update:modelValue="setStartDate()"
                   :disabled-weekly="off_day"
                   :disabled-dates="unavailable_dates"
                 />
@@ -269,6 +270,7 @@ export default {
         this.name = res.data.train_name;
         this.off_day = [res.data.off_day];
         this.unavailable_dates = res.data.unavailable_dates;
+        this.journey_time = res.data.last_start_time;
       });
     },
     addField() {
@@ -276,6 +278,10 @@ export default {
         bogi_type_id: "",
         bogi_name: "",
       });
+    },
+
+    setStartDate() {
+      this.start_date = this.journey_date;
     },
 
     // get date
