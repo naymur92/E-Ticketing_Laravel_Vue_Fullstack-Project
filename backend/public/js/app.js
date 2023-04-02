@@ -21998,32 +21998,35 @@ __webpack_require__.r(__webpack_exports__);
       loading: true,
       errors: [],
       trains: [],
-      bogis: [],
-      seats: [],
       train_id: null,
-      schedule_base_station: {
-        from_station_id: null,
-        from_station_name: "",
-        left_station_at: ""
-      },
-      schedule_dest_stations: [{
-        to_station_id: null,
-        to_station_name: "",
-        reach_at: "",
-        ac_b_price: null,
-        ac_s_price: null,
-        snigdha_price: null,
-        f_berth_price: null,
-        f_seat_price: null,
-        f_chair_price: null,
-        s_chair_price: null,
-        shovon_price: null,
-        seat_ranges: [{
-          bogi_id: null,
-          seat_start: null,
-          seat_end: null
+      schedules: [{
+        base_station: {
+          from_station_id: null,
+          from_station_name: "",
+          left_station_at: ""
+        },
+        dest_stations: [{
+          to_station_id: null,
+          to_station_name: "",
+          reach_at: "",
+          ac_b_price: null,
+          ac_s_price: null,
+          snigdha_price: null,
+          f_berth_price: null,
+          f_seat_price: null,
+          f_chair_price: null,
+          s_chair_price: null,
+          shovon_price: null,
+          seat_ranges: [{
+            bogi_id: null,
+            bogi_name: null,
+            seat_start: null,
+            seat_end: null
+          }]
         }]
-      }]
+      }],
+      bogi_types: [],
+      bogis_seats: []
     };
   },
   mounted: function mounted() {
@@ -22038,22 +22041,21 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
       if (this.train_id != null) {
         axios__WEBPACK_IMPORTED_MODULE_0___default().get("/admin/route-list/" + this.train_id.code).then(function (res) {
-          _this2.schedule_base_station = res.data.base_station;
-          _this2.schedule_dest_stations = res.data.dest_stations;
-          // console.log(res.data);
-        });
+          _this2.schedules = res.data.schedules;
+          _this2.bogi_types = res.data.bogi_types;
+          _this2.bogis_seats = res.data.bogis_seats;
 
-        // get bogi list when select a train
-        this.getBogis();
+          // console.log(res.data.schedules);
+        });
       } else {
         this.route_lists = [];
       }
     },
     addSchedule: function addSchedule() {
+      // console.log(this.dest_stations);
       axios__WEBPACK_IMPORTED_MODULE_0___default().post("/admin/schedules", {
         train_id: this.train_id.code,
-        base_station: this.schedule_base_station,
-        dest_stations: this.schedule_dest_stations
+        schedules: this.schedules
       }).then(function (res) {
         if (res.data.success) {
           // console.log(res.data.msg);
@@ -22062,25 +22064,6 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           alert(res.data.msg);
         }
-      });
-    },
-    getBogis: function getBogis() {
-      var _this3 = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/admin/get-bogis/" + this.train_id.code).then(function (res) {
-        _this3.bogis = res.data;
-      });
-    },
-    getSeats: function getSeats(id) {
-      var _this4 = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/admin/get-seats/" + id).then(function (res) {
-        _this4.seats = res.data;
-      });
-    },
-    addMoreBogi: function addMoreBogi(index) {
-      this.schedule_dest_stations[index].seat_ranges.push({
-        bogi_id: null,
-        seat_start: null,
-        seat_end: null
       });
     }
   }
@@ -22959,146 +22942,146 @@ var _hoisted_7 = {
 };
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("legend", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Schedule Info")], -1 /* HOISTED */);
 var _hoisted_9 = {
-  "class": "row"
+  key: 0,
+  "class": "bg-success p-3 text-center text-white rounded"
 };
 var _hoisted_10 = {
-  "class": "col-6"
+  "class": "row"
 };
 var _hoisted_11 = {
+  "class": "col-6"
+};
+var _hoisted_12 = {
   "class": "form-group my-2"
 };
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": "_base_station"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Base Station:")], -1 /* HOISTED */);
-var _hoisted_13 = ["value"];
-var _hoisted_14 = {
+var _hoisted_14 = ["value"];
+var _hoisted_15 = {
   "class": "col-6"
 };
-var _hoisted_15 = {
+var _hoisted_16 = {
   "class": "form-group my-2"
 };
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": "_left_at"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Left At:")], -1 /* HOISTED */);
-var _hoisted_17 = ["value"];
-var _hoisted_18 = {
-  key: 0
-};
+var _hoisted_18 = ["value"];
 var _hoisted_19 = {
-  "class": "row"
+  key: 1
 };
 var _hoisted_20 = {
-  "class": "col-6"
-};
-var _hoisted_21 = {
-  "class": "form-group"
-};
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Next Station")], -1 /* HOISTED */);
-var _hoisted_23 = ["value"];
-var _hoisted_24 = {
-  "class": "col-6"
-};
-var _hoisted_25 = {
-  "class": "form-group"
-};
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Reach At")], -1 /* HOISTED */);
-var _hoisted_27 = ["value"];
-var _hoisted_28 = {
   "class": "row"
 };
-var _hoisted_29 = {
-  "class": "col-3"
-};
-var _hoisted_30 = {
-  "class": "form-group"
-};
-var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Shovon Price")], -1 /* HOISTED */);
-var _hoisted_32 = ["onUpdate:modelValue"];
-var _hoisted_33 = {
-  "class": "col-3"
-};
-var _hoisted_34 = {
-  "class": "form-group"
-};
-var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "S-Chair Price")], -1 /* HOISTED */);
-var _hoisted_36 = ["onUpdate:modelValue"];
-var _hoisted_37 = {
-  "class": "col-3"
-};
-var _hoisted_38 = {
-  "class": "form-group"
-};
-var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "F-Chair Price")], -1 /* HOISTED */);
-var _hoisted_40 = ["onUpdate:modelValue"];
-var _hoisted_41 = {
-  "class": "col-3"
-};
-var _hoisted_42 = {
-  "class": "form-group"
-};
-var _hoisted_43 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "F-Seat Price")], -1 /* HOISTED */);
-var _hoisted_44 = ["onUpdate:modelValue"];
-var _hoisted_45 = {
-  "class": "col-3"
-};
-var _hoisted_46 = {
-  "class": "form-group"
-};
-var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "F-Berth Price")], -1 /* HOISTED */);
-var _hoisted_48 = ["onUpdate:modelValue"];
-var _hoisted_49 = {
-  "class": "col-3"
-};
-var _hoisted_50 = {
-  "class": "form-group"
-};
-var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Snigdha Price")], -1 /* HOISTED */);
-var _hoisted_52 = ["onUpdate:modelValue"];
-var _hoisted_53 = {
-  "class": "col-3"
-};
-var _hoisted_54 = {
-  "class": "form-group"
-};
-var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "AC-S Price")], -1 /* HOISTED */);
-var _hoisted_56 = ["onUpdate:modelValue"];
-var _hoisted_57 = {
-  "class": "col-3"
-};
-var _hoisted_58 = {
-  "class": "form-group"
-};
-var _hoisted_59 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "AC-B Price")], -1 /* HOISTED */);
-var _hoisted_60 = ["onUpdate:modelValue"];
-var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "alert alert-info mt-4"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Set Seat Ranges")], -1 /* HOISTED */);
-var _hoisted_62 = {
+var _hoisted_21 = {
   "class": "col-6"
 };
+var _hoisted_22 = {
+  "class": "form-group"
+};
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Next Station")], -1 /* HOISTED */);
+var _hoisted_24 = ["value"];
+var _hoisted_25 = {
+  "class": "col-6"
+};
+var _hoisted_26 = {
+  "class": "form-group"
+};
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Reach At")], -1 /* HOISTED */);
+var _hoisted_28 = ["value"];
+var _hoisted_29 = {
+  "class": "row"
+};
+var _hoisted_30 = {
+  "class": "col-3"
+};
+var _hoisted_31 = {
+  "class": "form-group"
+};
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Shovon Price")], -1 /* HOISTED */);
+var _hoisted_33 = ["onUpdate:modelValue", "disabled"];
+var _hoisted_34 = {
+  "class": "col-3"
+};
+var _hoisted_35 = {
+  "class": "form-group"
+};
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "S-Chair Price")], -1 /* HOISTED */);
+var _hoisted_37 = ["onUpdate:modelValue", "disabled"];
+var _hoisted_38 = {
+  "class": "col-3"
+};
+var _hoisted_39 = {
+  "class": "form-group"
+};
+var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "F-Chair Price")], -1 /* HOISTED */);
+var _hoisted_41 = ["onUpdate:modelValue", "disabled"];
+var _hoisted_42 = {
+  "class": "col-3"
+};
+var _hoisted_43 = {
+  "class": "form-group"
+};
+var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "F-Seat Price")], -1 /* HOISTED */);
+var _hoisted_45 = ["onUpdate:modelValue", "disabled"];
+var _hoisted_46 = {
+  "class": "col-3"
+};
+var _hoisted_47 = {
+  "class": "form-group"
+};
+var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "F-Berth Price")], -1 /* HOISTED */);
+var _hoisted_49 = ["onUpdate:modelValue", "disabled"];
+var _hoisted_50 = {
+  "class": "col-3"
+};
+var _hoisted_51 = {
+  "class": "form-group"
+};
+var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Snigdha Price")], -1 /* HOISTED */);
+var _hoisted_53 = ["onUpdate:modelValue", "disabled"];
+var _hoisted_54 = {
+  "class": "col-3"
+};
+var _hoisted_55 = {
+  "class": "form-group"
+};
+var _hoisted_56 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "AC-S Price")], -1 /* HOISTED */);
+var _hoisted_57 = ["onUpdate:modelValue", "disabled"];
+var _hoisted_58 = {
+  "class": "col-3"
+};
+var _hoisted_59 = {
+  "class": "form-group"
+};
+var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "AC-B Price")], -1 /* HOISTED */);
+var _hoisted_61 = ["onUpdate:modelValue", "disabled"];
+var _hoisted_62 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "alert alert-info mt-4"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Set Seat Ranges")], -1 /* HOISTED */);
 var _hoisted_63 = {
+  "class": "col-6"
+};
+var _hoisted_64 = {
   "class": "form-group"
 };
-var _hoisted_64 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Select Bogi")], -1 /* HOISTED */);
-var _hoisted_65 = {
-  "class": "col-3"
-};
+var _hoisted_65 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Select Bogi")], -1 /* HOISTED */);
 var _hoisted_66 = {
-  "class": "form-group"
-};
-var _hoisted_67 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Seat Start")], -1 /* HOISTED */);
-var _hoisted_68 = {
   "class": "col-3"
 };
-var _hoisted_69 = {
+var _hoisted_67 = {
   "class": "form-group"
 };
-var _hoisted_70 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Seat End")], -1 /* HOISTED */);
-var _hoisted_71 = {
-  "class": "d-flex justify-content-end"
+var _hoisted_68 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Seat Start")], -1 /* HOISTED */);
+var _hoisted_69 = {
+  "class": "col-3"
 };
-var _hoisted_72 = ["onClick"];
-var _hoisted_73 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_70 = {
+  "class": "form-group"
+};
+var _hoisted_71 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Seat End")], -1 /* HOISTED */);
+var _hoisted_72 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "card-footer d-flex justify-content-end"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "submit",
@@ -23127,116 +23110,118 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       key: index
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(err), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Schedule info "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("fieldset", null, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" base station info "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
-    id: "_base_station",
-    value: $data.schedule_base_station.from_station_name,
-    "class": "form-control",
-    disabled: ""
-  }, null, 8 /* PROPS */, _hoisted_13)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
-    id: "_left_at",
-    "class": "form-control",
-    value: $data.schedule_base_station.left_station_at,
-    disabled: ""
-  }, null, 8 /* PROPS */, _hoisted_17)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" next stations info "), $data.schedule_dest_stations[0].to_station_id != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_18, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.schedule_dest_stations, function (item, index) {
+  }), 128 /* KEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Schedule info "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("fieldset", null, [_hoisted_8, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.schedules, function (schedule, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-      "class": "my-4 shadow p-2",
-      key: item.to_station_id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Next station info "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      key: index,
+      "class": "mt-5 shadow p-3 rounded"
+    }, [schedule.dest_stations[0].to_station_id != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h2", _hoisted_9, " Base Station " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1) + " (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(schedule.base_station.from_station_name) + ") ", 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" base station info "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       type: "text",
+      id: "_base_station",
+      value: schedule.base_station.from_station_name,
       "class": "form-control",
-      value: $data.schedule_base_station.from_station_name + '->' + item.to_station_name,
       disabled: ""
-    }, null, 8 /* PROPS */, _hoisted_23)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    }, null, 8 /* PROPS */, _hoisted_14)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       type: "text",
+      id: "_left_at",
       "class": "form-control",
-      value: item.reach_at,
+      value: schedule.base_station.left_station_at,
       disabled: ""
-    }, null, 8 /* PROPS */, _hoisted_27)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" pricing details "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [_hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-      type: "number",
-      "class": "form-control",
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return item.shovon_price = $event;
-      }
-    }, null, 8 /* PROPS */, _hoisted_32), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.shovon_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [_hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-      type: "number",
-      "class": "form-control",
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return item.s_chair_price = $event;
-      }
-    }, null, 8 /* PROPS */, _hoisted_36), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.s_chair_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [_hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-      type: "number",
-      "class": "form-control",
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return item.f_chair_price = $event;
-      }
-    }, null, 8 /* PROPS */, _hoisted_40), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.f_chair_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [_hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-      type: "number",
-      "class": "form-control",
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return item.f_seat_price = $event;
-      }
-    }, null, 8 /* PROPS */, _hoisted_44), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.f_seat_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [_hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-      type: "number",
-      "class": "form-control",
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return item.f_berth_price = $event;
-      }
-    }, null, 8 /* PROPS */, _hoisted_48), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.f_berth_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [_hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-      type: "number",
-      "class": "form-control",
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return item.snigdha_price = $event;
-      }
-    }, null, 8 /* PROPS */, _hoisted_52), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.snigdha_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [_hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-      type: "number",
-      "class": "form-control",
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return item.ac_s_price = $event;
-      }
-    }, null, 8 /* PROPS */, _hoisted_56), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.ac_s_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [_hoisted_59, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-      type: "number",
-      "class": "form-control",
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return item.ac_b_price = $event;
-      }
-    }, null, 8 /* PROPS */, _hoisted_60), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.ac_b_price]])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Seat range details "), _hoisted_61, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(item.seat_ranges, function (seat_range, i) {
+    }, null, 8 /* PROPS */, _hoisted_18)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" next stations info "), schedule.dest_stations[0].to_station_id != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(schedule.dest_stations, function (item) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-        "class": "row",
-        key: i
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_62, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_63, [_hoisted_64, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
-        id: "_train_id",
-        modelValue: item.seat_ranges[i].bogi_id,
-        "onUpdate:modelValue": [function ($event) {
-          return item.seat_ranges[i].bogi_id = $event;
-        }, function ($event) {
-          return $options.getSeats(item.seat_ranges[i].bogi_id.code);
-        }],
-        options: $data.bogis
-      }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "options"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_65, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_66, [_hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
-        id: "_train_id",
-        modelValue: item.seat_ranges[i].seat_start,
+        "class": "my-4 shadow p-2",
+        key: item.to_station_id
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Next station info "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [_hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "text",
+        "class": "form-control",
+        value: schedule.base_station.from_station_name + '->' + item.to_station_name,
+        disabled: ""
+      }, null, 8 /* PROPS */, _hoisted_24)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [_hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "text",
+        "class": "form-control",
+        value: item.reach_at,
+        disabled: ""
+      }, null, 8 /* PROPS */, _hoisted_28)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" pricing details "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [_hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "number",
+        "class": "form-control",
         "onUpdate:modelValue": function onUpdateModelValue($event) {
-          return item.seat_ranges[i].seat_start = $event;
+          return item.shovon_price = $event;
         },
-        options: $data.seats
-      }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "options"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_68, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_69, [_hoisted_70, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
-        id: "_train_id",
-        modelValue: item.seat_ranges[i].seat_end,
+        disabled: !$data.bogi_types.includes('shovon')
+      }, null, 8 /* PROPS */, _hoisted_33), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.shovon_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [_hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "number",
+        "class": "form-control",
         "onUpdate:modelValue": function onUpdateModelValue($event) {
-          return item.seat_ranges[i].seat_end = $event;
+          return item.s_chair_price = $event;
         },
-        options: $data.seats
-      }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "options"])])])]);
-    }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_71, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-      type: "button",
-      onClick: function onClick($event) {
-        return $options.addMoreBogi(index);
-      },
-      "class": "btn btn-primary"
-    }, " Add More Bogi ", 8 /* PROPS */, _hoisted_72)])]);
-  }), 128 /* KEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), _hoisted_73], 32 /* HYDRATE_EVENTS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+        disabled: !$data.bogi_types.includes('s_chair')
+      }, null, 8 /* PROPS */, _hoisted_37), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.s_chair_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [_hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "number",
+        "class": "form-control",
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return item.f_chair_price = $event;
+        },
+        disabled: !$data.bogi_types.includes('f_chair')
+      }, null, 8 /* PROPS */, _hoisted_41), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.f_chair_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [_hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "number",
+        "class": "form-control",
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return item.f_seat_price = $event;
+        },
+        disabled: !$data.bogi_types.includes('f_seat')
+      }, null, 8 /* PROPS */, _hoisted_45), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.f_seat_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [_hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "number",
+        "class": "form-control",
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return item.f_berth_price = $event;
+        },
+        disabled: !$data.bogi_types.includes('f_berth')
+      }, null, 8 /* PROPS */, _hoisted_49), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.f_berth_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [_hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "number",
+        "class": "form-control",
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return item.snigdha_price = $event;
+        },
+        disabled: !$data.bogi_types.includes('snigdha')
+      }, null, 8 /* PROPS */, _hoisted_53), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.snigdha_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_55, [_hoisted_56, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "number",
+        "class": "form-control",
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return item.ac_s_price = $event;
+        },
+        disabled: !$data.bogi_types.includes('ac_s')
+      }, null, 8 /* PROPS */, _hoisted_57), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.ac_s_price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_59, [_hoisted_60, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "number",
+        "class": "form-control",
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return item.ac_b_price = $event;
+        },
+        disabled: !$data.bogi_types.includes('ac_b')
+      }, null, 8 /* PROPS */, _hoisted_61), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.ac_b_price]])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Seat range details "), _hoisted_62, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(item.seat_ranges, function (seat_range, i) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+          "class": "row",
+          key: i
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_63, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [_hoisted_65, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+          modelValue: item.seat_ranges[i].bogi_name,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return item.seat_ranges[i].bogi_name = $event;
+          },
+          options: $data.bogis_seats.bogis
+        }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "options"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_66, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_67, [_hoisted_68, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+          modelValue: item.seat_ranges[i].seat_start,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return item.seat_ranges[i].seat_start = $event;
+          },
+          options: $data.bogis_seats.seats[i]
+        }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "options"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_69, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_70, [_hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+          modelValue: item.seat_ranges[i].seat_end,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return item.seat_ranges[i].seat_end = $event;
+          },
+          options: $data.bogis_seats.seats[i]
+        }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "options"])])])]);
+      }), 128 /* KEYED_FRAGMENT */))]);
+    }), 128 /* KEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  }), 128 /* KEYED_FRAGMENT */))])]), _hoisted_72], 32 /* HYDRATE_EVENTS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),

@@ -42,40 +42,47 @@ class ScheduleController extends Controller
   public function store(Request $request)
   {
     $train_id = $request->train_id;
-    $base_station = json_decode(json_encode($request->base_station), FALSE);
-    $dest_stations = json_decode(json_encode($request->dest_stations), FALSE);
+    $schedules = json_decode(json_encode($request->schedules), FALSE);
 
-    foreach ($dest_stations as $dest_station) {
-      $schedule = new Schedule();
 
-      $schedule->train_id = $train_id;
-      $schedule->from_station_id = $base_station->from_station_id;
-      $schedule->to_station_id = $dest_station->to_station_id;
-      $schedule->left_station_at = $base_station->left_station_at;
-      $schedule->reach_destination_at = $dest_station->reach_at;
-      $schedule->ac_b_price = $dest_station->ac_b_price;
-      $schedule->ac_s_price = $dest_station->ac_s_price;
-      $schedule->snigdha_price = $dest_station->snigdha_price;
-      $schedule->f_berth_price = $dest_station->f_berth_price;
-      $schedule->f_seat_price = $dest_station->f_seat_price;
-      $schedule->f_chair_price = $dest_station->f_chair_price;
-      $schedule->s_chair_price = $dest_station->s_chair_price;
-      $schedule->shovon_price = $dest_station->shovon_price;
+    foreach ($schedules as $schedule) {
+      $base_station = $schedule->base_station;
+      $dest_stations = $schedule->dest_stations;
 
-      $schedule->save();
+      foreach ($dest_stations as $dest_station) {
+        $schedule = new Schedule();
 
-      // Add seat ranges
-      foreach ($dest_station->seat_ranges as $item) {
-        $seat_range = new SeatRange();
+        $schedule->train_id = $train_id;
+        $schedule->from_station_id = $base_station->from_station_id;
+        $schedule->to_station_id = $dest_station->to_station_id;
+        $schedule->left_station_at = $base_station->left_station_at;
+        $schedule->reach_destination_at = $dest_station->reach_at;
+        $schedule->ac_b_price = $dest_station->ac_b_price;
+        $schedule->ac_s_price = $dest_station->ac_s_price;
+        $schedule->snigdha_price = $dest_station->snigdha_price;
+        $schedule->f_berth_price = $dest_station->f_berth_price;
+        $schedule->f_seat_price = $dest_station->f_seat_price;
+        $schedule->f_chair_price = $dest_station->f_chair_price;
+        $schedule->s_chair_price = $dest_station->s_chair_price;
+        $schedule->shovon_price = $dest_station->shovon_price;
 
-        $seat_range->schedule_id = $schedule->id;
-        $seat_range->bogi_id = $item->bogi_id->code;
-        $seat_range->seats_range = $item->seat_start . ',' . $item->seat_end;
+        $schedule->save();
 
-        $seat_range->save();
+        // Add seat ranges
+        foreach ($dest_station->seat_ranges as $item) {
+          // if seat range not selected then skip
+          if ($item->seat_start == null || $item->seat_end == null) continue;
+
+          $seat_range = new SeatRange();
+
+          $seat_range->schedule_id = $schedule->id;
+          $seat_range->bogi_id = $item->bogi_id;
+          $seat_range->seats_range = $item->seat_start . ',' . $item->seat_end;
+
+          $seat_range->save();
+        }
       }
     }
-
 
     flash()->addSuccess('Schedules & Seat Ranges Added');
     // return redirect(route('schedules.index'));
@@ -139,6 +146,9 @@ class ScheduleController extends Controller
 
     $data = array();
     foreach ($trains as $train) {
+      // if train bogis is not available then skip
+      if (count($train->bogis) == 0) continue;
+
       // check train have schedules
       if (count($train->schedules) == 0) {
         $data[] = [
@@ -156,84 +166,95 @@ class ScheduleController extends Controller
   {
     $train = Train::find($id);
 
+    // get bogi_type_names
+    $bogi_type_names = $train->bogis->pluck('bogi_type.bogi_type_name');
+
+    // get schedules
+    $schedules = array();
+
+    $total_left_time_hour = 0;
+    $total_left_time_min = 0;
+
     $route_list = $train->route->routes->sortBy('sl_no');
-    // return $route_list;
+    for ($i = 0; $i < count($route_list) - 1; $i++) {
+      $first_route_item = $route_list[$i];
 
-    $first_route_item = $route_list->first();
+      // calculate left time
+      $total_left_time_hour += explode(':', $route_list[$i]->time_from_prev_station)[0];
+      $total_left_time_min += explode(':', $route_list[$i]->time_from_prev_station)[1];
 
-    // extract first station data
-    $base_station = [
-      'from_station_id' => $first_route_item->station_id,
-      'from_station_name' => $first_route_item->station->name,
-      'left_station_at' => date('Y-m-d H:i:s', strtotime($train->journey_date)),
-    ];
+      $left_time = date('Y-m-d H:i:s', strtotime("+{$total_left_time_hour} hour +{$total_left_time_min} minutes", strtotime($train->journey_date)));
 
-    $dest_stations = array();
+      // extract first station data
+      $base_station = [
+        'from_station_id' => $first_route_item->station_id,
+        'from_station_name' => $first_route_item->station->name,
+        'left_station_at' => $left_time,
+      ];
 
-    $reach_time = $train->journey_date;
-
-    // extract other lists
-    foreach ($route_list as $route) {
-      // skip first item
-      if ($route->sl_no == 1) {
-        continue;
+      // get bogis and seats
+      $bogis = $train->bogis;
+      $bogis_seats = array();
+      if (count($bogis) == 0) {
+        $bogis_seats['bogis'] = [];
+        $bogis_seats['seats'] = [];
       }
 
-      $time_hour = explode(':', $route->time_from_prev_station)[0];
-      $time_min = explode(':', $route->time_from_prev_station)[1];
+      foreach ($bogis as $bogi) {
+        $bogis_seats['bogis'][] = [
+          'code' => $bogi->id,
+          'label' => $bogi->bogi_name . ' (' . $bogi->bogi_type->bogi_type_name . ')'
+        ];
+        $bogis_seats['seats'][] = $bogi->seats->pluck('seat_name');
+      }
 
-      $reach_time = date('Y-m-d H:i:s', strtotime("+{$time_hour} hour +{$time_min} minutes", strtotime($reach_time)));
+      $dest_stations = array();
 
-      $dest_stations[] = [
-        'to_station_id' => $route->station_id,
-        'to_station_name' => $route->station->name,
-        'reach_at' => $reach_time,
-        'ac_b_price' => null,
-        'ac_s_price' => null,
-        'snigdha_price' => null,
-        'f_berth_price' => null,
-        'f_seat_price' => null,
-        'f_chair_price' => null,
-        's_chair_price' => null,
-        'shovon_price' => null,
-        'seat_ranges' => [
-          [
-            'bogi_id' => null,
+      $time_hour = 0;
+      $time_min = 0;
+      // extract other lists
+      for ($j = $i + 1; $j < count($route_list); $j++) {
+        // calculate reach time
+        $time_hour += explode(':', $route_list[$j]->time_from_prev_station)[0];
+        $time_min += explode(':', $route_list[$j]->time_from_prev_station)[1];
+
+        $reach_time = date('Y-m-d H:i:s', strtotime("+{$time_hour} hour +{$time_min} minutes", strtotime($left_time)));
+
+        // get last price list
+        $last_schedule = Schedule::where('from_station_id', $first_route_item->station_id)->where('to_station_id', $route_list[$j]->station_id)->orderBy('created_at', 'desc')->first();
+
+        // get seat_ranges
+        $seat_ranges = array();
+        foreach ($bogis_seats['bogis'] as $key => $bogi) {
+          $seat_ranges[] = [
+            'bogi_id' => $bogi['code'],
+            'bogi_name' => $bogi['label'],
             'seat_start' => null,
             'seat_end' => null,
-          ]
-        ]
+          ];
+        }
+
+        $dest_stations[] = [
+          'to_station_id' => $route_list[$j]->station_id,
+          'to_station_name' => $route_list[$j]->station->name,
+          'reach_at' => $reach_time,
+          'ac_b_price' => $last_schedule->ac_b_price ?? null,
+          'ac_s_price' => $last_schedule->ac_s_price ?? null,
+          'snigdha_price' => $last_schedule->snigdha_price ?? null,
+          'f_berth_price' => $last_schedule->f_berth_price ?? null,
+          'f_seat_price' => $last_schedule->f_seat_price ?? null,
+          'f_chair_price' => $last_schedule->f_chair_price ?? null,
+          's_chair_price' => $last_schedule->s_chair_price ?? null,
+          'shovon_price' => $last_schedule->shovon_price ?? null,
+          'seat_ranges' => $seat_ranges,
+        ];
+      }
+      $schedules[] = [
+        'base_station' => $base_station,
+        'dest_stations' => $dest_stations,
       ];
     }
 
-    return response()->json(['base_station' => $base_station, 'dest_stations' => $dest_stations]);
-  }
-
-  public function get_bogis($id)
-  {
-    $train = Train::findOrFail($id);
-    $bogis = $train->bogis;
-    $data = array();
-
-    foreach ($bogis as $bogi) {
-      $data[] = [
-        'code' => $bogi->id,
-        'label' => $bogi->bogi_name . ' (' . $bogi->bogi_type->bogi_type_name . ')'
-      ];
-    }
-
-    return response()->json($data);
-  }
-
-  public function get_seats($id)
-  {
-    $seats = Seat::where('bogi_id', $id)->get();
-    $data = array();
-
-    foreach ($seats as $seat) {
-      $data[] = $seat->seat_name;
-    }
-
-    return response()->json($data);
+    return response()->json(['schedules' => $schedules, 'bogi_types' => $bogi_type_names, 'bogis_seats' => $bogis_seats]);
   }
 }

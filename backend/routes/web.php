@@ -54,8 +54,6 @@ Route::middleware(['auth', 'user-access:admin'])->prefix('admin')->group(functio
 
   Route::get('trains-for-schedules', [ScheduleController::class, 'trains_for_schedules']);
   Route::get('route-list/{train_id}', [ScheduleController::class, 'route_list_for_schedules']);
-  Route::get('get-bogis/{train_id}', [ScheduleController::class, 'get_bogis']);
-  Route::get('get-seats/{bogi_id}', [ScheduleController::class, 'get_seats']);
 });
 
 Route::get('get-auth', [FrontController::class, 'get_auth']);

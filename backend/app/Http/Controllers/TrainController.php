@@ -50,7 +50,7 @@ class TrainController extends Controller
     ]);
 
     // check valid date and time
-    if (time() >= strtotime($request->journey_date . ' ' . $request->journey_time) || time() >= strtotime($request->start_date . ' ' . $request->journey_time) || time() >= strtotime($request->end_date . ' ' . $request->journey_time)) {
+    if (time() >= strtotime($request->journey_date . ' ' . $request->journey_time) || (time() >= strtotime($request->start_date . ' ' . $request->journey_time) && time() >= strtotime($request->end_date . ' ' . $request->journey_time))) {
       return response()->json(['success' => false, 'msg' => 'Please Select correct Date']);
     }
 
@@ -65,6 +65,10 @@ class TrainController extends Controller
         'journey_date' => $journey_date,
         'route_id' => $request->route_id
       ]);
+
+      if ($train) {
+        flash()->addSuccess('Train Added');
+      }
 
       // call bogi add method
       $this->add_bogi_seat($train->id, $request->bogis);
@@ -98,6 +102,10 @@ class TrainController extends Controller
           'route_id' => $request->route_id
         ]);
 
+        if ($train) {
+          flash()->addSuccess('Train Added');
+        }
+
         // call bogi add method
         $this->add_bogi_seat($train->id, $request->bogis);
 
@@ -105,7 +113,6 @@ class TrainController extends Controller
       }
     }
 
-    flash()->addSuccess('Train, Bogis and Seats Added');
     // return redirect(route('trains.index'));
     return response()->json(['success' => true, 'msg' => 'Train Added']);
   }
@@ -283,6 +290,8 @@ class TrainController extends Controller
 
         $seat->save();
       }
+
+      flash()->addSuccess('Bogis and Seats Added');
     }
   }
 }
