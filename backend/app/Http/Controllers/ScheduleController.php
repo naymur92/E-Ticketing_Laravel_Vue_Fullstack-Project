@@ -7,6 +7,7 @@ use App\Models\Schedule;
 use App\Models\Seat;
 use App\Models\SeatRange;
 use App\Models\Train;
+use App\Models\TrainList;
 use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
@@ -166,6 +167,17 @@ class ScheduleController extends Controller
   {
     $train = Train::find($id);
 
+    // get last schedules to find seat ranges for specific root train
+    $route_id = $train->route_id;
+    $last_trains = Train::where('route_id', $route_id)->orderBy('journey_date', 'desc')->get();
+
+    $last_sc_train_id = '';
+    foreach ($last_trains as $item) {
+      if (count($item->schedules) == 0) continue;
+      $last_sc_train_id = $item->id;
+      if (count($item->schedules) > 0) break;
+    }
+
     // get bogi_type_names
     $bogi_type_names = $train->bogis->pluck('bogi_type.bogi_type_name');
 
@@ -226,11 +238,27 @@ class ScheduleController extends Controller
         // get seat_ranges
         $seat_ranges = array();
         foreach ($bogis_seats['bogis'] as $key => $bogi) {
+          $seat_start = null;
+          $seat_end = null;
+
+          if ($last_sc_train_id != '') {
+            $last_sc_id = Schedule::where('train_id', $last_sc_train_id)->where('from_station_id', $first_route_item->station_id)->where('to_station_id', $route_list[$j]->station_id)->pluck('id')[0];
+
+            $sc_seat_ranges = SeatRange::where('schedule_id', $last_sc_id)->get();
+            foreach ($sc_seat_ranges as $sr) {
+              if ($sr->bogi->bogi_name == explode(' ', $bogi['label'])[0]) {
+                $st_rng = $sr->seats_range;
+                $seat_start = explode(',', $st_rng)[0];
+                $seat_end = explode(',', $st_rng)[1];
+              }
+            }
+          }
+
           $seat_ranges[] = [
             'bogi_id' => $bogi['code'],
             'bogi_name' => $bogi['label'],
-            'seat_start' => null,
-            'seat_end' => null,
+            'seat_start' => $seat_start,
+            'seat_end' => $seat_end,
           ];
         }
 
