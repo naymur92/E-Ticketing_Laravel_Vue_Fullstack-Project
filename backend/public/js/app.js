@@ -22163,7 +22163,7 @@ __webpack_require__.r(__webpack_exports__);
       root_trains: [],
       bogi_types: [],
       bogis: [{
-        bogi_type_id: "",
+        bogi_type_name: "",
         bogi_name: ""
       }],
       loading: true,
@@ -22181,6 +22181,7 @@ __webpack_require__.r(__webpack_exports__);
     });
     axios__WEBPACK_IMPORTED_MODULE_0___default().get("/admin/bogi-types-list").then(function (res) {
       _this.bogi_types = res.data;
+      console.log(res.data);
     });
     this.getNow();
   },
@@ -22232,7 +22233,7 @@ __webpack_require__.r(__webpack_exports__);
           _this3.bogis = res.data.bogis;
         } else {
           _this3.bogis = [{
-            bogi_type_id: "",
+            bogi_type_name: "",
             bogi_name: ""
           }];
         }
@@ -22242,7 +22243,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     addField: function addField() {
       this.bogis.push({
-        bogi_type_id: "",
+        bogi_type_name: "",
         bogi_name: ""
       });
     },
@@ -23602,9 +23603,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: index
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
       id: "_bogi_type",
-      modelValue: bogi.bogi_type_id,
+      modelValue: bogi.bogi_type_name,
       "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return bogi.bogi_type_id = $event;
+        return bogi.bogi_type_name = $event;
       },
       options: $data.bogi_types
     }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "options"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [_hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {

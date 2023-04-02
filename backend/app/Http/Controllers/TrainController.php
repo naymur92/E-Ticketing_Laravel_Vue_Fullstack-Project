@@ -236,7 +236,7 @@ class TrainController extends Controller
     $last_train = Train::where('route_id', $id)->orderBy('journey_date', 'desc')->first();
     foreach ($last_train->bogis ?? [] as $l_tr_bogi) {
       $bogis[] = [
-        'bogi_type_id' => $l_tr_bogi->bogi_type->bogi_type_name,
+        'bogi_type_name' => $l_tr_bogi->bogi_type->bogi_type_name,
         'bogi_name' => $l_tr_bogi->bogi_name,
       ];
     }
@@ -258,13 +258,7 @@ class TrainController extends Controller
   {
     $bogi_types = BogiType::get();
 
-    $data = array();
-    foreach ($bogi_types as $type) {
-      $data[] = [
-        'code' => $type->id,
-        'label' => $type->bogi_type_name,
-      ];
-    }
+    $data = $bogi_types->pluck('bogi_type_name');
 
     return response()->json($data);
   }
@@ -273,7 +267,9 @@ class TrainController extends Controller
   public function add_bogi_seat($train_id, $bogis)
   {
     foreach ($bogis as $bogi) {
-      $bogi_type_id = $bogi['bogi_type_id']['code'] ?? 0;
+      $bogi_type_name = $bogi['bogi_type_name'] ?? '';
+      $bogi_type_id = BogiType::where('bogi_type_name', $bogi_type_name)->pluck('id')[0] ?? 0;
+
 
       if ($bogi_type_id == 0 || $bogi['bogi_name'] == '') continue;
 

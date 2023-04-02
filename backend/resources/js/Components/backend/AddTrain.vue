@@ -142,7 +142,7 @@
                 >
                 <v-select
                   id="_bogi_type"
-                  v-model="bogi.bogi_type_id"
+                  v-model="bogi.bogi_type_name"
                   :options="bogi_types"
                 ></v-select>
               </div>
@@ -194,7 +194,7 @@ export default {
       bogi_types: [],
       bogis: [
         {
-          bogi_type_id: "",
+          bogi_type_name: "",
           bogi_name: "",
         },
       ],
@@ -213,6 +213,7 @@ export default {
 
     axios.get("/admin/bogi-types-list").then((res) => {
       this.bogi_types = res.data;
+      console.log(res.data);
     });
 
     this.getNow();
@@ -277,7 +278,7 @@ export default {
         } else {
           this.bogis = [
             {
-              bogi_type_id: "",
+              bogi_type_name: "",
               bogi_name: "",
             },
           ];
@@ -288,7 +289,7 @@ export default {
     },
     addField() {
       this.bogis.push({
-        bogi_type_id: "",
+        bogi_type_name: "",
         bogi_name: "",
       });
     },
