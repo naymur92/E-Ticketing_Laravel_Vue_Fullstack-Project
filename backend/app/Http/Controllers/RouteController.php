@@ -184,6 +184,9 @@ class RouteController extends Controller
     }
 
     foreach ($train_lists as $train) {
+      // skip those have routes
+      if (count($train->routes) > 0) continue;
+
       $data['train_lists'][] = [
         'label' => $train->train_name . ' - ' . $up_down[$train->up_down],
         'code' => $train->id

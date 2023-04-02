@@ -22860,14 +22860,10 @@ var _hoisted_7 = {
 var _hoisted_8 = {
   "class": "d-flex justify-content-end mt-2"
 };
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_9 = {
   "class": "card-footer d-flex justify-content-end"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  type: "submit",
-  value: "SUBMIT",
-  "class": "btn btn-success"
-})], -1 /* HOISTED */);
-
+};
+var _hoisted_10 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_v_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-select");
   var _component_VueCtkDateTimePicker = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("VueCtkDateTimePicker");
@@ -22912,7 +22908,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.addField();
     }),
     "class": "btn btn-outline-primary"
-  }, " Add New Field ")])]), _hoisted_9], 32 /* HYDRATE_EVENTS */);
+  }, " Add New Field ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "submit",
+    value: "SUBMIT",
+    "class": "btn btn-success",
+    disabled: $data.route_id == null
+  }, null, 8 /* PROPS */, _hoisted_10)])], 32 /* HYDRATE_EVENTS */);
 }
 
 /***/ }),

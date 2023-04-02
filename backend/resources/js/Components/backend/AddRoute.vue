@@ -50,7 +50,12 @@ import axios from "axios";
       </div>
     </div>
     <div class="card-footer d-flex justify-content-end">
-      <input type="submit" value="SUBMIT" class="btn btn-success" />
+      <input
+        type="submit"
+        value="SUBMIT"
+        class="btn btn-success"
+        :disabled="route_id == null"
+      />
     </div>
   </form>
 </template>
