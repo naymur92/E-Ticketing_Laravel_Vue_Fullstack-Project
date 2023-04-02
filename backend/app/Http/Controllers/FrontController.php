@@ -28,21 +28,16 @@ class FrontController extends Controller
 
     $results = Schedule::where('from_station_id', $request->from)->where('to_station_id', $request->to)->whereDate('left_station_at', $request->doj)->get();
 
-    $data = [];
+    $data = array();
 
     // get bogi types
     $bogi_types_with_seats = array();
+    foreach ($results as $key => $result) {
+      $bogi_types = $result->train->bogis->pluck('bogi_type.bogi_type_name');
+      foreach ($bogi_types as $b_type) {
+        $bogi_types_with_seats[$key][$b_type] = 0;
+      }
 
-    $bogi_types = BogiType::get();
-    foreach ($bogi_types as $item) {
-      $bogi_types_with_seats[] = [
-        'id' => $item->id,
-        'bogi_type_name' => $item->bogi_type_name,
-        'total_seats' => 0
-      ];
-    }
-
-    foreach ($results as $result) {
       // get seat range
       foreach ($result->seat_ranges as $item) {
         $bogi_type = $item->bogi->bogi_type->bogi_type_name;
@@ -53,11 +48,7 @@ class FrontController extends Controller
         $end_seat = explode('-', $seat_ranges[1])[1];
         $seat_count = $end_seat - $start_seat + 1;
 
-        for ($i = 0; $i < count($bogi_types_with_seats); $i++) {
-          if ($bogi_types_with_seats[$i]['bogi_type_name'] == $bogi_type) {
-            $bogi_types_with_seats[$i]['total_seats'] += $seat_count;
-          }
-        }
+        $bogi_types_with_seats[$key][$bogi_type] += $seat_count;
       }
 
       // calculate total time
@@ -72,7 +63,7 @@ class FrontController extends Controller
         'left_at' => date('d M, Y - h:i a', strtotime($result->left_station_at)),
         'reach_at' => date('d M, Y - h:i a', strtotime($result->reach_destination_at)),
         'total_time' => $total_time->h . ' Hours : ' . $total_time->i . ' Minutes',
-        'seats' => $bogi_types_with_seats
+        'seats' => $bogi_types_with_seats[$key]
       ];
     }
 

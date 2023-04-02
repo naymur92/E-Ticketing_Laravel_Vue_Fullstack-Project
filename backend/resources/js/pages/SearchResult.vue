@@ -37,9 +37,9 @@
                 <th>Seat Type</th>
                 <th>Total Seats</th>
               </tr>
-              <tr v-for="(item, index) in result.seats" :key="index">
-                <td>{{ item.bogi_type_name }}</td>
-                <td>{{ item.total_seats }}</td>
+              <tr v-for="(item, key) in result.seats" :key="item">
+                <td>{{ key }}</td>
+                <td>{{ item }}</td>
               </tr>
             </table>
           </div>
