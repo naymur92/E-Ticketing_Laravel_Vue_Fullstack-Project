@@ -22214,6 +22214,16 @@ __webpack_require__.r(__webpack_exports__);
         _this3.off_day = [res.data.off_day];
         _this3.unavailable_dates = res.data.unavailable_dates;
         _this3.journey_time = res.data.last_start_time;
+        if (res.data.bogis.length != 0) {
+          _this3.bogis = res.data.bogis;
+        } else {
+          _this3.bogis = [{
+            bogi_type_id: "",
+            bogi_name: ""
+          }];
+        }
+
+        // console.log(this.bogis);
       });
     },
     addField: function addField() {

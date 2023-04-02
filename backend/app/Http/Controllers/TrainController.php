@@ -231,12 +231,23 @@ class TrainController extends Controller
       'Saturday' => 6,
     ];
 
+    // get bogi name and types from previous train
+    $bogis = array();
+    $last_train = Train::where('route_id', $id)->orderBy('journey_date', 'desc')->first();
+    foreach ($last_train->bogis ?? [] as $l_tr_bogi) {
+      $bogis[] = [
+        'bogi_type_id' => $l_tr_bogi->bogi_type->bogi_type_name,
+        'bogi_name' => $l_tr_bogi->bogi_name,
+      ];
+    }
+
     // generate data
     $data = [
       'train_name' => $train_data->train_name,
       'off_day' => $day_to_number["$train_data->off_day"],
       'unavailable_dates' => $train_dates,
-      'last_start_time' => $last_start_time
+      'last_start_time' => $last_start_time,
+      'bogis' => $bogis
     ];
 
     return response()->json($data);

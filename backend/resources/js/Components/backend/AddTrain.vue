@@ -271,6 +271,19 @@ export default {
         this.off_day = [res.data.off_day];
         this.unavailable_dates = res.data.unavailable_dates;
         this.journey_time = res.data.last_start_time;
+
+        if (res.data.bogis.length != 0) {
+          this.bogis = res.data.bogis;
+        } else {
+          this.bogis = [
+            {
+              bogi_type_id: "",
+              bogi_name: "",
+            },
+          ];
+        }
+
+        // console.log(this.bogis);
       });
     },
     addField() {
