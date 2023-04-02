@@ -42,6 +42,13 @@ class TrainListController extends Controller
       'up_down' => 'required'
     ]);
 
+    // check duplicate data
+    $root_train_exists = TrainList::where('train_name', $request->train_name)->where('up_down', $request->up_down)->get();
+    if (count($root_train_exists) > 0) {
+      flash()->addError('Duplicate Entry!');
+      return back();
+    }
+
     $root_train = [
       'train_name' => $request->train_name,
       'off_day' => $request->off_day,
