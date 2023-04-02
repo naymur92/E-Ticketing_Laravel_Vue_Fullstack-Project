@@ -144,7 +144,7 @@ class ScheduleController extends Controller
   public function trains_for_schedules()
   {
     $trains = Train::orderBy('journey_date', 'desc')->get();
-
+    $up_down = ['Up', 'Down'];
     $data = array();
     foreach ($trains as $train) {
       // if train bogis is not available then skip
@@ -154,7 +154,7 @@ class ScheduleController extends Controller
       if (count($train->schedules) == 0) {
         $data[] = [
           'code' => $train->id,
-          'label' => $train->name . ' - ' . $train->journey_date
+          'label' => $train->name . ' (' . $up_down[$train->route->up_down] . ') - ' . $train->journey_date
         ];
       }
     }

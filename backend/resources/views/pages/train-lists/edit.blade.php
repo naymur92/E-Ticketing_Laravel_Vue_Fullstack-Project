@@ -69,8 +69,9 @@
                   <label for="_up_down"><strong>Select Up/Down:</strong></label>
                   <select name="up_down" id="_up_down" class="form-control @error('up_down') is-invalid @enderror">
                     <option value="" selected disabled>Select One</option>
-                    <option value="1" {{ old('off_day', $root_train->up_down) ? 'selected' : '' }}>Up</option>
-                    <option value="2" {{ old('off_day', $root_train->up_down) ? 'selected' : '' }}>Down</option>
+                    <option value="0" {{ old('up_down', $root_train->up_down) == '0' ? 'selected' : '' }}>Up
+                    </option>
+                    <option value="1" {{ old('up_down', $root_train->up_down) ? 'selected' : '' }}>Down</option>
                   </select>
                   @error('up_down')
                     <span class="invalid-feedback" role="alert">

@@ -58,8 +58,8 @@
           </div>
           <div class="card-footer d-flex justify-content-between">
             <a class="btn btn-outline-primary" href="{{ route('routes.index') }}">Back</a>
-            <a class="btn btn-outline-primary" href="{{ route('routes.edit', $route->id) }}"><i class="fa fa-pen"></i>
-              Edit</a>
+            {{-- <a class="btn btn-outline-primary" href="{{ route('routes.edit', $route->id) }}"><i class="fa fa-pen"></i>
+              Edit</a> --}}
 
             <form action="{{ route('routes.destroy', $route->id) }}"
               onsubmit="return confirm('Are you want to sure to delete?')" method="post">

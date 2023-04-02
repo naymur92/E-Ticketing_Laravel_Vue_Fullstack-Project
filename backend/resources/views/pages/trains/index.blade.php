@@ -68,7 +68,7 @@
                         <a class="dropdown-item" href="{{ route('trains.show', $train->id) }}"><i
                             class="fa fa-eye text-primary"></i> View</a>
                         <a class="dropdown-item" href="{{ route('trains.edit', $train->id) }}"><i
-                            class="fa fa-pen text-warning"></i> Edit</a>
+                            class="fa fa-pen text-warning"></i> Manage Bogi</a>
                         <form action="{{ route('trains.destroy', $train->id) }}"
                           onsubmit="return confirm('Are you want to sure to delete?')" method="post">
                           @csrf
