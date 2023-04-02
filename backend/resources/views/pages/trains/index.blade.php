@@ -34,6 +34,8 @@
                 <th>Name</th>
                 <th>Journey Time</th>
                 <th>Route</th>
+                <th>Bogi Number</th>
+                <th>Have Schedule?</th>
                 <th>Creation Time</th>
                 <th>Action</th>
               </tr>
@@ -43,6 +45,8 @@
                 <th>Name</th>
                 <th>Journey Time</th>
                 <th>Route</th>
+                <th>Bogi Number</th>
+                <th>Have Schedule?</th>
                 <th>Creation Time</th>
                 <th>Action</th>
               </tr>
@@ -56,6 +60,20 @@
                     {{ $train->route->routes->first()->station->name }}
                     -
                     {{ $train->route->routes->last()->station->name }}
+                  </td>
+                  <td>
+                    @if (count($train->bogis ?? []) == 0)
+                      <span class="badge badge-pill badge-danger">No Bogi</span>
+                    @else
+                      <span class="badge badge-pill badge-success">{{ count($train->bogis) }}</span>
+                    @endif
+                  </td>
+                  <td>
+                    @if (count($train->schedules ?? []) == 0)
+                      <span class="badge badge-pill badge-danger">No Schedule</span>
+                    @else
+                      <span class="badge badge-pill badge-success">Has Schedule</span>
+                    @endif
                   </td>
                   <td>{{ date('d M, Y - H:i a', strtotime($train->created_at)) }}</td>
                   <td>

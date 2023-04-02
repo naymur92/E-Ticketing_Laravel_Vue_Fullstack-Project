@@ -301,8 +301,7 @@ class TrainController extends Controller
 
         $seat->save();
       }
-
-      flash()->addSuccess('Bogis and Seats Added');
     }
+    flash()->addSuccess('Bogis and Seats Added');
   }
 }
