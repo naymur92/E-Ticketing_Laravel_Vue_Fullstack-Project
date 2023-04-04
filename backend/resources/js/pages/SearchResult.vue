@@ -56,15 +56,18 @@
     </div>
   </div>
 </template>
-<script setup>
-import { useSearchStore } from "../stores/search";
+
+<script>
+import { useSearchStore } from "../stores/searchTrain";
 import { useBookingTrain } from "../stores/booking";
 
-const searchStore = useSearchStore();
-const bookTrain = useBookingTrain();
-</script>
-<script>
 export default {
+  setup() {
+    const searchStore = useSearchStore();
+    const bookTrain = useBookingTrain();
+
+    return { searchStore, bookTrain };
+  },
   data() {
     return {};
   },

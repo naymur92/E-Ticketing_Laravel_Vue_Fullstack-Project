@@ -1,8 +1,3 @@
-<script setup>
-import axios from "axios";
-import { useSearchStore } from "../stores/search";
-const searchStore = useSearchStore();
-</script>
 <template>
   <div>
     <form @submit.prevent="searchTrain">
@@ -14,8 +9,8 @@ const searchStore = useSearchStore();
               id="_from"
               :options="from_stations"
               :class="[errors.from ? 'is-invalid' : '']"
-              :modelValue="from_st"
-              @update:modelValue="handleFromStUpdate"
+              v-model="from_st"
+              @update:modelValue="getToStations"
             ></v-select>
 
             <span
@@ -33,9 +28,9 @@ const searchStore = useSearchStore();
             <label for="_to"><strong>To</strong></label>
             <v-select
               id="_to"
-              v-model="to_st"
               :options="to_stations"
               :class="[errors.to ? 'is-invalid' : '']"
+              v-model="to_st"
             ></v-select>
 
             <span
@@ -95,7 +90,14 @@ const searchStore = useSearchStore();
 </template>
 
 <script>
+import axios from "axios";
+import { useSearchStore } from "../stores/searchTrain";
+
 export default {
+  setup() {
+    const searchStore = useSearchStore();
+    return { searchStore };
+  },
   data() {
     return {
       loading: true,
@@ -131,7 +133,7 @@ export default {
         })
         .then((res) => {
           // console.log(res.data);
-          this.searchStore.searchResult = res.data;
+          this.searchStore.setSearchResult(res.data);
           this.search = true;
 
           if (res.data.length > 0) {
@@ -150,11 +152,6 @@ export default {
           }
         });
       // alert(this.from);
-    },
-    handleFromStUpdate(from_st) {
-      this.from_st = from_st;
-      // console.log(this.from_st);
-      this.getToStations();
     },
     getToStations() {
       // console.log(this.from_st);
