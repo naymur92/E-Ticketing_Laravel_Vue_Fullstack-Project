@@ -1,20 +1,25 @@
-<script setup>
-import Navbar from "./Components/Navbar.vue";
-import Footer from "./Components/Footer.vue";
-</script>
 <template>
   <div>
     <!-- navbar -->
-    <Navbar />
+    <Navbar :auth="auth" />
     <!-- Contant Area -->
-    <router-view></router-view>
+    <router-view :auth="auth"></router-view>
 
     <!-- Footer -->
     <Footer />
   </div>
 </template>
 <script>
-export default {};
+import Navbar from "./Components/Navbar.vue";
+import Footer from "./Components/Footer.vue";
+
+export default {
+  components: {
+    Navbar,
+    Footer,
+  },
+  props: ["auth"],
+};
 </script>
 <style>
 </style>

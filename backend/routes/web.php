@@ -56,15 +56,17 @@ Route::middleware(['auth', 'user-access:admin'])->prefix('admin')->group(functio
   Route::get('route-list/{train_id}', [ScheduleController::class, 'route_list_for_schedules']);
 });
 
-Route::get('get-auth', [FrontController::class, 'get_auth']);
-
 // ticket checking
 Route::get('/from-stations', [FrontController::class, 'from_stations']);
 Route::get('/to-stations/{id}', [FrontController::class, 'to_stations']);
 Route::post('/search-train', [FrontController::class, 'check']);
 
-// booking
-Route::get('/get-booking-details/{schedule_id}', [BookingController::class, 'get_booking_details']);
+Route::middleware(['auth', 'user-access:user'])->group(function () {
+  // booking
+  Route::get('/get-booking-details/{schedule_id}', [BookingController::class, 'get_booking_details']);
+  Route::get('get-seats/{id}', [BookingController::class, 'get_seats_by_bogis']);
+});
+
 
 Route::any('{slug}', function () {
   return view('home');

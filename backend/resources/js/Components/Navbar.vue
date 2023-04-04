@@ -1,6 +1,3 @@
-<script setup>
-import axios from "axios";
-</script>
 <template>
   <nav
     class="front-navbar navbar sticky-top navbar-expand-lg navbar-light p-0 shadow"
@@ -134,11 +131,11 @@ import axios from "axios";
   </nav>
 </template>
 <script>
+import axios from "axios";
 export default {
+  props: ["auth"],
   data() {
-    return {
-      auth: [],
-    };
+    return {};
   },
   methods: {
     logout() {
@@ -148,11 +145,7 @@ export default {
       });
     },
   },
-  mounted() {
-    axios.get("/get-auth").then((res) => {
-      this.auth = res.data;
-    });
-  },
+  mounted() {},
 };
 </script>
 <style>

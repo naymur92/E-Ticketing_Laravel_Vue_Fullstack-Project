@@ -70,11 +70,6 @@ class FrontController extends Controller
     return response()->json($data);
   }
 
-  public function get_auth()
-  {
-    return response()->json(Auth::user());
-  }
-
   public function from_stations()
   {
     $stations = Station::get();
