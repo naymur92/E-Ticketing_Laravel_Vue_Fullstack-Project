@@ -14,24 +14,84 @@
                   <li
                     v-for="bogi in bogis"
                     :key="bogi.id"
+                    class="shadow"
                     :class="activeBogi == bogi.id ? 'active' : ''"
+                    @click="getSeats(bogi.id)"
                   >
-                    <span @click="getSeats(bogi.id)">
-                      {{ bogi.bogi_name }}
-                    </span>
+                    {{ bogi.bogi_name }}
                   </li>
                 </ul>
               </div>
               <div class="card-body">
                 <ul class="seat-list">
-                  <li v-for="seat in seats" :key="seat.id">
+                  <li
+                    class="rounded shadow"
+                    v-for="seat in seats"
+                    :key="seat.id"
+                  >
                     {{ seat.seat_name }}
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <div class="col-md-6"></div>
+          <div class="col-md-6">
+            <div class="card shadow m-0 p-0">
+              <div class="card-header">
+                <h4 class="text-center">Train Information</h4>
+              </div>
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <tr>
+                    <th>From</th>
+                    <td>{{ train_details.from }}</td>
+                  </tr>
+                  <tr>
+                    <th>To</th>
+                    <td>{{ train_details.to }}</td>
+                  </tr>
+                  <tr>
+                    <th>Left At</th>
+                    <td>{{ train_details.left_at }}</td>
+                  </tr>
+                  <tr>
+                    <th>Reach At</th>
+                    <td>{{ train_details.reach_at }}</td>
+                  </tr>
+                  <tr>
+                    <th>Total Time</th>
+                    <td>{{ train_details.total_time }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="card shadow m-0 p-0 mt-2">
+              <div class="card-header">
+                <h4 class="text-center">Available Seats</h4>
+              </div>
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <tr v-for="(av_seats, key) in available_seats" :key="key">
+                    <th>{{ key }}</th>
+                    <td>{{ av_seats }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="card shadow m-0 p-0 mt-2">
+              <div class="card-header">
+                <h4 class="text-center">Price List</h4>
+              </div>
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <tr v-for="(item, index) in price_details" :key="index">
+                    <th>{{ item[0] }}</th>
+                    <td>{{ item[1] }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="card-footer">
@@ -58,6 +118,9 @@ export default {
       activeBogi: null,
       seats: [],
       seat_ranges: [],
+      train_details: [],
+      price_details: [],
+      available_seats: [],
     };
   },
   beforeMount() {
@@ -88,6 +151,9 @@ export default {
     }
     // get booking info
     this.getBookingDetails();
+
+    // get train details
+    this.getTrainDetails();
   },
   methods: {
     async getBookingDetails() {
@@ -109,12 +175,32 @@ export default {
         // console.log(res.data);
       });
     },
+    async getTrainDetails() {
+      await axios
+        .get("/get-train-details-for-booking/" + this.bookTrain.schedule_id)
+        .then((res) => {
+          this.seat_ranges = res.data[0].seat_ranges;
+          this.train_details = res.data[0].train_details;
+          this.available_seats = res.data[0].available_seats;
+
+          // filter prices greater than zero
+          let price_list = Object.keys(res.data[0].price_details).map((key) => [
+            key,
+            res.data[0].price_details[key],
+          ]);
+
+          for (let i = 0; i < price_list.length; i++) {
+            if (price_list[i][1] > 0) {
+              this.price_details.push(price_list[i]);
+            }
+          }
+        });
+    },
   },
 };
 </script>
 <style>
-ul.bogi-list,
-ul.seat-list {
+ul.bogi-list {
   display: flex;
   flex-wrap: wrap;
   list-style-type: none;
@@ -123,7 +209,7 @@ ul.seat-list {
 }
 .bogi-list li {
   cursor: pointer;
-  background: #ddd;
+  background: #e6faff;
   width: 50px;
   height: 35px;
   border-radius: 5px;
@@ -141,17 +227,52 @@ ul.seat-list {
   margin-left: 0;
 }
 .bogi-list li:hover {
-  background: #8f8d8d;
+  background: #92fbff;
+  color: black;
+}
+
+.seat-list {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px 5px;
+  padding: 10px;
+  margin: 0;
+  font-size: 0.65em;
+  font-weight: 600 !important;
+  text-align: center;
+  position: relative;
+}
+
+.seat-list li:nth-child(5n + 2) {
+  margin-right: 40px !important;
 }
 
 .seat-list li {
-  cursor: pointer;
+  width: calc(20% - 13px);
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.seat-list li.unavailable {
   background: #ddd;
-  width: 50px;
-  border-radius: 5px;
-  margin: 10px;
-  text-align: center;
-  padding: 5px 0px;
-  transition: 0.3s all;
+  color: white;
+  cursor: crosshair;
+}
+.seat-list li.available {
+  background: #92e3f7;
+  cursor: pointer;
+}
+.seat-list li.selected {
+  background: #033fc2;
+  color: white;
+  cursor: pointer;
+}
+.seat-list li.booked {
+  background: #f792a3;
+  cursor: pointer;
+  color: white;
 }
 </style>

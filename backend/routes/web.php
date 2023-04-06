@@ -65,6 +65,7 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
   // booking
   Route::get('/get-booking-details/{schedule_id}', [BookingController::class, 'get_booking_details']);
   Route::get('get-seats/{id}', [BookingController::class, 'get_seats_by_bogis']);
+  Route::get('get-train-details-for-booking/{id}', [BookingController::class, 'get_train_details']);
 });
 
 

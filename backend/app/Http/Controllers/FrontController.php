@@ -41,12 +41,20 @@ class FrontController extends Controller
       // get seat range
       foreach ($result->seat_ranges as $item) {
         $bogi_type = $item->bogi->bogi_type->bogi_type_name;
-        $seat_ranges = explode(',', $item->seats_range);
+        $seats_range = explode(',', $item->seats_range);
 
         // calculate total seats
-        $start_seat = explode('-', $seat_ranges[0])[1];
-        $end_seat = explode('-', $seat_ranges[1])[1];
-        $seat_count = $end_seat - $start_seat + 1;
+        $start_seat = intval(explode('-', $seats_range[0])[1]);
+        $end_seat = intval(explode('-', $seats_range[1])[1]);
+
+        // count available seats
+        $seat_count = 0;
+        foreach ($item->bogi->seats as $seat) {
+          $seat_sl_no = intval(explode('-', $seat)[1]);
+          if ($seat_sl_no >= $start_seat && $seat_sl_no <= $end_seat && $seat->booked == 0) {
+            $seat_count++;
+          }
+        }
 
         $bogi_types_with_seats[$key][$bogi_type] += $seat_count;
       }
