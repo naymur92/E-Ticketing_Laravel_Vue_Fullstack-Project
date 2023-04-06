@@ -28,6 +28,8 @@
                     class="rounded shadow"
                     v-for="seat in seats"
                     :key="seat.id"
+                    :class="setClassNamesToSeats(seat)"
+                    @click="bookSeat($event, seat)"
                   >
                     {{ seat.seat_name }}
                   </li>
@@ -91,25 +93,45 @@
                 </table>
               </div>
             </div>
+            <div
+              class="card shadow m-0 p-0 mt-2"
+              v-if="selected_seats.length != 0"
+            >
+              <div class="card-header">
+                <h4 class="text-center">Selected Seats</h4>
+              </div>
+              <div class="card-body">
+                <span
+                  class="badge bg-primary"
+                  style="margin-right: 3px"
+                  v-for="(item, i) in selected_seats"
+                  :key="i"
+                  >{{ item }}</span
+                >
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="card-footer">
-        <router-link to="/" class="btn btn-warning float-end"
-          >Search Again</router-link
-        >
+      <div class="card-footer d-flex justify-content-between">
+        <router-link to="/" class="btn btn-warning">Search Again</router-link>
+        <button class="btn btn-success" :disabled="selected_seats.length == 0">
+          Confirm Booking
+        </button>
       </div>
     </div>
   </div>
 </template>
-<script setup>
+
+<script>
 import { useBookingTrain } from "../stores/booking";
 
-const bookTrain = useBookingTrain();
-</script>
-<script>
 import axios from "axios";
 export default {
+  setup() {
+    const bookTrain = useBookingTrain();
+    return { bookTrain };
+  },
   props: ["auth"],
   data() {
     return {
@@ -121,6 +143,7 @@ export default {
       train_details: [],
       price_details: [],
       available_seats: [],
+      selected_seats: [],
     };
   },
   beforeMount() {
@@ -196,6 +219,63 @@ export default {
           }
         });
     },
+    setClassNamesToSeats(seat) {
+      let bogi_name = seat.seat_name.split("-")[0];
+      let seat_sl = Number(seat.seat_name.split("-")[1]);
+
+      // check selected seat
+      if (this.selected_seats.includes(seat.seat_name)) {
+        return "selected";
+      }
+
+      // set unavailable class
+      if (
+        seat_sl < Number(this.seat_ranges[bogi_name].start_seat) ||
+        seat_sl > Number(this.seat_ranges[bogi_name].end_seat)
+      ) {
+        return "unavailable";
+      } else {
+        // set available or booked class
+        if (seat.booked == 0) {
+          return "available";
+        } else {
+          return "booked";
+        }
+      }
+    },
+    async bookSeat($event, seat) {
+      // book seat
+      if ($event.target.classList.contains("available")) {
+        // check maximum seats and send error
+        if (this.selected_seats.length == 4) {
+          this.$swal({ icon: "error", text: "Maximum seat selection is 4!" });
+          return;
+        }
+
+        await axios.post("/book-seat/" + seat.id).then((res) => {
+          this.selected_seats.push(seat.seat_name);
+
+          $event.target.classList.remove("available");
+          $event.target.classList.add("selected");
+        });
+
+        return;
+      }
+
+      // remove from booking
+      if ($event.target.classList.contains("selected")) {
+        await axios.post("/book-seat/" + seat.id).then((res) => {
+          this.selected_seats = this.selected_seats.filter(
+            (seat_name) => seat_name != seat.seat_name
+          );
+
+          $event.target.classList.remove("selected");
+          $event.target.classList.add("available");
+        });
+
+        return;
+      }
+    },
   },
 };
 </script>
@@ -258,8 +338,9 @@ ul.bogi-list {
 }
 .seat-list li.unavailable {
   background: #ddd;
-  color: white;
-  cursor: crosshair;
+  cursor: not-allowed;
+  color: red;
+  box-shadow: none !important;
 }
 .seat-list li.available {
   background: #92e3f7;
@@ -272,7 +353,7 @@ ul.bogi-list {
 }
 .seat-list li.booked {
   background: #f792a3;
-  cursor: pointer;
-  color: white;
+  cursor: not-allowed;
+  box-shadow: none !important;
 }
 </style>

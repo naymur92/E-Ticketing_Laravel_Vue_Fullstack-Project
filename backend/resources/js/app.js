@@ -13,6 +13,8 @@ import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import VueSelect from "vue-select";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 import "vue-select/dist/vue-select.css";
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 // Frontend imports
 import FrontLayout from "./FrontLayout.vue";
@@ -32,5 +34,6 @@ app.component("v-select", VueSelect);
 app.component("front-layout", FrontLayout);
 app.use(router);
 app.use(pinia);
+app.use(VueSweetalert2);
 
 app.mount("#app");

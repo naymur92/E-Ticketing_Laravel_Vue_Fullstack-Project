@@ -104,4 +104,9 @@ class BookingController extends Controller
 
     return response()->json($data);
   }
+
+  public function book_seat($id)
+  {
+    return response()->json(['success' => true]);
+  }
 }
