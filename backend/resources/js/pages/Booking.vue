@@ -38,6 +38,23 @@
             </div>
           </div>
           <div class="col-md-6">
+            <div
+              class="card shadow m-0 p-0 mt-2"
+              v-if="selected_seats.length != 0"
+            >
+              <div class="card-header">
+                <h4 class="text-center">Selected Seats</h4>
+              </div>
+              <div class="card-body">
+                <span
+                  class="badge bg-primary"
+                  style="margin-right: 3px"
+                  v-for="(item, i) in selected_seats"
+                  :key="i"
+                  >{{ item }}</span
+                >
+              </div>
+            </div>
             <div class="card shadow m-0 p-0">
               <div class="card-header">
                 <h4 class="text-center">Train Information</h4>
@@ -93,29 +110,16 @@
                 </table>
               </div>
             </div>
-            <div
-              class="card shadow m-0 p-0 mt-2"
-              v-if="selected_seats.length != 0"
-            >
-              <div class="card-header">
-                <h4 class="text-center">Selected Seats</h4>
-              </div>
-              <div class="card-body">
-                <span
-                  class="badge bg-primary"
-                  style="margin-right: 3px"
-                  v-for="(item, i) in selected_seats"
-                  :key="i"
-                  >{{ item }}</span
-                >
-              </div>
-            </div>
           </div>
         </div>
       </div>
       <div class="card-footer d-flex justify-content-between">
         <router-link to="/" class="btn btn-warning">Search Again</router-link>
-        <button class="btn btn-success" :disabled="selected_seats.length == 0">
+        <button
+          @click="confirmBooking"
+          class="btn btn-success"
+          :disabled="selected_seats.length == 0"
+        >
           Confirm Booking
         </button>
       </div>
@@ -147,7 +151,7 @@ export default {
     };
   },
   beforeMount() {
-    this.bookTrain.schedule_id = 31;
+    // this.bookTrain.schedule_id = 31;
     // check auth
     if (this.auth.length == 0) {
       alert("Please login first!");
@@ -275,6 +279,9 @@ export default {
 
         return;
       }
+    },
+    async confirmBooking() {
+      this.$swal({ icon: "error", text: "The project is under development!" });
     },
   },
 };

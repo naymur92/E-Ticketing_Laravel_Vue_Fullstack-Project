@@ -58,6 +58,7 @@
               no-label="true"
               auto-close="true"
               :min-date="current_date"
+              :max-date="max_date"
               id="_doj"
               v-model="doj"
             />
@@ -108,6 +109,7 @@ export default {
       doj: "",
       errors: {},
       current_date: "",
+      max_date: "",
       search: false,
     };
   },
@@ -175,6 +177,14 @@ export default {
       //   today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
       // const dateTime = date + " " + time;
       this.current_date = date;
+
+      let max_date = new Date(today.setDate(today.getDate() + 4));
+      this.max_date =
+        max_date.getFullYear() +
+        "-" +
+        (max_date.getMonth() + 1) +
+        "-" +
+        max_date.getDate();
     },
   },
 };
