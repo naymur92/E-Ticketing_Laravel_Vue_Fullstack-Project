@@ -154,14 +154,14 @@ export default {
     // this.bookTrain.schedule_id = 31;
     // check auth
     if (this.auth.length == 0) {
-      alert("Please login first!");
+      this.$swal({ icon: "error", text: "Please login first!" });
       window.location.href = "/login";
       return;
     }
 
     // check user
     if (this.auth.is_admin == "admin") {
-      alert("Please login as a user");
+      this.$swal({ icon: "error", text: "Please login as a user" });
 
       this.$router.push({
         name: "home",
